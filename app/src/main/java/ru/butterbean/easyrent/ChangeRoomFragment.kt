@@ -12,6 +12,7 @@ import ru.butterbean.easyrent.utils.showToast
 class ChangeRoomFragment : Fragment() {
 
     private val args by navArgs<ChangeRoomFragmentArgs>()
+    private var mIsNew = false
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.confirm_menu,menu)
@@ -42,10 +43,11 @@ class ChangeRoomFragment : Fragment() {
         // Inflate the layout for this fragment
         val view =  inflater.inflate(R.layout.fragment_room_change, container, false)
 
-        if (args.currentRoom != null){
+        mIsNew = args.currentRoom.name.isEmpty()
+
         view.room_change_name.setText(args.currentRoom.name)
         view.room_change_address.setText(args.currentRoom.address)
-        view.room_change_status.text = args.currentRoom.status}
+        view.room_change_status.text = args.currentRoom.status
         // add menu
         setHasOptionsMenu(true)
 

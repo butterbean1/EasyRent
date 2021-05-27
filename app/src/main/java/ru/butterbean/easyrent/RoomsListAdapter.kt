@@ -6,16 +6,13 @@ import android.view.ViewGroup
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.room_item.view.*
-import ru.butterbean.easyrent.models.Room
-import ru.butterbean.easyrent.utils.showToast
+import ru.butterbean.easyrent.models.RoomData
 
 class RoomsListAdapter:RecyclerView.Adapter<RoomsListAdapter.RoomsListHolder>() {
 
-    private var listRooms = mutableListOf<Room>()
+    private var listRooms = mutableListOf<RoomData>()
 
-    class RoomsListHolder(view: View):RecyclerView.ViewHolder(view) {
-
-    }
+    class RoomsListHolder(view: View):RecyclerView.ViewHolder(view)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RoomsListHolder {
         val holder = RoomsListHolder(LayoutInflater.from(parent.context).inflate(R.layout.fragment_rooms_list,parent,false) )

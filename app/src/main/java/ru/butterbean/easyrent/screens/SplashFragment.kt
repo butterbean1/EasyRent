@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import ru.butterbean.easyrent.R
+import ru.butterbean.easyrent.utils.APP_ACTIVITY
 
 class SplashFragment : Fragment() {
 
@@ -21,6 +22,9 @@ class SplashFragment : Fragment() {
         Handler(Looper.getMainLooper()).postDelayed({
             findNavController().navigate(R.id.action_splashFragment_to_roomsListFragment)
         },3000)
+
+
+        APP_ACTIVITY.supportActionBar?.hide()
 
 
         // Inflate the layout for this fragment
