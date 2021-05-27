@@ -33,6 +33,7 @@
             app:destination="@id/roomsListFragment" />
         <argument
             android:name="currentRoom"
-            app:argType="ru.butterbean.easyrent.models.Room" />
+            app:argType="ru.butterbean.easyrent.models.RoomData" />
+
     </fragment>
 </navigation>

@@ -21,6 +21,7 @@ class SplashFragment : Fragment() {
 
         Handler(Looper.getMainLooper()).postDelayed({
             findNavController().navigate(R.id.action_splashFragment_to_roomsListFragment)
+            APP_ACTIVITY.supportActionBar?.show()
         },3000)
 
 
