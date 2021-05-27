@@ -16,12 +16,12 @@
         />
 
     <TextView
-        android:id="@+id/rooms_list_room_state"
+        android:id="@+id/rooms_list_room_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="5dp"
-        android:text="@string/def_state"
+        android:text="@string/def_status"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/rooms_list_room_name"
         android:layout_marginLeft="10dp" />

@@ -3,5 +3,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="def_room_name">Жилинская, д.12, кв.159</string>
-    <string name="def_state">Свободно</string>
+    <string name="def_status">Свободно</string>
+    <string name="hint_room_name">Название помещения</string>
+    <string name="hint_room_address">Адрес помещения</string>
 </resources>

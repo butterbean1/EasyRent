@@ -18,5 +18,21 @@
         android:id="@+id/roomsListFragment"
         android:name="ru.butterbean.easyrent.RoomsListFragment"
         android:label="fragment_rooms_list"
-        tools:layout="@layout/fragment_rooms_list" />
+        tools:layout="@layout/fragment_rooms_list" >
+        <action
+            android:id="@+id/action_roomsListFragment_to_roomChangeFragment"
+            app:destination="@id/roomChangeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/roomChangeFragment"
+        android:name="ru.butterbean.easyrent.ChangeRoomFragment"
+        android:label="fragment_room"
+        tools:layout="@layout/fragment_room_change" >
+        <action
+            android:id="@+id/action_roomChangeFragment_to_roomsListFragment"
+            app:destination="@id/roomsListFragment" />
+        <argument
+            android:name="currentRoom"
+            app:argType="ru.butterbean.easyrent.models.Room" />
+    </fragment>
 </navigation>
