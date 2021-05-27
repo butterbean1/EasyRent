@@ -10,12 +10,12 @@ import ru.butterbean.easyrent.models.RoomData
 
 class RoomsListAdapter:RecyclerView.Adapter<RoomsListAdapter.RoomsListHolder>() {
 
-    private var listRooms = mutableListOf<RoomData>()
+    private var listRooms = emptyList<RoomData>()
 
     class RoomsListHolder(view: View):RecyclerView.ViewHolder(view)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RoomsListHolder {
-        val holder = RoomsListHolder(LayoutInflater.from(parent.context).inflate(R.layout.fragment_rooms_list,parent,false) )
+        val holder = RoomsListHolder(LayoutInflater.from(parent.context).inflate(R.layout.room_item,parent,false) )
         holder.itemView.setOnClickListener {
             val action = RoomsListFragmentDirections.actionRoomsListFragmentToRoomChangeFragment(listRooms[holder.adapterPosition])
             holder.itemView.findNavController().navigate(action)
@@ -30,4 +30,10 @@ class RoomsListAdapter:RecyclerView.Adapter<RoomsListAdapter.RoomsListHolder>() 
     }
 
     override fun getItemCount(): Int = listRooms.size
+
+    fun setData(rooms:List<RoomData>){
+        listRooms = rooms
+        notifyDataSetChanged()
+
+    }
 }

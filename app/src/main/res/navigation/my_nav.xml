@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/splashFragment"
         android:name="ru.butterbean.easyrent.screens.SplashFragment"
-        android:label="fragment_splash"
+        android:label=""
         tools:layout="@layout/fragment_splash" >
         <action
             android:id="@+id/action_splashFragment_to_roomsListFragment"
@@ -17,7 +17,7 @@
     <fragment
         android:id="@+id/roomsListFragment"
         android:name="ru.butterbean.easyrent.RoomsListFragment"
-        android:label="fragment_rooms_list"
+        android:label="Список помещений"
         tools:layout="@layout/fragment_rooms_list" >
         <action
             android:id="@+id/action_roomsListFragment_to_roomChangeFragment"
@@ -26,7 +26,7 @@
     <fragment
         android:id="@+id/roomChangeFragment"
         android:name="ru.butterbean.easyrent.ChangeRoomFragment"
-        android:label="fragment_room"
+        android:label=""
         tools:layout="@layout/fragment_room_change" >
         <action
             android:id="@+id/action_roomChangeFragment_to_roomsListFragment"
