@@ -18,7 +18,7 @@ class RoomsListAdapter:RecyclerView.Adapter<RoomsListAdapter.RoomsListHolder>() 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RoomsListHolder {
         val holder = RoomsListHolder(LayoutInflater.from(parent.context).inflate(R.layout.room_item,parent,false) )
         holder.itemView.setOnClickListener {
-            val action = RoomsListFragmentDirections.actionRoomsListFragmentToRoomChangeFragment(listRooms[holder.adapterPosition])
+            val action = RoomsListFragmentDirections.actionRoomsListFragmentToRoomFragment(listRooms[holder.adapterPosition])
             holder.itemView.findNavController().navigate(action)
         }
         return holder

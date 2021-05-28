@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@color/grey"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".screens.RoomFragment">
+
+    <TextView
+        android:id="@+id/room_name"
+        android:text = "@string/def_room_name"
+        style="@style/large_text"
+        android:textColor="@color/white"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="gone"
+        />
+
+    <TextView
+        android:id="@+id/room_address"
+        android:text = "@string/def_room_address"
+        style="@style/normal_text"
+        android:textColor="@color/white"
+        app:layout_constraintTop_toBottomOf="@+id/room_name"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/room_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/room_address"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_margin="@dimen/app_margin"
+        android:text="@string/def_status"
+        />
+
+
+    <View
+        android:id="@+id/room_separator"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_margin="@dimen/app_margin"
+        android:background="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/room_status"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rooms_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/grey"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/room_separator"
+        app:layout_constraintVertical_bias="0.0"
+        tools:listitem="@layout/room_item" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/rooms_btn_add"
+        style="@style/floating_btn"
+        android:src="@drawable/ic_add"
+        app:tint="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

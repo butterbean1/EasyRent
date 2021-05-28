@@ -9,8 +9,8 @@ import androidx.navigation.fragment.navArgs
 import kotlinx.android.synthetic.main.fragment_room_change.*
 import kotlinx.android.synthetic.main.fragment_room_change.view.*
 import ru.butterbean.easyrent.R
-import ru.butterbean.easyrent.database.view_models.RoomViewModel
 import ru.butterbean.easyrent.STATUS_FREE
+import ru.butterbean.easyrent.database.view_models.RoomViewModel
 import ru.butterbean.easyrent.models.RoomData
 import ru.butterbean.easyrent.utils.APP_ACTIVITY
 import ru.butterbean.easyrent.utils.showToast
@@ -44,12 +44,16 @@ class ChangeRoomFragment : Fragment() {
         }else{
             val room = RoomData(args.currentRoom.id,name,address,status)
             if (mIsNew){
+                // если новое помещение - добавляем в базу и переходим в список
                 mRoomViewModel.addRoom(room)
+                findNavController().navigate(R.id.action_roomChangeFragment_to_roomsListFragment)
             }else{
+                // если редактируем - записываем изменения и переходим в карточку помещения
                 mRoomViewModel.updateRoom(room)
+                val action = ChangeRoomFragmentDirections.actionRoomChangeFragmentToRoomFragment(room)
+                findNavController().navigate(action)
             }
 
-            findNavController().navigate(R.id.action_roomChangeFragment_to_roomsListFragment)
         }
     }
 
