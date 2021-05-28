@@ -19,7 +19,7 @@ interface GuestDao {
     @Query("DELETE FROM $TABLE_GUESTS_NAME")
     suspend fun deleteAllGuests()
 
-    @Query("SELECT * $TABLE_GUESTS_NAME ORDER BY id ASC")
+    @Query("SELECT * FROM $TABLE_GUESTS_NAME ORDER BY id ASC")
     fun readAllGuests(): LiveData<List<GuestData>>
 
 }

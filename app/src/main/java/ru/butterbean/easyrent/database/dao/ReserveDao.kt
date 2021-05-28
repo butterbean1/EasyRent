@@ -19,7 +19,7 @@ interface ReserveDao {
     @Query("DELETE FROM $TABLE_RESERVES_NAME")
     suspend fun deleteAllReserves()
 
-    @Query("SELECT * $TABLE_RESERVES_NAME ORDER BY id ASC")
+    @Query("SELECT * FROM $TABLE_RESERVES_NAME ORDER BY id ASC")
     fun readAllReserves(): LiveData<List<ReserveData>>
 
 }

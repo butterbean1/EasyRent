@@ -21,7 +21,7 @@ class RoomsListFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         APP_ACTIVITY.supportActionBar?.setDisplayHomeAsUpEnabled(false)
-
+        APP_ACTIVITY.backAvailable = false
     }
 
     override fun onCreateView(
@@ -50,4 +50,9 @@ class RoomsListFragment : Fragment() {
         return view
     }
 
+    override fun onStop() {
+        super.onStop()
+        APP_ACTIVITY.backAvailable = true
+
+    }
 }

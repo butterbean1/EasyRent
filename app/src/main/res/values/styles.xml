@@ -13,9 +13,18 @@
         <item name="android:layout_margin">@dimen/floating_btn_margin</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:tint">@color/white</item>
+        <item name="android:color">@color/white</item>
+        <item name="android:backgroundTint">@color/green</item>
         <item name="android:clickable">true</item>
         <item name="android:focusable">true</item>
     </style>
 
+    <style name="recycle_view_item">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:background">@drawable/ripple_effect</item>
+        <item name="android:layout_marginTop">@dimen/app_margin</item>
+    </style>
 </resources>

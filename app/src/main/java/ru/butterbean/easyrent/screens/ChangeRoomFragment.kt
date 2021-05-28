@@ -62,7 +62,7 @@ class ChangeRoomFragment : Fragment() {
         mIsNew = args.currentRoom.name.isEmpty()
 
         if (mIsNew){
-            APP_ACTIVITY.supportActionBar?.title = "Новое помещение"
+            APP_ACTIVITY.supportActionBar?.title = getString(R.string.new_room)
         }else{
             APP_ACTIVITY.supportActionBar?.title = args.currentRoom.name
         }
