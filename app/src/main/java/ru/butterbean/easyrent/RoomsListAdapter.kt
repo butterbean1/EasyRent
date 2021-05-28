@@ -7,6 +7,7 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.room_item.view.*
 import ru.butterbean.easyrent.models.RoomData
+import ru.butterbean.easyrent.screens.RoomsListFragmentDirections
 
 class RoomsListAdapter:RecyclerView.Adapter<RoomsListAdapter.RoomsListHolder>() {
 

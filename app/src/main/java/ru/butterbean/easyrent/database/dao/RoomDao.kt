@@ -1,7 +1,8 @@
-package ru.butterbean.easyrent
+package ru.butterbean.easyrent.database.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import ru.butterbean.easyrent.TABLE_ROOMS_NAME
 import ru.butterbean.easyrent.models.RoomData
 
 @Dao

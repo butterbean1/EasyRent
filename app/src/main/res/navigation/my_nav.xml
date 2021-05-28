@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/roomsListFragment"
-        android:name="ru.butterbean.easyrent.RoomsListFragment"
+        android:name="ru.butterbean.easyrent.screens.RoomsListFragment"
         android:label="Список помещений"
         tools:layout="@layout/fragment_rooms_list" >
         <action
@@ -25,7 +25,7 @@
     </fragment>
     <fragment
         android:id="@+id/roomChangeFragment"
-        android:name="ru.butterbean.easyrent.ChangeRoomFragment"
+        android:name="ru.butterbean.easyrent.screens.ChangeRoomFragment"
         android:label=""
         tools:layout="@layout/fragment_room_change" >
         <action

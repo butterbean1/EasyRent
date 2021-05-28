@@ -1,4 +1,4 @@
-package ru.butterbean.easyrent
+package ru.butterbean.easyrent.screens
 
 import android.os.Bundle
 import android.view.*
@@ -8,6 +8,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import kotlinx.android.synthetic.main.fragment_room_change.*
 import kotlinx.android.synthetic.main.fragment_room_change.view.*
+import ru.butterbean.easyrent.R
+import ru.butterbean.easyrent.database.view_models.RoomViewModel
+import ru.butterbean.easyrent.STATUS_FREE
 import ru.butterbean.easyrent.models.RoomData
 import ru.butterbean.easyrent.utils.APP_ACTIVITY
 import ru.butterbean.easyrent.utils.showToast
@@ -23,10 +26,13 @@ class ChangeRoomFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId){
-            R.id.confirm_change -> change()
+        return when (item.itemId){
+            R.id.confirm_change -> {
+                change()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
-        return true
     }
 
     private fun change() {
@@ -67,6 +73,7 @@ class ChangeRoomFragment : Fragment() {
         view.room_change_address.setText(args.currentRoom.address)
         if (mIsNew){
             view.room_change_status.text = STATUS_FREE
+            view.room_change_status.visibility = View.INVISIBLE
         }else{
             view.room_change_status.text = args.currentRoom.status
         }
@@ -76,5 +83,7 @@ class ChangeRoomFragment : Fragment() {
 
         return view
     }
+
+
 
 }

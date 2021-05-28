@@ -1,9 +1,10 @@
-package ru.butterbean.easyrent
+package ru.butterbean.easyrent.database.repository
 
 import androidx.lifecycle.LiveData
+import ru.butterbean.easyrent.database.dao.RoomDao
 import ru.butterbean.easyrent.models.RoomData
 
-class RoomRepository(private val roomDao:RoomDao) {
+class RoomRepository(private val roomDao: RoomDao) {
 
     val readAllRooms:LiveData<List<RoomData>> = roomDao.readAllRooms()
 

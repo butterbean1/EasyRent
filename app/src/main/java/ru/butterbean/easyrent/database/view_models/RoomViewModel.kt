@@ -1,4 +1,4 @@
-package ru.butterbean.easyrent
+package ru.butterbean.easyrent.database.view_models
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
@@ -6,11 +6,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import ru.butterbean.easyrent.database.MainDatabase
+import ru.butterbean.easyrent.database.repository.RoomRepository
 import ru.butterbean.easyrent.models.RoomData
 
 class RoomViewModel(application: Application):AndroidViewModel(application) {
     val readAllRooms: LiveData<List<RoomData>>
-    private val repository:RoomRepository
+    private val repository: RoomRepository
 
     init {
         val roomDao = MainDatabase.getDatabase(application).roomDao()

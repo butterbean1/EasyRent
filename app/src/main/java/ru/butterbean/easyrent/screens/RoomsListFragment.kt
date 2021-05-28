@@ -1,4 +1,4 @@
-package ru.butterbean.easyrent
+package ru.butterbean.easyrent.screens
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,6 +8,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.fragment_rooms_list.view.*
+import ru.butterbean.easyrent.R
+import ru.butterbean.easyrent.database.view_models.RoomViewModel
+import ru.butterbean.easyrent.RoomsListAdapter
 import ru.butterbean.easyrent.models.RoomData
 import ru.butterbean.easyrent.utils.APP_ACTIVITY
 
@@ -17,7 +20,7 @@ class RoomsListFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        APP_ACTIVITY.supportActionBar?.show()
+        APP_ACTIVITY.supportActionBar?.setDisplayHomeAsUpEnabled(false)
 
     }
 

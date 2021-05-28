@@ -1,20 +1,26 @@
-package ru.butterbean.easyrent
+package ru.butterbean.easyrent.database
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import ru.butterbean.easyrent.DATABASE_NAME
+import ru.butterbean.easyrent.database.dao.GuestDao
+import ru.butterbean.easyrent.database.dao.ReserveDao
+import ru.butterbean.easyrent.database.dao.RoomDao
 import ru.butterbean.easyrent.models.RoomData
 
 @Database(entities=[RoomData::class],version=1,exportSchema = false)
 abstract class MainDatabase: RoomDatabase(){
-    abstract fun roomDao():RoomDao
+    abstract fun roomDao(): RoomDao
+    abstract fun guestDao(): GuestDao
+    abstract fun reserveDao(): ReserveDao
 
     companion object{
         @Volatile
-        private var INSTANCE:MainDatabase? = null
+        private var INSTANCE: MainDatabase? = null
 
-        fun getDatabase(context: Context):MainDatabase{
+        fun getDatabase(context: Context): MainDatabase {
             val tempInstance = INSTANCE
             if (tempInstance != null){
                 return tempInstance
