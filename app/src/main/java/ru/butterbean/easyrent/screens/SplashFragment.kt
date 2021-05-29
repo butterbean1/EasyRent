@@ -7,12 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
-import ru.butterbean.easyrent.MainActivity
 import ru.butterbean.easyrent.R
+import ru.butterbean.easyrent.utils.APP_ACTIVITY
+import ru.butterbean.easyrent.utils.replaceFragment
 
 class SplashFragment : Fragment() {
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -20,11 +19,11 @@ class SplashFragment : Fragment() {
     ): View? {
 
         Handler(Looper.getMainLooper()).postDelayed({
-            findNavController().navigate(R.id.action_splashFragment_to_roomsListFragment)
-            (requireActivity() as MainActivity).supportActionBar?.show()
-        },3000)
+            replaceFragment(RoomsListFragment(), false)
+            APP_ACTIVITY.supportActionBar?.show()
+        }, 2000)
 
-        (requireActivity() as MainActivity).supportActionBar?.hide()
+        APP_ACTIVITY.supportActionBar?.hide()
 
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_splash, container, false)

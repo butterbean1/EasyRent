@@ -1,18 +1,17 @@
 package ru.butterbean.easyrent.screens
 
-import android.os.Bundle
-import android.view.*
-import androidx.fragment.app.Fragment
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
-import kotlinx.android.synthetic.main.fragment_room.view.*
+import kotlinx.android.synthetic.main.fragment_room.*
 import ru.butterbean.easyrent.R
 import ru.butterbean.easyrent.database.view_models.RoomViewModel
+import ru.butterbean.easyrent.models.RoomData
 import ru.butterbean.easyrent.utils.APP_ACTIVITY
+import ru.butterbean.easyrent.utils.replaceFragment
 
-class RoomFragment : Fragment() {
-    private val args by navArgs<RoomFragmentArgs>()
+class RoomFragment(private val paramRoom:RoomData) : BaseFragment(R.layout.fragment_room) {
     private lateinit var mRoomViewModel: RoomViewModel
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -22,37 +21,29 @@ class RoomFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId){
             R.id.confirm_edit -> {
-                val action = RoomFragmentDirections.actionRoomFragmentToRoomChangeFragment(args.currentRoom)
-                findNavController().navigate(action)
+                replaceFragment(EditRoomFragment(paramRoom))
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onResume(){
+        super.onResume()
         mRoomViewModel = ViewModelProvider(this).get(RoomViewModel::class.java)
 
-        APP_ACTIVITY.supportActionBar?.title = args.currentRoom.name
+        APP_ACTIVITY.title = paramRoom.name
 
-        // Inflate the layout for this fragment
-        val view =  inflater.inflate(R.layout.fragment_room, container, false)
-
-        view.room_name.text = args.currentRoom.name
-        if (args.currentRoom.address.isEmpty()){
-            view.room_address.text = getString(R.string.empty_address)
+        room_name.text = paramRoom.name
+        if (paramRoom.address.isEmpty()){
+            room_address.text = getString(R.string.empty_address)
         }else {
-            view.room_address.text = args.currentRoom.address
+            room_address.text = paramRoom.address
         }
-        view.room_status.text = args.currentRoom.status
+        room_status.text = paramRoom.status
 
         // add menu
         setHasOptionsMenu(true)
-
-        return view
     }
 
 }

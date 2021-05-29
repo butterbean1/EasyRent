@@ -1,32 +1,26 @@
 package ru.butterbean.easyrent
 
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
-import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.appcompat.widget.Toolbar
+import ru.butterbean.easyrent.databinding.ActivityMainBinding
+import ru.butterbean.easyrent.screens.SplashFragment
 import ru.butterbean.easyrent.utils.APP_ACTIVITY
+import ru.butterbean.easyrent.utils.replaceFragment
 
 class MainActivity : AppCompatActivity() {
 
-    var backAvailable = false
+    private lateinit var mBinding:ActivityMainBinding
+    lateinit var mToolbar: Toolbar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        mBinding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(mBinding.root)
         APP_ACTIVITY = this
-        setupActionBarWithNavController(findNavController(R.id.fragment))
-        supportActionBar?.setBackgroundDrawable(ColorDrawable(getColor(R.color.green)))
+        mToolbar = mBinding.mainToolbar
+        setSupportActionBar(mToolbar)
+        replaceFragment(SplashFragment())
     }
-    override fun onSupportNavigateUp(): Boolean {
-        val navController = findNavController(R.id.fragment)
-        return navController.navigateUp() || super.onSupportNavigateUp()
-    }
-
-    override fun onBackPressed() {
-        if (backAvailable) {super.onBackPressed()}
-        else { APP_ACTIVITY.finish()}
-    }
-
 
 }

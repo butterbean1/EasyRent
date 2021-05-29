@@ -3,13 +3,12 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-android-extensions'
     id 'kotlin-kapt'
-    id 'androidx.navigation.safeargs.kotlin'
 }
 
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
-
+    buildFeatures.viewBinding = true
     defaultConfig {
         applicationId "ru.butterbean.easyrent"
         minSdkVersion 23

@@ -4,8 +4,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
+import kotlinx.android.synthetic.main.fragment_room.*
 import kotlinx.android.synthetic.main.fragment_room_change.*
 import kotlinx.android.synthetic.main.fragment_room_change.view.*
 import ru.butterbean.easyrent.R
@@ -13,11 +12,12 @@ import ru.butterbean.easyrent.STATUS_FREE
 import ru.butterbean.easyrent.database.view_models.RoomViewModel
 import ru.butterbean.easyrent.models.RoomData
 import ru.butterbean.easyrent.utils.APP_ACTIVITY
+import ru.butterbean.easyrent.utils.replaceFragment
 import ru.butterbean.easyrent.utils.showToast
 
-class ChangeRoomFragment : Fragment() {
+class EditRoomFragment(private val paramRoom: RoomData) : BaseFragment(R.layout.fragment_room_change) {
 
-    private val args by navArgs<ChangeRoomFragmentArgs>()
+//    private val args by navArgs<ChangeRoomFragmentArgs>()
     private var mIsNew = false
     private lateinit var mRoomViewModel: RoomViewModel
 
@@ -42,52 +42,42 @@ class ChangeRoomFragment : Fragment() {
         if (name.isEmpty()){
             showToast("Введите название!")
         }else{
-            val room = RoomData(args.currentRoom.id,name,address,status)
+            val room = RoomData(paramRoom.id,name,address,status)
             if (mIsNew){
                 // если новое помещение - добавляем в базу и переходим в список
                 mRoomViewModel.addRoom(room)
-                findNavController().navigate(R.id.action_roomChangeFragment_to_roomsListFragment)
+                replaceFragment(RoomsListFragment(),false)
             }else{
                 // если редактируем - записываем изменения и переходим в карточку помещения
                 mRoomViewModel.updateRoom(room)
-                val action = ChangeRoomFragmentDirections.actionRoomChangeFragmentToRoomFragment(room)
-                findNavController().navigate(action)
+                replaceFragment(RoomFragment(room),false)
             }
 
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onResume(){
+        super.onResume()
 
         mRoomViewModel = ViewModelProvider(this).get(RoomViewModel::class.java)
-        mIsNew = args.currentRoom.name.isEmpty()
+        mIsNew = paramRoom.name.isEmpty()
 
         if (mIsNew){
-            APP_ACTIVITY.supportActionBar?.title = getString(R.string.new_room)
+            APP_ACTIVITY.title = getString(R.string.new_room)
         }else{
-            APP_ACTIVITY.supportActionBar?.title = args.currentRoom.name
+            APP_ACTIVITY.title = paramRoom.name
         }
-        // Inflate the layout for this fragment
-        val view =  inflater.inflate(R.layout.fragment_room_change, container, false)
-
-        view.room_change_name.setText(args.currentRoom.name)
-        view.room_change_address.setText(args.currentRoom.address)
+        room_change_name.setText(paramRoom.name)
+        room_change_address.setText(paramRoom.address)
         if (mIsNew){
-            view.room_change_status.text = STATUS_FREE
-            view.room_change_status.visibility = View.INVISIBLE
+            room_change_status.text = STATUS_FREE
+            room_change_status.visibility = View.INVISIBLE
         }else{
-            view.room_change_status.text = args.currentRoom.status
+            room_change_status.text = paramRoom.status
         }
 
+        room_change_name.requestFocus()
         // add menu
         setHasOptionsMenu(true)
-
-        return view
     }
-
-
-
 }

@@ -1,39 +1,28 @@
 package ru.butterbean.easyrent.screens
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
-import kotlinx.android.synthetic.main.fragment_rooms_list.view.*
+import kotlinx.android.synthetic.main.fragment_rooms_list.*
 import ru.butterbean.easyrent.R
-import ru.butterbean.easyrent.database.view_models.RoomViewModel
 import ru.butterbean.easyrent.RoomsListAdapter
+import ru.butterbean.easyrent.database.view_models.RoomViewModel
 import ru.butterbean.easyrent.models.RoomData
 import ru.butterbean.easyrent.utils.APP_ACTIVITY
+import ru.butterbean.easyrent.utils.replaceFragment
 
-class RoomsListFragment : Fragment() {
+class RoomsListFragment : Fragment(R.layout.fragment_rooms_list) {
 
     private lateinit var mRoomViewModel: RoomViewModel
 
-    override fun onResume() {
+    override fun onResume(){
         super.onResume()
-        APP_ACTIVITY.supportActionBar?.setDisplayHomeAsUpEnabled(false)
-        APP_ACTIVITY.backAvailable = false
-    }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        val view =  inflater.inflate(R.layout.fragment_rooms_list, container, false)
+        APP_ACTIVITY.title = getString(R.string.rooms_list)
+        APP_ACTIVITY.supportActionBar?.setDisplayHomeAsUpEnabled(false)
 
         //Recycler view
         val adapter = RoomsListAdapter()
-        val recyclerView = view.rooms_recycler_view
+        val recyclerView = rooms_recycler_view
         recyclerView.adapter = adapter
 
         // ViewModel
@@ -42,17 +31,9 @@ class RoomsListFragment : Fragment() {
             adapter.setData(rooms)
         })
 
-        view.rooms_btn_add.setOnClickListener {
-            val nullRoom = RoomData(0,"","","")
-            val action = RoomsListFragmentDirections.actionRoomsListFragmentToRoomChangeFragment(nullRoom)
-            findNavController().navigate(action)
+        rooms_btn_add.setOnClickListener {
+            val nullRoom = RoomData(0, "", "", "")
+            replaceFragment(EditRoomFragment(nullRoom))
         }
-        return view
-    }
-
-    override fun onStop() {
-        super.onStop()
-        APP_ACTIVITY.backAvailable = true
-
     }
 }
