@@ -12,7 +12,6 @@ import ru.butterbean.easyrent.TABLE_ROOMS_NAME
 data class ReserveData(
     @PrimaryKey(autoGenerate = true)
     val id:Int,
-    val name:String,
     val roomId:Int,
     val guestId:Int,
     val sum:Int,
