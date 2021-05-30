@@ -1,5 +1,9 @@
 package ru.butterbean.easyrent
 
+import ru.butterbean.easyrent.models.RoomData
+
+lateinit var CURRENT_ROOM:RoomData
+
 const val DATABASE_NAME = "main_database"
 
 const val TABLE_ROOMS_NAME = "rooms_table"

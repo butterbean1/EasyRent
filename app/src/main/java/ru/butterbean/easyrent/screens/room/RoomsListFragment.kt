@@ -1,12 +1,10 @@
-package ru.butterbean.easyrent.screens
+package ru.butterbean.easyrent.screens.room
 
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.fragment_rooms_list.*
 import ru.butterbean.easyrent.R
-import ru.butterbean.easyrent.RoomsListAdapter
 import ru.butterbean.easyrent.database.view_models.RoomViewModel
-import ru.butterbean.easyrent.models.RoomData
 import ru.butterbean.easyrent.utils.APP_ACTIVITY
 import ru.butterbean.easyrent.utils.replaceFragment
 
@@ -32,8 +30,7 @@ class RoomsListFragment : Fragment(R.layout.fragment_rooms_list) {
         })
 
         rooms_btn_add.setOnClickListener {
-            val nullRoom = RoomData(0, "", "", "")
-            replaceFragment(EditRoomFragment(nullRoom))
+            replaceFragment(EditRoomFragment())
         }
     }
 }

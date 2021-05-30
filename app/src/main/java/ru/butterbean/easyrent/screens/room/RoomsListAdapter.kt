@@ -1,12 +1,13 @@
-package ru.butterbean.easyrent
+package ru.butterbean.easyrent.screens.room
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.room_item.view.*
+import ru.butterbean.easyrent.CURRENT_ROOM
+import ru.butterbean.easyrent.R
 import ru.butterbean.easyrent.models.RoomData
-import ru.butterbean.easyrent.screens.RoomFragment
 import ru.butterbean.easyrent.utils.replaceFragment
 
 class RoomsListAdapter:RecyclerView.Adapter<RoomsListAdapter.RoomsListHolder>() {
@@ -18,9 +19,8 @@ class RoomsListAdapter:RecyclerView.Adapter<RoomsListAdapter.RoomsListHolder>() 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RoomsListHolder {
         val holder = RoomsListHolder(LayoutInflater.from(parent.context).inflate(R.layout.room_item,parent,false) )
         holder.itemView.setOnClickListener {
-//            val action = RoomsListFragmentDirections.actionRoomsListFragmentToRoomFragment(listRooms[holder.adapterPosition])
-//            holder.itemView.findNavController().navigate(action)
-            replaceFragment(RoomFragment(listRooms[holder.adapterPosition]))
+            CURRENT_ROOM = listRooms[holder.adapterPosition]
+            replaceFragment(RoomFragment())
         }
         return holder
     }

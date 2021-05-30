@@ -1,11 +1,6 @@
-package ru.butterbean.easyrent.screens
+package ru.butterbean.easyrent.screens.base
 
-import android.os.Bundle
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import ru.butterbean.easyrent.R
 import ru.butterbean.easyrent.utils.APP_ACTIVITY
 
 open class BaseFragment(layout:Int) : Fragment(layout) {

@@ -6,6 +6,7 @@ import androidx.appcompat.widget.Toolbar
 import ru.butterbean.easyrent.databinding.ActivityMainBinding
 import ru.butterbean.easyrent.screens.SplashFragment
 import ru.butterbean.easyrent.utils.APP_ACTIVITY
+import ru.butterbean.easyrent.utils.getEmptyRoom
 import ru.butterbean.easyrent.utils.replaceFragment
 
 class MainActivity : AppCompatActivity() {
@@ -18,6 +19,7 @@ class MainActivity : AppCompatActivity() {
         mBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(mBinding.root)
         APP_ACTIVITY = this
+        CURRENT_ROOM = getEmptyRoom()
         mToolbar = mBinding.mainToolbar
         setSupportActionBar(mToolbar)
         replaceFragment(SplashFragment())
