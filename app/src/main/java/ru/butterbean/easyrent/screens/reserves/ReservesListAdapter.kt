@@ -5,7 +5,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.reserve_item.view.*
-import kotlinx.android.synthetic.main.room_item.view.*
 import ru.butterbean.easyrent.CURRENT_RESERVE
 import ru.butterbean.easyrent.R
 import ru.butterbean.easyrent.models.ReserveData
