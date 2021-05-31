@@ -4,7 +4,7 @@
     style="@style/recycle_view_item">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/reserves_list_block_check_in"
+        android:id="@+id/reserves_list_group_check_in"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/app_margin"
@@ -64,11 +64,11 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/reserves_list_block_check_out"
+        android:id="@+id/reserves_list_group_check_out"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/app_margin"
-        app:layout_constraintTop_toBottomOf="@id/reserves_list_block_check_in"
+        app:layout_constraintTop_toBottomOf="@id/reserves_list_group_check_in"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent">

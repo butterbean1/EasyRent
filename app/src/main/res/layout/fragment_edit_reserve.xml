@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/layout_edit">
+
+    <TextView
+        android:id="@+id/edit_reserve_room_name"
+        style="@style/large_text"
+        android:text="@string/def_room_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/edit_reserve_guest"
+        style="@style/edit_text"
+        android:hint="@string/guest_name"
+        android:inputType="textPersonName"
+        android:text="@string/def_guest_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edit_reserve_room_name" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/edit_reserve_group_guests_count"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edit_reserve_guest">
+
+        <TextView
+            android:id="@+id/edit_reserve_header_guests_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/app_margin"
+            android:layout_marginTop="12dp"
+            android:text="@string/guests_count"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/edit_reserve_guests_count"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:inputType="number"
+            android:text="1"
+            app:layout_constraintStart_toEndOf="@+id/edit_reserve_header_guests_count"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/edit_reserve_group_chek_in"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_reserve_group_guests_count">
+
+        <TextView
+            android:id="@+id/edit_reserve_chek_in_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/app_margin"
+            android:text="@string/check_in"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/edit_reserve_chek_in_separator"
+            style="@style/normal_separator_edit"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/edit_reserve_chek_in_header" />
+
+        <EditText
+            android:id="@+id/edit_reserve_date_check_in"
+            style="@style/edit_text"
+            android:hint="@string/check_in_date"
+            android:inputType="date"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/edit_reserve_chek_in_separator" />
+
+        <EditText
+            android:id="@+id/edit_reserve_time_check_in"
+            style="@style/edit_text"
+            android:hint="@string/check_in_time"
+            android:inputType="time"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/edit_reserve_date_check_in" />
+
+        <CheckBox
+            android:id="@+id/edit_reserve_was_check_in"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/was_check_in"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/edit_reserve_time_check_in" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/edit_reserve_group_chek_out"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edit_reserve_group_chek_in">
+
+        <TextView
+            android:id="@+id/edit_reserve_chek_out_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/app_margin"
+            android:text="@string/check_out"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/edit_reserve_chek_out_separator"
+            style="@style/normal_separator_edit"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/edit_reserve_chek_out_header" />
+
+        <EditText
+            android:id="@+id/edit_reserve_date_check_out"
+            style="@style/edit_text"
+            android:hint="@string/check_out_date"
+            android:inputType="date"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/edit_reserve_chek_out_separator" />
+
+        <EditText
+            android:id="@+id/edit_reserve_time_check_out"
+            style="@style/edit_text"
+            android:hint="@string/check_out_time"
+            android:inputType="time"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/edit_reserve_date_check_out" />
+
+        <CheckBox
+            android:id="@+id/edit_reserve_was_check_out"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/was_check_out"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/edit_reserve_time_check_out" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/edit_reserve_group_sum"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edit_reserve_group_chek_out">
+
+        <TextView
+            android:id="@+id/edit_reserve_header_sum"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/app_margin"
+            android:layout_marginTop="12dp"
+            android:text="@string/sum"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/edit_reserve_sum"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:inputType="number"
+            android:text="@string/def_sum"
+            app:layout_constraintStart_toEndOf="@+id/edit_reserve_header_sum"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/edit_reserve_group_payment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edit_reserve_group_sum">
+
+        <TextView
+            android:id="@+id/edit_reserve_header_payment"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/app_margin"
+            android:layout_marginTop="12dp"
+            android:text="@string/payment"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/edit_reserve_payment"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:inputType="number"
+            android:text="@string/def_sum"
+            app:layout_constraintStart_toEndOf="@+id/edit_reserve_header_payment"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

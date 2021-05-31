@@ -14,11 +14,11 @@ data class ReserveData(
     val id:Int,
     val roomId:Int,
     val guestId:Int,
+    val guestsCount:Int,
     val sum:Int,
     val payment:Int,
     val dateCheckIn:String,
     val dateCheckOut:String,
     val wasCheckIn:Boolean,
-    val wasCheckOut:Boolean,
-    val guestsCount:Int
+    val wasCheckOut:Boolean
 ):Parcelable

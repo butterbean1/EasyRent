@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <style name="layout_readonly">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@color/grey</item>
+    </style>
+
+    <style name="layout_edit">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@color/white</item>
+    </style>
+
     <style name="edit_text">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -46,6 +58,17 @@
         <item name="android:focusable">true</item>
     </style>
 
+    <style name="normal_separator">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/normal_separator_height</item>
+        <item name="android:layout_margin">@dimen/app_margin</item>
+    </style>
+    <style name="normal_separator_edit" parent="normal_separator">
+        <item name="android:background">@color/grey</item>
+    </style>
+    <style name="normal_separator_readonly" parent="normal_separator">
+        <item name="android:background">@color/white</item>
+    </style>
     <style name="recycle_view_item">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>

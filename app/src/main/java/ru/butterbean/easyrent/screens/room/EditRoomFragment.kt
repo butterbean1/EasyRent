@@ -12,7 +12,7 @@ import ru.butterbean.easyrent.screens.base.BaseFragment
 import ru.butterbean.easyrent.utils.APP_ACTIVITY
 import ru.butterbean.easyrent.utils.showToast
 
-class EditRoomFragment() : BaseFragment(R.layout.fragment_room_change) {
+class EditRoomFragment() : BaseFragment(R.layout.fragment_edit_room) {
 
     private var mIsNew = false
     private lateinit var mRoomViewModel: RoomViewModel
