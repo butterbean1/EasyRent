@@ -11,7 +11,7 @@ import ru.butterbean.easyrent.TABLE_ROOMS_NAME
 data class RoomData(
     @PrimaryKey(autoGenerate = true)
     val id:Int,
-    val name:String,
-    val address:String,
-    val status:String
+    val name:String = "",
+    val address:String = "",
+    val status:String = ""
 ):Parcelable

@@ -77,28 +77,27 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/edit_reserve_chek_in_header" />
 
-        <EditText
+        <TextView
             android:id="@+id/edit_reserve_date_check_in"
-            style="@style/edit_text"
+            style="@style/date_time_text"
             android:hint="@string/check_in_date"
-            android:inputType="date"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/edit_reserve_chek_in_separator" />
 
-        <EditText
+        <TextView
             android:id="@+id/edit_reserve_time_check_in"
-            style="@style/edit_text"
-            android:hint="@string/check_in_time"
-            android:inputType="time"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/edit_reserve_date_check_in" />
+            style="@style/date_time_text"
+            android:text="@string/check_in_time"
+            app:layout_constraintStart_toEndOf="@id/edit_reserve_date_check_in"
+            app:layout_constraintTop_toTopOf="@id/edit_reserve_date_check_in"
+            app:layout_constraintBottom_toBottomOf="@id/edit_reserve_date_check_in"
+            />
 
         <CheckBox
             android:id="@+id/edit_reserve_was_check_in"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/app_margin"
             android:text="@string/was_check_in"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/edit_reserve_time_check_in" />
@@ -130,28 +129,28 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/edit_reserve_chek_out_header" />
 
-        <EditText
+        <TextView
             android:id="@+id/edit_reserve_date_check_out"
-            style="@style/edit_text"
-            android:hint="@string/check_out_date"
-            android:inputType="date"
-            app:layout_constraintEnd_toEndOf="parent"
+            style="@style/date_time_text"
+            android:hint="@string/check_in_date"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/edit_reserve_chek_out_separator" />
 
-        <EditText
+        <TextView
             android:id="@+id/edit_reserve_time_check_out"
-            style="@style/edit_text"
-            android:hint="@string/check_out_time"
-            android:inputType="time"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/edit_reserve_date_check_out" />
+            style="@style/date_time_text"
+            android:text="@string/check_out_time"
+            app:layout_constraintStart_toEndOf="@id/edit_reserve_date_check_out"
+            app:layout_constraintTop_toTopOf="@id/edit_reserve_date_check_out"
+            app:layout_constraintBottom_toBottomOf="@id/edit_reserve_date_check_out"
+            />
+
 
         <CheckBox
             android:id="@+id/edit_reserve_was_check_out"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/app_margin"
             android:text="@string/was_check_out"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/edit_reserve_time_check_out" />

@@ -7,6 +7,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import ru.butterbean.easyrent.MainActivity
 import ru.butterbean.easyrent.R
+import ru.butterbean.easyrent.models.GuestData
+import ru.butterbean.easyrent.models.ReserveData
 import ru.butterbean.easyrent.models.RoomData
 
 fun showToast(message: String) {
@@ -32,5 +34,13 @@ fun replaceFragment(fragment: Fragment, addStack: Boolean = true) {
 }
 
 fun getEmptyRoom(): RoomData {
-    return RoomData(0, "", "", "")
+    return RoomData(0)
+}
+
+fun getEmptyReserve(): ReserveData {
+    return ReserveData(0)
+}
+
+fun getEmptyGuest(): GuestData {
+    return GuestData(0)
 }

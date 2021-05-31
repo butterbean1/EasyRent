@@ -1,23 +1,30 @@
 package ru.butterbean.easyrent.screens.reserves
 
-import android.view.*
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.fragment_edit_reserve.*
 import ru.butterbean.easyrent.CURRENT_RESERVE
 import ru.butterbean.easyrent.CURRENT_ROOM
 import ru.butterbean.easyrent.R
-import ru.butterbean.easyrent.STATUS_FREE
 import ru.butterbean.easyrent.database.view_models.ReserveViewModel
 import ru.butterbean.easyrent.models.ReserveData
-import ru.butterbean.easyrent.models.RoomData
 import ru.butterbean.easyrent.screens.base.BaseFragment
 import ru.butterbean.easyrent.utils.APP_ACTIVITY
 import ru.butterbean.easyrent.utils.showToast
+import java.util.*
 
 class EditReserveFragment() : BaseFragment(R.layout.fragment_edit_reserve) {
 
     private var mIsNew = false
     private lateinit var mReserveViewModel: ReserveViewModel
+    private lateinit var mDateCheckInSetListener:DatePickerDialog.OnDateSetListener
+    private lateinit var mDateCheckOutSetListener:DatePickerDialog.OnDateSetListener
+    private lateinit var mTimeCheckInSetListener:TimePickerDialog.OnTimeSetListener
+    private lateinit var mTimeCheckOutSetListener:TimePickerDialog.OnTimeSetListener
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.confirm_menu, menu)
@@ -48,7 +55,7 @@ class EditReserveFragment() : BaseFragment(R.layout.fragment_edit_reserve) {
         } else {
             val reserve = ReserveData(
                 CURRENT_RESERVE.id,
-                CURRENT_RESERVE.roomId,
+                CURRENT_ROOM.id,
                 1,
                 guestsCount,
                 sum,
@@ -73,13 +80,34 @@ class EditReserveFragment() : BaseFragment(R.layout.fragment_edit_reserve) {
     override fun onResume() {
         super.onResume()
 
-        mReserveViewModel = ViewModelProvider(this).get(mReserveViewModel::class.java)
+        mReserveViewModel = ViewModelProvider(this).get(ReserveViewModel::class.java)
         mIsNew = CURRENT_RESERVE.roomId == 0
 
         APP_ACTIVITY.title = getString(R.string.reserve)
 
-        edit_reserve_room_name.setText(CURRENT_RESERVE.roomId)
-        edit_reserve_guest.setText(CURRENT_RESERVE.guestId)
+        edit_reserve_room_name.text = CURRENT_RESERVE.roomId.toString()
+        edit_reserve_guest.setText(CURRENT_RESERVE.guestId.toString())
+
+        edit_reserve_date_check_in.setOnClickListener {showCalendarDialogFromListener(mDateCheckInSetListener)}
+        mDateCheckInSetListener = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+            edit_reserve_date_check_in.text = getDateString(month, dayOfMonth, year)
+        }
+
+        edit_reserve_time_check_in.setOnClickListener {showTimeDialogFromListener(mTimeCheckInSetListener)}
+        mTimeCheckInSetListener = TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
+            edit_reserve_time_check_in.text = getTimeString(hourOfDay, minute)
+        }
+
+        edit_reserve_date_check_out.setOnClickListener {showCalendarDialogFromListener(mDateCheckOutSetListener)}
+        mDateCheckOutSetListener = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+            edit_reserve_date_check_out.text = getDateString(month, dayOfMonth, year)
+        }
+
+        edit_reserve_time_check_out.setOnClickListener {showTimeDialogFromListener(mTimeCheckOutSetListener)}
+        mTimeCheckOutSetListener = TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
+            edit_reserve_time_check_out.text = getTimeString(hourOfDay, minute)
+        }
+
         if (mIsNew) {
             edit_reserve_guests_count.setText("1")
         } else {
@@ -88,6 +116,43 @@ class EditReserveFragment() : BaseFragment(R.layout.fragment_edit_reserve) {
 
         // add menu
         setHasOptionsMenu(true)
+    }
+
+    private fun getDateString(month: Int, dayOfMonth: Int, year: Int): String {
+        val monthText = (month + 1).toString().padStart(2, '0')
+        val dayText = dayOfMonth.toString().padStart(2, '0')
+        return "$dayText-$monthText-$year"
+    }
+
+    private fun getTimeString(hour: Int, minute: Int): String {
+        val hourText = hour.toString().padStart(2, '0')
+        val minuteText = minute.toString().padStart(2, '0')
+        return "$hourText:$minuteText"
+    }
+
+    private fun showCalendarDialogFromListener(listener:DatePickerDialog.OnDateSetListener) {
+        val cal = Calendar.getInstance()
+        val dialog = DatePickerDialog(
+            requireContext(),
+            android.R.style.Theme_Material_Light_Dialog_MinWidth,
+            listener,
+            cal.get(Calendar.YEAR),
+            cal.get(Calendar.MONTH),
+            cal.get(Calendar.DAY_OF_MONTH)
+        )
+        dialog.show()
+    }
+
+    private fun showTimeDialogFromListener(listener:TimePickerDialog.OnTimeSetListener) {
+        val dialog = TimePickerDialog(
+            requireContext(),
+            android.R.style.Theme_Material_Light_Dialog,
+            listener,
+            12,
+            0,
+            true
+        )
+        dialog.show()
     }
 
 

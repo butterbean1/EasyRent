@@ -16,10 +16,10 @@
     <string name="check_in">Заселение</string>
     <string name="check_out">Выселение</string>
     <string name="check_in_date">Дата</string>
-    <string name="check_in_time">Время</string>
+    <string name="check_in_time">12:00</string>
     <string name="was_check_in">Заселение произошло</string>
     <string name="check_out_date">Дата</string>
-    <string name="check_out_time">Время</string>
+    <string name="check_out_time">14:00</string>
     <string name="was_check_out">Выселение произошло</string>
     <string name="def_guest_name">Спиридон Красносельский</string>
     <string name="guest_name">Имя гостя</string>

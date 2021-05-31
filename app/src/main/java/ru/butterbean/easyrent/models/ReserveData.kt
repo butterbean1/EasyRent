@@ -12,13 +12,13 @@ import ru.butterbean.easyrent.TABLE_ROOMS_NAME
 data class ReserveData(
     @PrimaryKey(autoGenerate = true)
     val id:Int,
-    val roomId:Int,
-    val guestId:Int,
-    val guestsCount:Int,
-    val sum:Int,
-    val payment:Int,
-    val dateCheckIn:String,
-    val dateCheckOut:String,
-    val wasCheckIn:Boolean,
-    val wasCheckOut:Boolean
+    val roomId:Int = 0,
+    val guestId:Int = 0,
+    val guestsCount:Int = 0,
+    val sum:Int = 0,
+    val payment:Int = 0,
+    val dateCheckIn:String = "",
+    val dateCheckOut:String = "",
+    val wasCheckIn:Boolean = false,
+    val wasCheckOut:Boolean = false
 ):Parcelable

@@ -5,9 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import ru.butterbean.easyrent.databinding.ActivityMainBinding
 import ru.butterbean.easyrent.screens.SplashFragment
-import ru.butterbean.easyrent.utils.APP_ACTIVITY
-import ru.butterbean.easyrent.utils.getEmptyRoom
-import ru.butterbean.easyrent.utils.replaceFragment
+import ru.butterbean.easyrent.utils.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -20,6 +18,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(mBinding.root)
         APP_ACTIVITY = this
         CURRENT_ROOM = getEmptyRoom()
+        CURRENT_RESERVE = getEmptyReserve()
+        CURRENT_GUEST = getEmptyGuest()
         mToolbar = mBinding.mainToolbar
         setSupportActionBar(mToolbar)
         replaceFragment(SplashFragment())

@@ -6,4 +6,5 @@
     <dimen name="ripple_effect_radius">4dp</dimen>
     <dimen name="chek_margin">16dp</dimen>
     <dimen name="normal_separator_height">2dp</dimen>
+    <dimen name="min_width_datetime_text">100dp</dimen>
 </resources>

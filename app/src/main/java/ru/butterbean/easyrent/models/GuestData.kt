@@ -11,7 +11,7 @@ import ru.butterbean.easyrent.TABLE_GUESTS_NAME
 data class GuestData(
     @PrimaryKey(autoGenerate = true)
     val id:Int,
-    val name:String,
-    val fullname:String,
-    val document:String
+    val name:String = "",
+    val fullname:String = "",
+    val document:String = ""
 ):Parcelable

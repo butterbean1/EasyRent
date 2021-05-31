@@ -17,7 +17,7 @@ class ReservesListAdapter:RecyclerView.Adapter<ReservesListAdapter.ReservesListH
     class ReservesListHolder(view: View):RecyclerView.ViewHolder(view)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReservesListHolder {
-        val holder = ReservesListHolder(LayoutInflater.from(parent.context).inflate(R.layout.room_item,parent,false) )
+        val holder = ReservesListHolder(LayoutInflater.from(parent.context).inflate(R.layout.reserve_item,parent,false) )
         holder.itemView.setOnClickListener {
             CURRENT_RESERVE = listReserves[holder.adapterPosition]
             replaceFragment(EditReserveFragment())
@@ -27,7 +27,18 @@ class ReservesListAdapter:RecyclerView.Adapter<ReservesListAdapter.ReservesListH
 
     override fun onBindViewHolder(holder: ReservesListHolder, position: Int) {
         val currentItem = listReserves[position]
-        holder.itemView.reserves_list_date_check_in.text = currentItem.dateCheckIn
+        holder.itemView.reserves_list_date_check_in.text = getLocalDateString(currentItem.dateCheckIn)
+        holder.itemView.reserves_list_date_check_out.text = getLocalDateString(currentItem.dateCheckOut)
+        holder.itemView.reserves_list_time_check_in.text = getLocalTimeString(currentItem.dateCheckIn)
+        holder.itemView.reserves_list_time_check_out.text = getLocalTimeString(currentItem.dateCheckOut)
+    }
+
+    private fun getLocalTimeString(dateCheckIn: String): String {
+        return dateCheckIn
+    }
+
+    private fun getLocalDateString(dateCheckIn: String): String {
+        return dateCheckIn
     }
 
     override fun getItemCount(): Int = listReserves.size

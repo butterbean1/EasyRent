@@ -38,6 +38,16 @@
         <item name="android:textSize">@dimen/normal_text_size</item>
     </style>
 
+    <style name="date_time_text">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">@dimen/app_margin</item>
+        <item name="android:minWidth">@dimen/min_width_datetime_text</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/normal_text_size</item>
+    </style>
+
     <style name="floating_btn">
         <item name="android:layout_margin">@dimen/floating_btn_margin</item>
         <item name="android:layout_width">wrap_content</item>

@@ -2,7 +2,7 @@ package ru.butterbean.easyrent.screens.room
 
 import android.view.*
 import androidx.lifecycle.ViewModelProvider
-import kotlinx.android.synthetic.main.fragment_room_change.*
+import kotlinx.android.synthetic.main.fragment_edit_room.*
 import ru.butterbean.easyrent.CURRENT_ROOM
 import ru.butterbean.easyrent.R
 import ru.butterbean.easyrent.STATUS_FREE
