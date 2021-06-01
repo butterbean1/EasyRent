@@ -109,10 +109,10 @@ class EditReserveFragment() : BaseFragment(R.layout.fragment_edit_reserve) {
         if (!mIsNew){
             mCurrentDateCheckIn = CURRENT_RESERVE.dateCheckIn.substring(0,10)
             mCurrentDateCheckOut = CURRENT_RESERVE.dateCheckOut.substring(0,10)
-            edit_reserve_date_check_in.text = CURRENT_RESERVE.dateCheckIn.toDateTimeFormat(false,false)
-            edit_reserve_date_check_out.text = CURRENT_RESERVE.dateCheckOut.toDateTimeFormat(false,false)
-            edit_reserve_time_check_in.text = CURRENT_RESERVE.dateCheckIn.toDateTimeFormat(true,false)
-            edit_reserve_time_check_out.text = CURRENT_RESERVE.dateCheckOut.toDateTimeFormat(true,false)
+            edit_reserve_date_check_in.text = CURRENT_RESERVE.dateCheckIn.toDateFormat(false)
+            edit_reserve_date_check_out.text = CURRENT_RESERVE.dateCheckOut.toDateFormat(false)
+            edit_reserve_time_check_in.text = CURRENT_RESERVE.dateCheckIn.toTimeFormat()
+            edit_reserve_time_check_out.text = CURRENT_RESERVE.dateCheckOut.toTimeFormat()
         }
 
         edit_reserve_date_check_in.setOnClickListener {
@@ -122,7 +122,7 @@ class EditReserveFragment() : BaseFragment(R.layout.fragment_edit_reserve) {
         }
         mDateCheckInSetListener = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
             mCurrentDateCheckIn = getDateFormatISO(year, month, dayOfMonth)
-            edit_reserve_date_check_in.text = mCurrentDateCheckIn.toDateTimeFormat(false,true)
+            edit_reserve_date_check_in.text = mCurrentDateCheckIn.toDateFormat(true)
         }
 
         edit_reserve_time_check_in.setOnClickListener {
@@ -142,7 +142,7 @@ class EditReserveFragment() : BaseFragment(R.layout.fragment_edit_reserve) {
         mDateCheckOutSetListener =
             DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
                 mCurrentDateCheckOut = getDateFormatISO(year, month, dayOfMonth)
-                edit_reserve_date_check_out.text = mCurrentDateCheckOut.toDateTimeFormat(false,true)
+                edit_reserve_date_check_out.text = mCurrentDateCheckOut.toDateFormat(true)
             }
 
         edit_reserve_time_check_out.setOnClickListener {

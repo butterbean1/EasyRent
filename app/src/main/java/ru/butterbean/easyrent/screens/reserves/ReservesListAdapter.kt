@@ -28,10 +28,12 @@ class ReservesListAdapter:RecyclerView.Adapter<ReservesListAdapter.ReservesListH
 
     override fun onBindViewHolder(holder: ReservesListHolder, position: Int) {
         val currentItem = listReserves[position]
-        holder.itemView.reserves_list_date_check_in.text = currentItem.dateCheckIn.toDateTimeFormat(false,false)
-        holder.itemView.reserves_list_date_check_out.text = currentItem.dateCheckOut.toDateTimeFormat(false,false)
-        holder.itemView.reserves_list_time_check_in.text = currentItem.dateCheckIn.toDateTimeFormat(true,false)
-        holder.itemView.reserves_list_time_check_out.text = currentItem.dateCheckOut.toDateTimeFormat(true,false)
+        holder.itemView.reserves_list_date_check_in.text = currentItem.dateCheckIn.toDateTimeFormat()
+        holder.itemView.reserves_list_date_check_out.text = currentItem.dateCheckOut.toDateTimeFormat()
+//        holder.itemView.reserves_list_time_check_in.text = currentItem.dateCheckIn.toDateTimeFormat(true,false)
+//        holder.itemView.reserves_list_time_check_out.text = currentItem.dateCheckOut.toDateTimeFormat(true,false)
+        holder.itemView.reserves_list_was_check_in.visibility = if(currentItem.wasCheckIn) View.VISIBLE else View.GONE
+        holder.itemView.reserves_list_was_check_out.visibility = if(currentItem.wasCheckOut) View.VISIBLE else View.GONE
     }
 
     override fun getItemCount(): Int = listReserves.size

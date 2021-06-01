@@ -49,6 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:text="@string/def_time_representation"
+            android:visibility="gone"
             android:textColor="@color/black"
             app:layout_constraintStart_toEndOf="@+id/reserves_list_date_check_in"
             app:layout_constraintTop_toTopOf="parent" />
@@ -111,6 +112,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:text="@string/def_time_representation"
+            android:visibility="gone"
             android:textColor="@color/black"
             app:layout_constraintStart_toEndOf="@+id/reserves_list_date_check_out"
             app:layout_constraintTop_toTopOf="parent" />

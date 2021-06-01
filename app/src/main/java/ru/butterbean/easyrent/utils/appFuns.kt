@@ -35,10 +35,10 @@ fun restartActivity() {
 
 fun replaceFragment(fragment: Fragment, addStack: Boolean = true) {
     var tran = APP_ACTIVITY.supportFragmentManager.beginTransaction()
-    if (addStack){
+    if (addStack) {
         tran = tran.addToBackStack(null)
     }
-    tran.replace(R.id.data_container,fragment).commit()
+    tran.replace(R.id.data_container, fragment).commit()
 }
 
 fun getEmptyRoom(): RoomData {
@@ -53,36 +53,67 @@ fun getEmptyGuest(): GuestData {
     return GuestData(0)
 }
 
-fun String.toDateTimeFormat(onlyTime:Boolean,onlyDate:Boolean = false): String {
+fun String.toDateTimeFormat(): String {
 
-    return if (Build.VERSION.SDK_INT > 25){
+    return if (Build.VERSION.SDK_INT > 25) {
         val formatStyle = FormatStyle.SHORT
-        when{
-            onlyTime -> {
-                val parsedTime = LocalTime.parse(this,DateTimeFormatter.ISO_DATE_TIME)
-                parsedTime.format(DateTimeFormatter.ofLocalizedTime(formatStyle))
-            }
+        val parsedDateTime = LocalDateTime.parse(this, DateTimeFormatter.ISO_DATE_TIME)
+        parsedDateTime.format(DateTimeFormatter.ofLocalizedDateTime(formatStyle))
+
+
+    } else {
+        val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
+
+        val inst = SimpleDateFormat.getDateTimeInstance() as SimpleDateFormat
+
+        val formatter = SimpleDateFormat(inst.toLocalizedPattern(), Locale.getDefault())
+        formatter.format(parser.parse(this) ?: Date(0))
+    }
+
+}
+
+fun String.toDateFormat(onlyDate: Boolean = false): String {
+
+    return if (Build.VERSION.SDK_INT > 25) {
+        val formatStyle = FormatStyle.SHORT
+        when {
             onlyDate -> {
-                val parsedDate = LocalDate.parse(this,DateTimeFormatter.ISO_DATE)
-                parsedDate.format(DateTimeFormatter.ofLocalizedDate(formatStyle))
+                LocalDate.parse(this, DateTimeFormatter.ISO_DATE)
+                    .format(DateTimeFormatter.ofLocalizedDate(formatStyle))
             }
             else -> {
-                val parsedDateTime = LocalDateTime.parse(this, DateTimeFormatter.ISO_DATE_TIME)
-                parsedDateTime.format(DateTimeFormatter.ofLocalizedDateTime(formatStyle))
+                LocalDateTime.parse(this, DateTimeFormatter.ISO_DATE_TIME)
+                    .format(DateTimeFormatter.ofLocalizedDate(formatStyle))
             }
         }
 
-    }else{
-        val patternParser = if (onlyDate){"yyyy-MM-dd"}else{ "yyyy-MM-dd'T'HH:mm:ss"}
+    } else {
+        val patternParser = if (onlyDate) {
+            "yyyy-MM-dd"
+        } else {
+            "yyyy-MM-dd'T'HH:mm:ss"
+        }
         val parser = SimpleDateFormat(patternParser, Locale.getDefault())
 
-        val inst = when{
-            onlyTime -> SimpleDateFormat.getTimeInstance()
-            onlyDate -> SimpleDateFormat.getDateInstance()
-            else -> SimpleDateFormat.getDateTimeInstance()
-        } as SimpleDateFormat
+        val inst = SimpleDateFormat.getDateInstance() as SimpleDateFormat
         val formatter = SimpleDateFormat(inst.toLocalizedPattern(), Locale.getDefault())
-        formatter.format(parser.parse(this)?:Date(0))
+        formatter.format(parser.parse(this) ?: Date(0))
+    }
+
+}
+
+fun String.toTimeFormat(): String {
+
+    return if (Build.VERSION.SDK_INT > 25) {
+        val parsedTime = LocalTime.parse(this, DateTimeFormatter.ISO_DATE_TIME)
+        parsedTime.format(DateTimeFormatter.ofPattern("HH:ss"))
+
+    } else {
+
+        val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
+
+        val formatter = SimpleDateFormat("HH:ss", Locale.getDefault())
+        formatter.format(parser.parse(this) ?: Date(0))
     }
 
 }
