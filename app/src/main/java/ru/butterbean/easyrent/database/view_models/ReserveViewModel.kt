@@ -6,8 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import ru.butterbean.easyrent.CURRENT_RESERVE
-import ru.butterbean.easyrent.database.MainDatabase
+import ru.butterbean.easyrent.database.CURRENT_RESERVE
 import ru.butterbean.easyrent.database.repository.ReserveRepository
 import ru.butterbean.easyrent.models.ReserveData
 import ru.butterbean.easyrent.utils.APP_DATABASE

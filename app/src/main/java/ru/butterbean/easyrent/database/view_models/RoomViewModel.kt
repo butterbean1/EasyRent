@@ -6,8 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import ru.butterbean.easyrent.CURRENT_ROOM
-import ru.butterbean.easyrent.database.MainDatabase
+import ru.butterbean.easyrent.database.CURRENT_ROOM
 import ru.butterbean.easyrent.database.repository.RoomRepository
 import ru.butterbean.easyrent.models.RoomData
 import ru.butterbean.easyrent.utils.APP_DATABASE
@@ -22,6 +21,8 @@ class RoomViewModel(application: Application) : AndroidViewModel(application) {
         repository = RoomRepository(roomDao)
         readAllRooms = repository.readAllRooms
     }
+
+    fun getReservesCount(roomId:Int):Int = repository.getReservesCount(roomId)
 
     fun addRoom(room: RoomData) {
         viewModelScope.launch(Dispatchers.IO) {

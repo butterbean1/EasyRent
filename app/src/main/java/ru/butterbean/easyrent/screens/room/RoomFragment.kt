@@ -5,14 +5,15 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.fragment_room.*
-import ru.butterbean.easyrent.CURRENT_RESERVE
-import ru.butterbean.easyrent.CURRENT_ROOM
+import ru.butterbean.easyrent.database.CURRENT_RESERVE
+import ru.butterbean.easyrent.database.CURRENT_ROOM
 import ru.butterbean.easyrent.R
 import ru.butterbean.easyrent.database.view_models.ReserveViewModel
 import ru.butterbean.easyrent.screens.base.BaseFragment
 import ru.butterbean.easyrent.screens.reserves.EditReserveFragment
 import ru.butterbean.easyrent.screens.reserves.ReservesListAdapter
 import ru.butterbean.easyrent.utils.APP_ACTIVITY
+import ru.butterbean.easyrent.utils.deleteRoomWithDialog
 import ru.butterbean.easyrent.utils.getEmptyReserve
 import ru.butterbean.easyrent.utils.replaceFragment
 
@@ -27,6 +28,10 @@ class RoomFragment() : BaseFragment(R.layout.fragment_room) {
         return when (item.itemId){
             R.id.confirm_edit -> {
                 replaceFragment(EditRoomFragment())
+                true
+            }
+            R.id.delete -> {
+                deleteRoomWithDialog(CURRENT_ROOM)
                 true
             }
             else -> super.onOptionsItemSelected(item)

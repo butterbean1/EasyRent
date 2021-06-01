@@ -3,8 +3,7 @@ package ru.butterbean.easyrent.screens.room
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.fragment_rooms_list.*
-import ru.butterbean.easyrent.CURRENT_RESERVE
-import ru.butterbean.easyrent.CURRENT_ROOM
+import ru.butterbean.easyrent.database.CURRENT_ROOM
 import ru.butterbean.easyrent.R
 import ru.butterbean.easyrent.database.view_models.RoomViewModel
 import ru.butterbean.easyrent.utils.APP_ACTIVITY

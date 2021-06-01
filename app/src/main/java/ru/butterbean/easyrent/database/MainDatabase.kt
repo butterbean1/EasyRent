@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import ru.butterbean.easyrent.DATABASE_NAME
 import ru.butterbean.easyrent.database.dao.GuestDao
 import ru.butterbean.easyrent.database.dao.ReserveDao
 import ru.butterbean.easyrent.database.dao.RoomDao

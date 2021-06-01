@@ -4,7 +4,7 @@ import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlinx.android.parcel.Parcelize
-import ru.butterbean.easyrent.TABLE_GUESTS_NAME
+import ru.butterbean.easyrent.database.TABLE_GUESTS_NAME
 
 @Parcelize
 @Entity(tableName = TABLE_GUESTS_NAME)

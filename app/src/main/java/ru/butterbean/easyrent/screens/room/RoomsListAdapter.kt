@@ -5,10 +5,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.room_item.view.*
-import ru.butterbean.easyrent.CURRENT_ROOM
+import ru.butterbean.easyrent.database.CURRENT_ROOM
 import ru.butterbean.easyrent.R
 import ru.butterbean.easyrent.models.RoomData
 import ru.butterbean.easyrent.utils.replaceFragment
+import ru.butterbean.easyrent.utils.showEditDeleteRoomDialog
 
 class RoomsListAdapter:RecyclerView.Adapter<RoomsListAdapter.RoomsListHolder>() {
 
@@ -21,6 +22,11 @@ class RoomsListAdapter:RecyclerView.Adapter<RoomsListAdapter.RoomsListHolder>() 
         holder.itemView.setOnClickListener {
             CURRENT_ROOM = listRooms[holder.adapterPosition]
             replaceFragment(RoomFragment())
+        }
+        holder.itemView.setOnLongClickListener {
+            CURRENT_ROOM = listRooms[holder.adapterPosition]
+            showEditDeleteRoomDialog(CURRENT_ROOM)
+            true
         }
         return holder
     }

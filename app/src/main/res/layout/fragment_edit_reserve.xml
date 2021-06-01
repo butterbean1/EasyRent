@@ -15,6 +15,7 @@
         android:id="@+id/edit_reserve_guest"
         style="@style/edit_text"
         android:hint="@string/guest_name"
+        android:textColorHint="@color/red"
         android:inputType="textPersonName"
         android:text="@string/def_guest_name"
         app:layout_constraintEnd_toEndOf="parent"
@@ -80,6 +81,7 @@
         <TextView
             android:id="@+id/edit_reserve_date_check_in"
             style="@style/date_time_text"
+            android:textColorHint="@color/red"
             android:hint="@string/check_in_date"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/edit_reserve_chek_in_separator" />
@@ -132,6 +134,7 @@
         <TextView
             android:id="@+id/edit_reserve_date_check_out"
             style="@style/date_time_text"
+            android:textColorHint="@color/red"
             android:hint="@string/check_in_date"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/edit_reserve_chek_out_separator" />

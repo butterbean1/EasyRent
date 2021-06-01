@@ -3,6 +3,9 @@ package ru.butterbean.easyrent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import ru.butterbean.easyrent.database.CURRENT_GUEST
+import ru.butterbean.easyrent.database.CURRENT_RESERVE
+import ru.butterbean.easyrent.database.CURRENT_ROOM
 import ru.butterbean.easyrent.database.MainDatabase
 import ru.butterbean.easyrent.databinding.ActivityMainBinding
 import ru.butterbean.easyrent.screens.SplashFragment

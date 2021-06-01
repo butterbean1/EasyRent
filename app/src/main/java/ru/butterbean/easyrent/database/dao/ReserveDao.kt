@@ -2,7 +2,7 @@ package ru.butterbean.easyrent.database.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import ru.butterbean.easyrent.TABLE_RESERVES_NAME
+import ru.butterbean.easyrent.database.TABLE_RESERVES_NAME
 import ru.butterbean.easyrent.models.ReserveData
 
 @Dao

@@ -1,5 +1,7 @@
 package ru.butterbean.easyrent.utils
 
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Build
@@ -39,18 +41,6 @@ fun replaceFragment(fragment: Fragment, addStack: Boolean = true) {
         tran = tran.addToBackStack(null)
     }
     tran.replace(R.id.data_container, fragment).commit()
-}
-
-fun getEmptyRoom(): RoomData {
-    return RoomData(0)
-}
-
-fun getEmptyReserve(): ReserveData {
-    return ReserveData(0)
-}
-
-fun getEmptyGuest(): GuestData {
-    return GuestData(0)
 }
 
 fun String.toDateTimeFormat(): String {
@@ -116,4 +106,41 @@ fun String.toTimeFormat(): String {
         formatter.format(parser.parse(this) ?: Date(0))
     }
 
+}
+
+fun getDateFormatISO(year: Int, month: Int, dayOfMonth: Int): String {
+    val monthText = (month + 1).toString().padStart(2, '0')
+    val dayText = dayOfMonth.toString().padStart(2, '0')
+    return "$year-$monthText-$dayText"
+}
+
+fun getTimeString(hour: Int, minute: Int): String {
+    val hourText = hour.toString().padStart(2, '0')
+    val minuteText = minute.toString().padStart(2, '0')
+    return "$hourText:$minuteText"
+}
+
+fun showCalendarDialogFromListener(context: Context,listener: DatePickerDialog.OnDateSetListener) {
+    val cal = Calendar.getInstance()
+    val dialog = DatePickerDialog(
+        context,
+        android.R.style.Theme_Material_Light_Dialog_MinWidth,
+        listener,
+        cal.get(Calendar.YEAR),
+        cal.get(Calendar.MONTH),
+        cal.get(Calendar.DAY_OF_MONTH)
+    )
+    dialog.show()
+}
+
+fun showTimeDialogFromListener(context: Context, listener: TimePickerDialog.OnTimeSetListener) {
+    val dialog = TimePickerDialog(
+        context,
+        android.R.style.Theme_Material_Light_Dialog,
+        listener,
+        12,
+        0,
+        true
+    )
+    dialog.show()
 }

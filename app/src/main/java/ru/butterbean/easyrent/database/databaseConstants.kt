@@ -1,4 +1,4 @@
-package ru.butterbean.easyrent
+package ru.butterbean.easyrent.database
 
 import ru.butterbean.easyrent.models.GuestData
 import ru.butterbean.easyrent.models.ReserveData

@@ -3,13 +3,14 @@ package ru.butterbean.easyrent.screens.room
 import android.view.*
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.fragment_edit_room.*
-import ru.butterbean.easyrent.CURRENT_ROOM
+import ru.butterbean.easyrent.database.CURRENT_ROOM
 import ru.butterbean.easyrent.R
-import ru.butterbean.easyrent.STATUS_FREE
+import ru.butterbean.easyrent.database.STATUS_FREE
 import ru.butterbean.easyrent.database.view_models.RoomViewModel
 import ru.butterbean.easyrent.models.RoomData
 import ru.butterbean.easyrent.screens.base.BaseFragment
 import ru.butterbean.easyrent.utils.APP_ACTIVITY
+import ru.butterbean.easyrent.utils.deleteRoomWithDialog
 import ru.butterbean.easyrent.utils.showToast
 
 class EditRoomFragment() : BaseFragment(R.layout.fragment_edit_room) {
@@ -18,13 +19,18 @@ class EditRoomFragment() : BaseFragment(R.layout.fragment_edit_room) {
     private lateinit var mRoomViewModel: RoomViewModel
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.confirm_menu,menu)
+        if (mIsNew) inflater.inflate(R.menu.confirm_menu,menu)
+        else inflater.inflate(R.menu.confirm_delete_menu,menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId){
             R.id.confirm_change -> {
                 change()
+                true
+            }
+            R.id.delete -> {
+                deleteRoomWithDialog(CURRENT_ROOM)
                 true
             }
             else -> super.onOptionsItemSelected(item)

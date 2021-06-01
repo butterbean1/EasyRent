@@ -10,6 +10,7 @@
     <string name="rooms_list">Список помещений</string>
     <string name="edit">Редактировать</string>
     <string name="save">Сохранить</string>
+    <string name="delete">Удалить</string>
     <string name="empty_address">Адрес не заполнен</string>
     <string name="def_date_representation">22 сентября</string>
     <string name="def_time_representation">12:00</string>
@@ -28,4 +29,8 @@
     <string name="payment">Оплачено</string>
     <string name="def_sum">2500</string>
     <string name="reserve">Бронирование</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+    <string name="question_delete_reserve">Удалить бронирование?</string>
+    <string name="question_delete_room">Будут удалены все бронирования по этому помещению! Продолжить?</string>
 </resources>
