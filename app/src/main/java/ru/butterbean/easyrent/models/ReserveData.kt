@@ -13,7 +13,7 @@ data class ReserveData(
     @PrimaryKey(autoGenerate = true)
     val id:Int,
     val roomId:Int = 0,
-    val guestId:Int = 0,
+    val guestName:String = "",
     val guestsCount:Int = 0,
     val sum:Int = 0,
     val payment:Int = 0,

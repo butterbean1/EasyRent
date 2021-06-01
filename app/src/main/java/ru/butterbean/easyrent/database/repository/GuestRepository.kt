@@ -11,6 +11,9 @@ class GuestRepository(private val guestDao: GuestDao) {
     suspend fun addGuest(guest:GuestData){
         guestDao.addGuest(guest)
     }
+    fun getById(id:Int):GuestData{
+        return guestDao.getById(id)
+    }
     suspend fun deleteGuest(guest:GuestData){
         guestDao.deleteGuest(guest)
     }

@@ -9,6 +9,7 @@ import ru.butterbean.easyrent.CURRENT_RESERVE
 import ru.butterbean.easyrent.R
 import ru.butterbean.easyrent.models.ReserveData
 import ru.butterbean.easyrent.utils.replaceFragment
+import ru.butterbean.easyrent.utils.toDateTimeFormat
 
 class ReservesListAdapter:RecyclerView.Adapter<ReservesListAdapter.ReservesListHolder>() {
 
@@ -27,18 +28,10 @@ class ReservesListAdapter:RecyclerView.Adapter<ReservesListAdapter.ReservesListH
 
     override fun onBindViewHolder(holder: ReservesListHolder, position: Int) {
         val currentItem = listReserves[position]
-        holder.itemView.reserves_list_date_check_in.text = getLocalDateString(currentItem.dateCheckIn)
-        holder.itemView.reserves_list_date_check_out.text = getLocalDateString(currentItem.dateCheckOut)
-        holder.itemView.reserves_list_time_check_in.text = getLocalTimeString(currentItem.dateCheckIn)
-        holder.itemView.reserves_list_time_check_out.text = getLocalTimeString(currentItem.dateCheckOut)
-    }
-
-    private fun getLocalTimeString(dateCheckIn: String): String {
-        return dateCheckIn
-    }
-
-    private fun getLocalDateString(dateCheckIn: String): String {
-        return dateCheckIn
+        holder.itemView.reserves_list_date_check_in.text = currentItem.dateCheckIn.toDateTimeFormat(false,false)
+        holder.itemView.reserves_list_date_check_out.text = currentItem.dateCheckOut.toDateTimeFormat(false,false)
+        holder.itemView.reserves_list_time_check_in.text = currentItem.dateCheckIn.toDateTimeFormat(true,false)
+        holder.itemView.reserves_list_time_check_out.text = currentItem.dateCheckOut.toDateTimeFormat(true,false)
     }
 
     override fun getItemCount(): Int = listReserves.size

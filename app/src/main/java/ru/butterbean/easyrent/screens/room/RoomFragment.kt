@@ -5,19 +5,18 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.fragment_room.*
-import kotlinx.android.synthetic.main.fragment_rooms_list.*
+import ru.butterbean.easyrent.CURRENT_RESERVE
 import ru.butterbean.easyrent.CURRENT_ROOM
 import ru.butterbean.easyrent.R
 import ru.butterbean.easyrent.database.view_models.ReserveViewModel
-import ru.butterbean.easyrent.database.view_models.RoomViewModel
 import ru.butterbean.easyrent.screens.base.BaseFragment
 import ru.butterbean.easyrent.screens.reserves.EditReserveFragment
 import ru.butterbean.easyrent.screens.reserves.ReservesListAdapter
 import ru.butterbean.easyrent.utils.APP_ACTIVITY
+import ru.butterbean.easyrent.utils.getEmptyReserve
 import ru.butterbean.easyrent.utils.replaceFragment
 
 class RoomFragment() : BaseFragment(R.layout.fragment_room) {
-    private lateinit var mRoomViewModel: RoomViewModel
     private lateinit var mReserveViewModel: ReserveViewModel
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -36,7 +35,6 @@ class RoomFragment() : BaseFragment(R.layout.fragment_room) {
 
     override fun onResume(){
         super.onResume()
-        mRoomViewModel = ViewModelProvider(this).get(RoomViewModel::class.java)
 
         APP_ACTIVITY.title = CURRENT_ROOM.name
 
@@ -63,6 +61,7 @@ class RoomFragment() : BaseFragment(R.layout.fragment_room) {
         setHasOptionsMenu(true)
 
         room_btn_add_reserve.setOnClickListener {
+            CURRENT_RESERVE = getEmptyReserve()
             replaceFragment(EditReserveFragment())
         }
     }

@@ -2,6 +2,7 @@ package ru.butterbean.easyrent.utils
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -10,6 +11,13 @@ import ru.butterbean.easyrent.R
 import ru.butterbean.easyrent.models.GuestData
 import ru.butterbean.easyrent.models.ReserveData
 import ru.butterbean.easyrent.models.RoomData
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
+import java.util.*
 
 fun showToast(message: String) {
     Toast.makeText(APP_ACTIVITY, message, Toast.LENGTH_SHORT).show()
@@ -43,4 +51,38 @@ fun getEmptyReserve(): ReserveData {
 
 fun getEmptyGuest(): GuestData {
     return GuestData(0)
+}
+
+fun String.toDateTimeFormat(onlyTime:Boolean,onlyDate:Boolean = false): String {
+
+    return if (Build.VERSION.SDK_INT > 25){
+        val formatStyle = FormatStyle.SHORT
+        when{
+            onlyTime -> {
+                val parsedTime = LocalTime.parse(this,DateTimeFormatter.ISO_DATE_TIME)
+                parsedTime.format(DateTimeFormatter.ofLocalizedTime(formatStyle))
+            }
+            onlyDate -> {
+                val parsedDate = LocalDate.parse(this,DateTimeFormatter.ISO_DATE)
+                parsedDate.format(DateTimeFormatter.ofLocalizedDate(formatStyle))
+            }
+            else -> {
+                val parsedDateTime = LocalDateTime.parse(this, DateTimeFormatter.ISO_DATE_TIME)
+                parsedDateTime.format(DateTimeFormatter.ofLocalizedDateTime(formatStyle))
+            }
+        }
+
+    }else{
+        val patternParser = if (onlyDate){"yyyy-MM-dd"}else{ "yyyy-MM-dd'T'HH:mm:ss"}
+        val parser = SimpleDateFormat(patternParser, Locale.getDefault())
+
+        val inst = when{
+            onlyTime -> SimpleDateFormat.getTimeInstance()
+            onlyDate -> SimpleDateFormat.getDateInstance()
+            else -> SimpleDateFormat.getDateTimeInstance()
+        } as SimpleDateFormat
+        val formatter = SimpleDateFormat(inst.toLocalizedPattern(), Locale.getDefault())
+        formatter.format(parser.parse(this)?:Date(0))
+    }
+
 }

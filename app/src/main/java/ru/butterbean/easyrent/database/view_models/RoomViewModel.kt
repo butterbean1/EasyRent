@@ -10,6 +10,7 @@ import ru.butterbean.easyrent.CURRENT_ROOM
 import ru.butterbean.easyrent.database.MainDatabase
 import ru.butterbean.easyrent.database.repository.RoomRepository
 import ru.butterbean.easyrent.models.RoomData
+import ru.butterbean.easyrent.utils.APP_DATABASE
 import ru.butterbean.easyrent.utils.getEmptyRoom
 
 class RoomViewModel(application: Application) : AndroidViewModel(application) {
@@ -17,7 +18,7 @@ class RoomViewModel(application: Application) : AndroidViewModel(application) {
     private val repository: RoomRepository
 
     init {
-        val roomDao = MainDatabase.getDatabase(application).roomDao()
+        val roomDao = APP_DATABASE.roomDao()
         repository = RoomRepository(roomDao)
         readAllRooms = repository.readAllRooms
     }

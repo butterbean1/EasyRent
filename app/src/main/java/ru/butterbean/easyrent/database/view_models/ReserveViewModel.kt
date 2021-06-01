@@ -10,6 +10,7 @@ import ru.butterbean.easyrent.CURRENT_RESERVE
 import ru.butterbean.easyrent.database.MainDatabase
 import ru.butterbean.easyrent.database.repository.ReserveRepository
 import ru.butterbean.easyrent.models.ReserveData
+import ru.butterbean.easyrent.utils.APP_DATABASE
 import ru.butterbean.easyrent.utils.getEmptyReserve
 
 class ReserveViewModel(application: Application) : AndroidViewModel(application) {
@@ -17,7 +18,7 @@ class ReserveViewModel(application: Application) : AndroidViewModel(application)
     private val repository: ReserveRepository
 
     init {
-        val reserveDao = MainDatabase.getDatabase(application).reserveDao()
+        val reserveDao = APP_DATABASE.reserveDao()
         repository = ReserveRepository(reserveDao)
         readAllReserves = repository.readAllReserves
     }
