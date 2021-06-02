@@ -15,9 +15,9 @@
         android:id="@+id/edit_reserve_guest"
         style="@style/edit_text"
         android:hint="@string/guest_name"
-        android:textColorHint="@color/red"
         android:inputType="textPersonName"
         android:text="@string/def_guest_name"
+        android:textColorHint="@color/red"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/edit_reserve_room_name" />
@@ -81,8 +81,8 @@
         <TextView
             android:id="@+id/edit_reserve_date_check_in"
             style="@style/date_time_text"
-            android:textColorHint="@color/red"
             android:hint="@string/check_in_date"
+            android:textColorHint="@color/red"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/edit_reserve_chek_in_separator" />
 
@@ -90,10 +90,9 @@
             android:id="@+id/edit_reserve_time_check_in"
             style="@style/date_time_text"
             android:text="@string/check_in_time"
-            app:layout_constraintStart_toEndOf="@id/edit_reserve_date_check_in"
-            app:layout_constraintTop_toTopOf="@id/edit_reserve_date_check_in"
             app:layout_constraintBottom_toBottomOf="@id/edit_reserve_date_check_in"
-            />
+            app:layout_constraintStart_toEndOf="@id/edit_reserve_date_check_in"
+            app:layout_constraintTop_toTopOf="@id/edit_reserve_date_check_in" />
 
         <CheckBox
             android:id="@+id/edit_reserve_was_check_in"
@@ -134,8 +133,8 @@
         <TextView
             android:id="@+id/edit_reserve_date_check_out"
             style="@style/date_time_text"
-            android:textColorHint="@color/red"
             android:hint="@string/check_in_date"
+            android:textColorHint="@color/red"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/edit_reserve_chek_out_separator" />
 
@@ -143,10 +142,9 @@
             android:id="@+id/edit_reserve_time_check_out"
             style="@style/date_time_text"
             android:text="@string/check_out_time"
-            app:layout_constraintStart_toEndOf="@id/edit_reserve_date_check_out"
-            app:layout_constraintTop_toTopOf="@id/edit_reserve_date_check_out"
             app:layout_constraintBottom_toBottomOf="@id/edit_reserve_date_check_out"
-            />
+            app:layout_constraintStart_toEndOf="@id/edit_reserve_date_check_out"
+            app:layout_constraintTop_toTopOf="@id/edit_reserve_date_check_out" />
 
 
         <CheckBox
@@ -203,7 +201,7 @@
 
         <TextView
             android:id="@+id/edit_reserve_header_payment"
-            android:layout_width="150dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/app_margin"
             android:layout_marginTop="12dp"
@@ -212,6 +210,13 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <ImageButton
+            android:id="@+id/edit_reserve_btn_payment_full"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_check_green"
+            app:layout_constraintStart_toEndOf="@+id/edit_reserve_header_payment"/>
+
         <EditText
             android:id="@+id/edit_reserve_payment"
             android:layout_width="150dp"
@@ -219,7 +224,7 @@
             android:layout_marginStart="10dp"
             android:inputType="number"
             android:text="@string/def_sum"
-            app:layout_constraintStart_toEndOf="@+id/edit_reserve_header_payment"
+            app:layout_constraintStart_toEndOf="@+id/edit_reserve_btn_payment_full"
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

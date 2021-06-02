@@ -33,4 +33,6 @@
     <string name="no">Нет</string>
     <string name="question_delete_reserve">Удалить бронирование?</string>
     <string name="question_delete_room">Будут удалены все бронирования по этому помещению! Продолжить?</string>
+    <string name="people_abbr">чел.</string>
+    <string name="def_currency_symbol">₽</string>
 </resources>

@@ -4,53 +4,161 @@
     style="@style/recycle_view_item">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/reserves_list_group_guests_sums"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/app_small_margin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/reserves_list_group_guests"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <TextView
+                android:id="@+id/reserves_list_guest_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/app_small_margin"
+                android:text="@string/def_guest_name"
+                android:textColor="@color/black"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/reserves_list_guests_text_separator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/text_separator_margin"
+                android:text="-"
+                android:textColor="@color/black"
+                app:layout_constraintStart_toEndOf="@+id/reserves_list_guest_name"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/reserves_list_guests_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/text_separator_margin"
+                android:text="1"
+                android:textColor="@color/black"
+                app:layout_constraintStart_toEndOf="@+id/reserves_list_guests_text_separator"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/reserves_list_guests_count_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:text="@string/people_abbr"
+                android:textColor="@color/black"
+                app:layout_constraintStart_toEndOf="@+id/reserves_list_guests_count"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/reserves_list_group_sums"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <TextView
+                android:id="@+id/reserves_list_currency_symbol"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/def_currency_symbol"
+                android:layout_marginEnd="@dimen/app_small_margin"
+                android:textColor="@color/black"
+                app:layout_constraintEnd_toStartOf="@+id/reserves_list_sum"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <TextView
+                android:id="@+id/reserves_list_sum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/app_small_margin"
+                android:text="@string/def_sum"
+                android:textColor="@color/black"
+                app:layout_constraintEnd_toStartOf="@+id/reserves_list_sum_check"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <ImageView
+                android:id="@+id/reserves_list_sum_check"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/chek_margin"
+                android:src="@drawable/ic_check_green"
+                android:layout_marginBottom="@dimen/app_small_margin"
+                android:layout_marginEnd="@dimen/app_small_margin"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/reserves_list_group_check_in"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/app_margin"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="@dimen/app_small_margin"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/reserves_list_group_guests_sums">
 
         <TextView
             android:id="@+id/reserves_list_check_in_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_margin="@dimen/app_small_margin"
+            android:minWidth="55dp"
+            android:textSize="10sp"
             android:text="@string/check_in"
-            android:minWidth="75dp"
             android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
         <TextView
             android:id="@+id/reserves_list_text_separator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_margin="@dimen/app_small_margin"
             android:text=":"
             android:textColor="@color/black"
             app:layout_constraintStart_toEndOf="@+id/reserves_list_check_in_text"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
         <TextView
             android:id="@+id/reserves_list_date_check_in"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_margin="@dimen/app_small_margin"
             android:text="@string/def_date_representation"
             android:textColor="@color/black"
             app:layout_constraintStart_toEndOf="@+id/reserves_list_text_separator"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
         <TextView
             android:id="@+id/reserves_list_time_check_in"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_margin="@dimen/app_small_margin"
             android:text="@string/def_time_representation"
-            android:visibility="gone"
             android:textColor="@color/black"
+            android:visibility="gone"
             app:layout_constraintStart_toEndOf="@+id/reserves_list_date_check_in"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -62,49 +170,55 @@
             android:src="@drawable/ic_check_green"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/reserves_list_time_check_in"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/reserves_list_group_check_out"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/app_margin"
-        app:layout_constraintTop_toBottomOf="@id/reserves_list_group_check_in"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="@dimen/app_small_margin"
+        android:layout_marginBottom="@dimen/app_small_margin"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/reserves_list_group_check_in">
 
         <TextView
             android:id="@+id/reserves_list_check_out_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_margin="@dimen/app_small_margin"
+            android:minWidth="55dp"
+            android:textSize="10sp"
             android:text="@string/check_out"
-            android:minWidth="75dp"
             android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
         <TextView
             android:id="@+id/reserves_list_check_out_text_separator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_margin="@dimen/app_small_margin"
             android:text=":"
             android:textColor="@color/black"
             app:layout_constraintStart_toEndOf="@+id/reserves_list_check_out_text"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
         <TextView
             android:id="@+id/reserves_list_date_check_out"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_margin="@dimen/app_small_margin"
             android:text="@string/def_date_representation"
             android:textColor="@color/black"
             app:layout_constraintStart_toEndOf="@+id/reserves_list_check_out_text_separator"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
         <TextView
             android:id="@+id/reserves_list_time_check_out"
@@ -112,10 +226,11 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:text="@string/def_time_representation"
-            android:visibility="gone"
             android:textColor="@color/black"
+            android:visibility="gone"
             app:layout_constraintStart_toEndOf="@+id/reserves_list_date_check_out"
             app:layout_constraintTop_toTopOf="parent" />
+
         <ImageView
             android:id="@+id/reserves_list_was_check_out"
             android:layout_width="wrap_content"

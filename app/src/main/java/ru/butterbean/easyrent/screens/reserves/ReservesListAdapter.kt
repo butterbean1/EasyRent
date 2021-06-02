@@ -37,6 +37,10 @@ class ReservesListAdapter :RecyclerView.Adapter<ReservesListAdapter.ReservesList
 
     override fun onBindViewHolder(holder: ReservesListHolder, position: Int) {
         val currentItem = listReserves[position]
+        holder.itemView.reserves_list_guest_name.text = currentItem.guestName
+        holder.itemView.reserves_list_guests_count.text = currentItem.guestsCount.toString()
+        holder.itemView.reserves_list_sum.text = currentItem.sum.toString()
+        holder.itemView.reserves_list_sum_check.visibility = if(currentItem.sum>0 && currentItem.sum<=currentItem.payment) View.VISIBLE else View.INVISIBLE
         holder.itemView.reserves_list_date_check_in.text = currentItem.dateCheckIn.toDateTimeFormat()
         holder.itemView.reserves_list_date_check_out.text = currentItem.dateCheckOut.toDateTimeFormat()
         holder.itemView.reserves_list_was_check_in.visibility = if(currentItem.wasCheckIn) View.VISIBLE else View.GONE

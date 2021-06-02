@@ -7,4 +7,6 @@
     <dimen name="chek_margin">16dp</dimen>
     <dimen name="normal_separator_height">2dp</dimen>
     <dimen name="min_width_datetime_text">100dp</dimen>
+    <dimen name="text_separator_margin">8dp</dimen>
+    <dimen name="app_small_margin">5dp</dimen>
 </resources>

@@ -2,9 +2,12 @@ package ru.butterbean.easyrent.screens.reserves
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.text.TextWatcher
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.view.View
+import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.fragment_edit_reserve.*
 import ru.butterbean.easyrent.R
@@ -160,8 +163,23 @@ class EditReserveFragment() : BaseFragment(R.layout.fragment_edit_reserve) {
             edit_reserve_guests_count.setText(mCurrentReserve.guestsCount.toString())
         }
 
+        edit_reserve_sum.addTextChangedListener{
+            changePaymentBtnVisibility()
+        }
+
+        edit_reserve_btn_payment_full.setOnClickListener {
+            edit_reserve_payment.setText(edit_reserve_sum.text.toString())
+            changePaymentBtnVisibility()
+        }
+
         // add menu
         setHasOptionsMenu(true)
+    }
+
+    private fun changePaymentBtnVisibility(){
+        if (edit_reserve_payment.text == edit_reserve_sum.text) edit_reserve_btn_payment_full.visibility = View.INVISIBLE
+        else edit_reserve_btn_payment_full.visibility = View.VISIBLE
+
     }
 
 }

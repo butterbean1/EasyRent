@@ -9,7 +9,6 @@ import kotlinx.coroutines.launch
 import ru.butterbean.easyrent.database.repository.RoomRepository
 import ru.butterbean.easyrent.models.RoomData
 import ru.butterbean.easyrent.utils.APP_DATABASE
-import ru.butterbean.easyrent.utils.getEmptyRoom
 
 class RoomViewModel(application: Application) : AndroidViewModel(application) {
     val readAllRooms: LiveData<List<RoomData>>
