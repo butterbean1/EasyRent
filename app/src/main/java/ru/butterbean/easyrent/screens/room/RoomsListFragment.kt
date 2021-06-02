@@ -1,5 +1,10 @@
 package ru.butterbean.easyrent.screens.room
 
+import android.view.ContextMenu
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.View
+import androidx.core.view.forEach
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.fragment_rooms_list.*
@@ -20,8 +25,10 @@ class RoomsListFragment : Fragment(R.layout.fragment_rooms_list) {
         APP_ACTIVITY.title = getString(R.string.rooms_list)
         APP_ACTIVITY.supportActionBar?.setDisplayHomeAsUpEnabled(false)
 
+        setHasOptionsMenu(true)
+
         //Recycler view
-        val adapter = RoomsListAdapter()
+        val adapter = RoomsListAdapter(viewLifecycleOwner)
         val recyclerView = rooms_recycler_view
         recyclerView.adapter = adapter
 
@@ -33,7 +40,12 @@ class RoomsListFragment : Fragment(R.layout.fragment_rooms_list) {
 
         rooms_btn_add.setOnClickListener {
             CURRENT_ROOM = getEmptyRoom()
-            replaceFragment(EditRoomFragment(),false)
+            mRoomViewModel.currentRoom = getEmptyRoom()
+            replaceFragment(EditRoomFragment())
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        menu.clear()
     }
 }

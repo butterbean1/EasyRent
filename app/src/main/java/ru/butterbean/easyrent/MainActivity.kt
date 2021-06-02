@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
         CURRENT_GUEST = getEmptyGuest()
         mToolbar = mBinding.mainToolbar
         setSupportActionBar(mToolbar)
-        replaceFragment(SplashFragment())
+        replaceFragment(SplashFragment(),false)
     }
 
 }

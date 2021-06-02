@@ -3,6 +3,7 @@ package ru.butterbean.easyrent.screens.room
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.room_item.view.*
 import ru.butterbean.easyrent.database.CURRENT_ROOM
@@ -11,7 +12,7 @@ import ru.butterbean.easyrent.models.RoomData
 import ru.butterbean.easyrent.utils.replaceFragment
 import ru.butterbean.easyrent.utils.showEditDeleteRoomDialog
 
-class RoomsListAdapter:RecyclerView.Adapter<RoomsListAdapter.RoomsListHolder>() {
+class RoomsListAdapter(private val viewLifecycleOwner: LifecycleOwner) :RecyclerView.Adapter<RoomsListAdapter.RoomsListHolder>() {
 
     private var listRooms = emptyList<RoomData>()
 
@@ -24,8 +25,9 @@ class RoomsListAdapter:RecyclerView.Adapter<RoomsListAdapter.RoomsListHolder>() 
             replaceFragment(RoomFragment())
         }
         holder.itemView.setOnLongClickListener {
+            //parent.findV
             CURRENT_ROOM = listRooms[holder.adapterPosition]
-            showEditDeleteRoomDialog(CURRENT_ROOM)
+            showEditDeleteRoomDialog(CURRENT_ROOM,viewLifecycleOwner)
             true
         }
         return holder

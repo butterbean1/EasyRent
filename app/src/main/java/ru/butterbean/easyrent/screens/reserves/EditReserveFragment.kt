@@ -120,6 +120,7 @@ class EditReserveFragment() : BaseFragment(R.layout.fragment_edit_reserve) {
         }
 
         edit_reserve_date_check_in.setOnClickListener {
+            hideKeyboard()
             showCalendarDialogFromListener(requireContext(), mDateCheckInSetListener)
         }
         mDateCheckInSetListener = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->

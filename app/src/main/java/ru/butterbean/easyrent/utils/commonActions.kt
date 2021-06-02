@@ -1,7 +1,6 @@
 package ru.butterbean.easyrent.utils
 
 import android.app.AlertDialog
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import ru.butterbean.easyrent.R
 import ru.butterbean.easyrent.database.view_models.ReserveViewModel
@@ -11,7 +10,6 @@ import ru.butterbean.easyrent.models.ReserveData
 import ru.butterbean.easyrent.models.RoomData
 import ru.butterbean.easyrent.screens.reserves.EditReserveFragment
 import ru.butterbean.easyrent.screens.room.EditRoomFragment
-import kotlin.coroutines.coroutineContext
 
 fun getEmptyRoom(): RoomData {
     return RoomData(0)
@@ -40,7 +38,7 @@ fun showEditDeleteReserveDialog(reserve: ReserveData) {
         .show()
 }
 
-fun showEditDeleteRoomDialog(room: RoomData) {
+fun showEditDeleteRoomDialog(room: RoomData, lo: LifecycleOwner) {
     val actions = arrayOf(
         APP_ACTIVITY.getString(R.string.edit), // 0
         APP_ACTIVITY.getString(R.string.delete) // 1
@@ -49,8 +47,8 @@ fun showEditDeleteRoomDialog(room: RoomData) {
     builder.setItems(actions) { _, i ->
         when (i) {
             0 -> replaceFragment(EditRoomFragment())
-//            1 -> deleteRoomWithDialog(room, LifecycleOwner()
-            1 -> RoomViewModel(APP_ACTIVITY.application).deleteRoom(room)
+            1 -> deleteRoomWithDialog(room, lo)
+           // 1 -> RoomViewModel(APP_ACTIVITY.application).deleteRoom(room)
         }
     }
         .show()

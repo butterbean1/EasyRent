@@ -14,7 +14,7 @@ import ru.butterbean.easyrent.utils.getEmptyRoom
 
 class RoomViewModel(application: Application) : AndroidViewModel(application) {
     val readAllRooms: LiveData<List<RoomData>>
-
+    lateinit var currentRoom:RoomData
     private val repository: RoomRepository
 
     init {
@@ -29,28 +29,28 @@ class RoomViewModel(application: Application) : AndroidViewModel(application) {
     fun addRoom(room: RoomData) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.addRoom(room)
-            CURRENT_ROOM = room
+            currentRoom = room
         }
     }
 
     fun deleteRoom(room: RoomData) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.deleteRoom(room)
-            CURRENT_ROOM = getEmptyRoom()
+            currentRoom = getEmptyRoom()
         }
     }
 
     fun updateRoom(room: RoomData) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.updateRoom(room)
-            CURRENT_ROOM = room
+            currentRoom = room
         }
     }
 
     fun deleteAllRooms() {
         viewModelScope.launch(Dispatchers.IO) {
             repository.deleteAllRooms()
-            CURRENT_ROOM = getEmptyRoom()
+            currentRoom = getEmptyRoom()
         }
     }
 }

@@ -48,6 +48,8 @@ class RoomFragment() : BaseFragment(R.layout.fragment_room) {
         val recyclerView = room_reserves_recycler_view
         recyclerView.adapter = adapter
 
+
+
         // ViewModel
         mReserveViewModel = ViewModelProvider(this).get(ReserveViewModel::class.java)
         mReserveViewModel.getReservesByRoomId(CURRENT_ROOM.id).observe(viewLifecycleOwner, { reserves ->

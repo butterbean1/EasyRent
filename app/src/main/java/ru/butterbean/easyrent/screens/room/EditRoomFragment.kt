@@ -53,7 +53,7 @@ class EditRoomFragment() : BaseFragment(R.layout.fragment_edit_room) {
                 // если редактируем - записываем изменения и переходим в карточку помещения
                 mRoomViewModel.updateRoom(room)
             }
-            if (mIsNew) replaceFragment(RoomFragment())
+            if (mIsNew) replaceFragment(RoomFragment(),false)
             else APP_ACTIVITY.supportFragmentManager.popBackStack()
 
 
@@ -64,7 +64,7 @@ class EditRoomFragment() : BaseFragment(R.layout.fragment_edit_room) {
         super.onResume()
 
         mRoomViewModel = ViewModelProvider(this).get(RoomViewModel::class.java)
-        mIsNew = CURRENT_ROOM.name.isEmpty()
+        mIsNew = mRoomViewModel.currentRoom.name.isEmpty()
 
         if (mIsNew) {
             APP_ACTIVITY.title = getString(R.string.new_room)
