@@ -6,7 +6,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import ru.butterbean.easyrent.database.CURRENT_ROOM
 import ru.butterbean.easyrent.database.repository.RoomRepository
 import ru.butterbean.easyrent.models.RoomData
 import ru.butterbean.easyrent.utils.APP_DATABASE
@@ -25,6 +24,7 @@ class RoomViewModel(application: Application) : AndroidViewModel(application) {
 
     fun getReservesCount(roomId:Int): LiveData<Int> = repository.getReservesCount(roomId)
 
+    fun getById(id:Int): LiveData<RoomData> = repository.getById(id)
 
     fun addRoom(room: RoomData) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -36,7 +36,6 @@ class RoomViewModel(application: Application) : AndroidViewModel(application) {
     fun deleteRoom(room: RoomData) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.deleteRoom(room)
-            currentRoom = getEmptyRoom()
         }
     }
 
@@ -50,7 +49,6 @@ class RoomViewModel(application: Application) : AndroidViewModel(application) {
     fun deleteAllRooms() {
         viewModelScope.launch(Dispatchers.IO) {
             repository.deleteAllRooms()
-            currentRoom = getEmptyRoom()
         }
     }
 }

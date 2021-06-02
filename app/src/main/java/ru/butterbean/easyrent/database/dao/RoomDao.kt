@@ -26,5 +26,8 @@ interface RoomDao {
     @Query("SELECT COUNT(*) FROM $TABLE_RESERVES_NAME WHERE roomId = :roomId")
     fun getReservesCount(roomId:Int): LiveData<Int>
 
+    @Query("SELECT * FROM $TABLE_ROOMS_NAME WHERE id = :id")
+    fun getById(id:Int): LiveData<RoomData>
+
 
 }

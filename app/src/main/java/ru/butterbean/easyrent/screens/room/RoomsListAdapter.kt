@@ -3,16 +3,18 @@ package ru.butterbean.easyrent.screens.room
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.LifecycleOwner
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.room_item.view.*
-import ru.butterbean.easyrent.database.CURRENT_ROOM
 import ru.butterbean.easyrent.R
+import ru.butterbean.easyrent.database.view_models.RoomViewModel
 import ru.butterbean.easyrent.models.RoomData
+import ru.butterbean.easyrent.utils.APP_ACTIVITY
 import ru.butterbean.easyrent.utils.replaceFragment
 import ru.butterbean.easyrent.utils.showEditDeleteRoomDialog
 
-class RoomsListAdapter(private val viewLifecycleOwner: LifecycleOwner) :RecyclerView.Adapter<RoomsListAdapter.RoomsListHolder>() {
+class RoomsListAdapter(private val f: Fragment) :RecyclerView.Adapter<RoomsListAdapter.RoomsListHolder>() {
 
     private var listRooms = emptyList<RoomData>()
 
@@ -20,14 +22,14 @@ class RoomsListAdapter(private val viewLifecycleOwner: LifecycleOwner) :Recycler
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RoomsListHolder {
         val holder = RoomsListHolder(LayoutInflater.from(parent.context).inflate(R.layout.room_item,parent,false) )
+        val roomViewModel = ViewModelProvider(APP_ACTIVITY).get(RoomViewModel::class.java)
         holder.itemView.setOnClickListener {
-            CURRENT_ROOM = listRooms[holder.adapterPosition]
+            roomViewModel.currentRoom = listRooms[holder.adapterPosition]
             replaceFragment(RoomFragment())
         }
         holder.itemView.setOnLongClickListener {
-            //parent.findV
-            CURRENT_ROOM = listRooms[holder.adapterPosition]
-            showEditDeleteRoomDialog(CURRENT_ROOM,viewLifecycleOwner)
+            roomViewModel.currentRoom = listRooms[holder.adapterPosition]
+            showEditDeleteRoomDialog(roomViewModel.currentRoom,f.viewLifecycleOwner)
             true
         }
         return holder

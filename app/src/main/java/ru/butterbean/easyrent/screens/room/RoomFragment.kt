@@ -5,10 +5,10 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.fragment_room.*
-import ru.butterbean.easyrent.database.CURRENT_RESERVE
-import ru.butterbean.easyrent.database.CURRENT_ROOM
 import ru.butterbean.easyrent.R
 import ru.butterbean.easyrent.database.view_models.ReserveViewModel
+import ru.butterbean.easyrent.database.view_models.RoomViewModel
+import ru.butterbean.easyrent.models.RoomData
 import ru.butterbean.easyrent.screens.base.BaseFragment
 import ru.butterbean.easyrent.screens.reserves.EditReserveFragment
 import ru.butterbean.easyrent.screens.reserves.ReservesListAdapter
@@ -19,6 +19,7 @@ import ru.butterbean.easyrent.utils.replaceFragment
 
 class RoomFragment() : BaseFragment(R.layout.fragment_room) {
     private lateinit var mReserveViewModel: ReserveViewModel
+    private lateinit var mCurrentRoom: RoomData
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.edit_menu,menu)
@@ -31,7 +32,7 @@ class RoomFragment() : BaseFragment(R.layout.fragment_room) {
                 true
             }
             R.id.delete -> {
-                deleteRoomWithDialog(CURRENT_ROOM,viewLifecycleOwner)
+                deleteRoomWithDialog(mCurrentRoom,viewLifecycleOwner)
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -41,34 +42,34 @@ class RoomFragment() : BaseFragment(R.layout.fragment_room) {
     override fun onResume(){
         super.onResume()
 
-        APP_ACTIVITY.title = CURRENT_ROOM.name
-
         //Recycler view
         val adapter = ReservesListAdapter()
         val recyclerView = room_reserves_recycler_view
         recyclerView.adapter = adapter
 
-
-
         // ViewModel
-        mReserveViewModel = ViewModelProvider(this).get(ReserveViewModel::class.java)
-        mReserveViewModel.getReservesByRoomId(CURRENT_ROOM.id).observe(viewLifecycleOwner, { reserves ->
+        val roomViewModel = ViewModelProvider(APP_ACTIVITY).get(RoomViewModel::class.java)
+        mCurrentRoom = roomViewModel.currentRoom
+        APP_ACTIVITY.title = mCurrentRoom.name
+
+        mReserveViewModel = ViewModelProvider(APP_ACTIVITY).get(ReserveViewModel::class.java)
+        mReserveViewModel.getReservesByRoomId(mCurrentRoom.id).observe(viewLifecycleOwner, { reserves ->
             adapter.setData(reserves)
         })
 
-        room_name.text = CURRENT_ROOM.name
-        if (CURRENT_ROOM.address.isEmpty()){
+        room_name.text = mCurrentRoom.name
+        if (mCurrentRoom.address.isEmpty()){
             room_address.text = getString(R.string.empty_address)
         }else {
-            room_address.text = CURRENT_ROOM.address
+            room_address.text = mCurrentRoom.address
         }
-        room_status.text = CURRENT_ROOM.status
+        room_status.text = mCurrentRoom.status
 
         // add menu
         setHasOptionsMenu(true)
 
         room_btn_add_reserve.setOnClickListener {
-            CURRENT_RESERVE = getEmptyReserve()
+            mReserveViewModel.currentReserve = getEmptyReserve(mCurrentRoom.id)
             replaceFragment(EditReserveFragment())
         }
     }

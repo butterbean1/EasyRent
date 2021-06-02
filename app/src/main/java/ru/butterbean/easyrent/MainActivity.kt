@@ -3,13 +3,12 @@ package ru.butterbean.easyrent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import ru.butterbean.easyrent.database.CURRENT_GUEST
-import ru.butterbean.easyrent.database.CURRENT_RESERVE
-import ru.butterbean.easyrent.database.CURRENT_ROOM
 import ru.butterbean.easyrent.database.MainDatabase
 import ru.butterbean.easyrent.databinding.ActivityMainBinding
 import ru.butterbean.easyrent.screens.SplashFragment
-import ru.butterbean.easyrent.utils.*
+import ru.butterbean.easyrent.utils.APP_ACTIVITY
+import ru.butterbean.easyrent.utils.APP_DATABASE
+import ru.butterbean.easyrent.utils.replaceFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -20,13 +19,13 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         mBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(mBinding.root)
+
         APP_ACTIVITY = this
         APP_DATABASE = MainDatabase.getDatabase(applicationContext)
-        CURRENT_ROOM = getEmptyRoom()
-        CURRENT_RESERVE = getEmptyReserve()
-        CURRENT_GUEST = getEmptyGuest()
+
         mToolbar = mBinding.mainToolbar
         setSupportActionBar(mToolbar)
+
         replaceFragment(SplashFragment(),false)
     }
 

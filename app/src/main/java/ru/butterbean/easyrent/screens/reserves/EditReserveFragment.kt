@@ -8,10 +8,8 @@ import android.view.MenuItem
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.fragment_edit_reserve.*
 import ru.butterbean.easyrent.R
-import ru.butterbean.easyrent.database.CURRENT_RESERVE
-import ru.butterbean.easyrent.database.CURRENT_ROOM
-import ru.butterbean.easyrent.database.view_models.GuestViewModel
 import ru.butterbean.easyrent.database.view_models.ReserveViewModel
+import ru.butterbean.easyrent.database.view_models.RoomViewModel
 import ru.butterbean.easyrent.models.ReserveData
 import ru.butterbean.easyrent.screens.base.BaseFragment
 import ru.butterbean.easyrent.utils.*
@@ -20,7 +18,7 @@ class EditReserveFragment() : BaseFragment(R.layout.fragment_edit_reserve) {
 
     private var mIsNew = false
     private lateinit var mReserveViewModel: ReserveViewModel
-    private lateinit var mGuestViewModel: GuestViewModel
+    private lateinit var mCurrentReserve: ReserveData
     private lateinit var mDateCheckInSetListener: DatePickerDialog.OnDateSetListener
     private lateinit var mDateCheckOutSetListener: DatePickerDialog.OnDateSetListener
     private lateinit var mTimeCheckInSetListener: TimePickerDialog.OnTimeSetListener
@@ -40,7 +38,7 @@ class EditReserveFragment() : BaseFragment(R.layout.fragment_edit_reserve) {
                 true
             }
             R.id.delete -> {
-                deleteReserveWithDialog(CURRENT_RESERVE)
+                deleteReserveWithDialog(mCurrentReserve)
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -71,8 +69,8 @@ class EditReserveFragment() : BaseFragment(R.layout.fragment_edit_reserve) {
             guestsCount == 0 -> showToast("Введите количество постояльцев!")
             else -> {
                 val reserve = ReserveData(
-                    CURRENT_RESERVE.id,
-                    CURRENT_ROOM.id,
+                    mCurrentReserve.id,
+                    mCurrentReserve.roomId,
                     guest,
                     guestsCount,
                     sum,
@@ -98,25 +96,30 @@ class EditReserveFragment() : BaseFragment(R.layout.fragment_edit_reserve) {
     override fun onResume() {
         super.onResume()
 
-        mReserveViewModel = ViewModelProvider(this).get(ReserveViewModel::class.java)
-        mGuestViewModel = ViewModelProvider(this).get(GuestViewModel::class.java)
-        mIsNew = CURRENT_RESERVE.roomId == 0
+        mReserveViewModel = ViewModelProvider(APP_ACTIVITY).get(ReserveViewModel::class.java)
+        mCurrentReserve = mReserveViewModel.currentReserve
+        mIsNew = mCurrentReserve.roomId == 0
 
         APP_ACTIVITY.title = getString(R.string.reserve)
 
-        edit_reserve_room_name.text = CURRENT_ROOM.name
-        edit_reserve_guest.setText(CURRENT_RESERVE.guestName)
-        edit_reserve_sum.setText(CURRENT_RESERVE.sum.toString())
-        edit_reserve_payment.setText(CURRENT_RESERVE.payment.toString())
-        edit_reserve_was_check_in.isChecked = CURRENT_RESERVE.wasCheckIn
-        edit_reserve_was_check_out.isChecked = CURRENT_RESERVE.wasCheckOut
+        // получим название помещения из таблицы помещений
+        val roomViewModel = ViewModelProvider(APP_ACTIVITY).get(RoomViewModel::class.java)
+        roomViewModel.getById(roomViewModel.currentRoom.id).observe(viewLifecycleOwner, { room ->
+            edit_reserve_room_name.text = room.name
+        })
+
+        edit_reserve_guest.setText(mCurrentReserve.guestName)
+        edit_reserve_sum.setText(mCurrentReserve.sum.toString())
+        edit_reserve_payment.setText(mCurrentReserve.payment.toString())
+        edit_reserve_was_check_in.isChecked = mCurrentReserve.wasCheckIn
+        edit_reserve_was_check_out.isChecked = mCurrentReserve.wasCheckOut
         if (!mIsNew) {
-            mCurrentDateCheckIn = CURRENT_RESERVE.dateCheckIn.substring(0, 10)
-            mCurrentDateCheckOut = CURRENT_RESERVE.dateCheckOut.substring(0, 10)
-            edit_reserve_date_check_in.text = CURRENT_RESERVE.dateCheckIn.toDateFormat(false)
-            edit_reserve_date_check_out.text = CURRENT_RESERVE.dateCheckOut.toDateFormat(false)
-            edit_reserve_time_check_in.text = CURRENT_RESERVE.dateCheckIn.toTimeFormat()
-            edit_reserve_time_check_out.text = CURRENT_RESERVE.dateCheckOut.toTimeFormat()
+            mCurrentDateCheckIn = mCurrentReserve.dateCheckIn.substring(0, 10)
+            mCurrentDateCheckOut = mCurrentReserve.dateCheckOut.substring(0, 10)
+            edit_reserve_date_check_in.text = mCurrentReserve.dateCheckIn.toDateFormat(false)
+            edit_reserve_date_check_out.text = mCurrentReserve.dateCheckOut.toDateFormat(false)
+            edit_reserve_time_check_in.text = mCurrentReserve.dateCheckIn.toTimeFormat()
+            edit_reserve_time_check_out.text = mCurrentReserve.dateCheckOut.toTimeFormat()
         }
 
         edit_reserve_date_check_in.setOnClickListener {
@@ -154,7 +157,7 @@ class EditReserveFragment() : BaseFragment(R.layout.fragment_edit_reserve) {
         if (mIsNew) {
             edit_reserve_guests_count.setText("1")
         } else {
-            edit_reserve_guests_count.setText(CURRENT_RESERVE.guestsCount.toString())
+            edit_reserve_guests_count.setText(mCurrentReserve.guestsCount.toString())
         }
 
         // add menu
