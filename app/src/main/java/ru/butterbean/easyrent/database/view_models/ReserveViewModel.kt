@@ -22,6 +22,8 @@ class ReserveViewModel(application: Application) : AndroidViewModel(application)
         readAllReserves = repository.readAllReserves
     }
 
+    fun getReservesByRoomId(roomId:Int):LiveData<List<ReserveData>> = repository.getReservesByRoomId(roomId)
+
     fun addReserve(reserve: ReserveData) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.addReserve(reserve)

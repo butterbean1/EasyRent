@@ -1,6 +1,8 @@
 package ru.butterbean.easyrent.utils
 
 import android.app.AlertDialog
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.LifecycleOwner
 import ru.butterbean.easyrent.R
 import ru.butterbean.easyrent.database.view_models.ReserveViewModel
 import ru.butterbean.easyrent.database.view_models.RoomViewModel
@@ -9,6 +11,7 @@ import ru.butterbean.easyrent.models.ReserveData
 import ru.butterbean.easyrent.models.RoomData
 import ru.butterbean.easyrent.screens.reserves.EditReserveFragment
 import ru.butterbean.easyrent.screens.room.EditRoomFragment
+import kotlin.coroutines.coroutineContext
 
 fun getEmptyRoom(): RoomData {
     return RoomData(0)
@@ -46,7 +49,8 @@ fun showEditDeleteRoomDialog(room: RoomData) {
     builder.setItems(actions) { _, i ->
         when (i) {
             0 -> replaceFragment(EditRoomFragment())
-            1 -> deleteRoomWithDialog(room)
+//            1 -> deleteRoomWithDialog(room, LifecycleOwner()
+            1 -> RoomViewModel(APP_ACTIVITY.application).deleteRoom(room)
         }
     }
         .show()
@@ -58,7 +62,7 @@ fun deleteReserveWithDialog(reserve: ReserveData) {
         .setPositiveButton(APP_ACTIVITY.getString(R.string.yes)) { dialog, _ ->
             ReserveViewModel(APP_ACTIVITY.application).deleteReserve(reserve)
             dialog.cancel()
-            APP_ACTIVITY.supportFragmentManager?.popBackStack()
+            APP_ACTIVITY.supportFragmentManager.popBackStack()
         }
         .setNegativeButton(APP_ACTIVITY.getString(R.string.no)) { dialog, _ ->
             dialog.cancel()
@@ -66,24 +70,27 @@ fun deleteReserveWithDialog(reserve: ReserveData) {
         .show()
 }
 
-fun deleteRoomWithDialog(room: RoomData) {
+fun deleteRoomWithDialog(room: RoomData, lo: LifecycleOwner) {
     val roomViewModel = RoomViewModel(APP_ACTIVITY.application)
     // если нет бронирований, то не будем ничего спрашивать
-    if (roomViewModel.getReservesCount(room.id) == 0) {
-        roomViewModel.deleteRoom(room)
-    } else {
-        val builder = AlertDialog.Builder(APP_ACTIVITY)
-        builder.setMessage(APP_ACTIVITY.getString(R.string.question_delete_room))
-            .setPositiveButton(APP_ACTIVITY.getString(R.string.yes)) { dialog, _ ->
-                roomViewModel.deleteRoom(room)
-                dialog.cancel()
-                APP_ACTIVITY.supportFragmentManager?.popBackStack()
-            }
-            .setNegativeButton(APP_ACTIVITY.getString(R.string.no)) { dialog, _ ->
-                dialog.cancel()
-            }
-            .show()
-    }
+    roomViewModel.getReservesCount(room.id).observe(lo, { count ->
+        if (count == 0) {
+            roomViewModel.deleteRoom(room)
+            APP_ACTIVITY.supportFragmentManager.popBackStack()
+        } else {
+            val builder = AlertDialog.Builder(APP_ACTIVITY)
+            builder.setMessage(APP_ACTIVITY.getString(R.string.question_delete_room))
+                .setPositiveButton(APP_ACTIVITY.getString(R.string.yes)) { dialog, _ ->
+                    roomViewModel.deleteRoom(room)
+                    dialog.cancel()
+                    APP_ACTIVITY.supportFragmentManager.popBackStack()
+                }
+                .setNegativeButton(APP_ACTIVITY.getString(R.string.no)) { dialog, _ ->
+                    dialog.cancel()
+                }
+                .show()
+        }
+    })
 }
 
 

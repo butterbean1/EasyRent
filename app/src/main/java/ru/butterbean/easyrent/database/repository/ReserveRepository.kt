@@ -21,4 +21,6 @@ class ReserveRepository(private val reserveDao: ReserveDao) {
         reserveDao.deleteAllReserves()
     }
 
+    fun getReservesByRoomId(roomId: Int): LiveData<List<ReserveData>> = reserveDao.getReservesByRoomId(roomId)
+
 }

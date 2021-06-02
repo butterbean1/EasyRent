@@ -33,7 +33,7 @@ class RoomsListFragment : Fragment(R.layout.fragment_rooms_list) {
 
         rooms_btn_add.setOnClickListener {
             CURRENT_ROOM = getEmptyRoom()
-            replaceFragment(EditRoomFragment())
+            replaceFragment(EditRoomFragment(),false)
         }
     }
 }

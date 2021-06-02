@@ -31,7 +31,7 @@ class RoomFragment() : BaseFragment(R.layout.fragment_room) {
                 true
             }
             R.id.delete -> {
-                deleteRoomWithDialog(CURRENT_ROOM)
+                deleteRoomWithDialog(CURRENT_ROOM,viewLifecycleOwner)
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -50,7 +50,7 @@ class RoomFragment() : BaseFragment(R.layout.fragment_room) {
 
         // ViewModel
         mReserveViewModel = ViewModelProvider(this).get(ReserveViewModel::class.java)
-        mReserveViewModel.readAllReserves.observe(viewLifecycleOwner, { reserves ->
+        mReserveViewModel.getReservesByRoomId(CURRENT_ROOM.id).observe(viewLifecycleOwner, { reserves ->
             adapter.setData(reserves)
         })
 

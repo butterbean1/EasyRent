@@ -14,6 +14,7 @@ import ru.butterbean.easyrent.utils.getEmptyRoom
 
 class RoomViewModel(application: Application) : AndroidViewModel(application) {
     val readAllRooms: LiveData<List<RoomData>>
+
     private val repository: RoomRepository
 
     init {
@@ -22,7 +23,8 @@ class RoomViewModel(application: Application) : AndroidViewModel(application) {
         readAllRooms = repository.readAllRooms
     }
 
-    fun getReservesCount(roomId:Int):Int = repository.getReservesCount(roomId)
+    fun getReservesCount(roomId:Int): LiveData<Int> = repository.getReservesCount(roomId)
+
 
     fun addRoom(room: RoomData) {
         viewModelScope.launch(Dispatchers.IO) {
