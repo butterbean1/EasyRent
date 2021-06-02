@@ -98,7 +98,7 @@ class EditReserveFragment() : BaseFragment(R.layout.fragment_edit_reserve) {
 
         mReserveViewModel = ViewModelProvider(APP_ACTIVITY).get(ReserveViewModel::class.java)
         mCurrentReserve = mReserveViewModel.currentReserve
-        mIsNew = mCurrentReserve.roomId == 0
+        mIsNew = mCurrentReserve.guestName.isEmpty()
 
         APP_ACTIVITY.title = getString(R.string.reserve)
 
