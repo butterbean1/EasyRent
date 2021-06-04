@@ -6,13 +6,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import ru.butterbean.easyrent.database.MainDatabase
 import ru.butterbean.easyrent.database.repository.GuestRepository
-import ru.butterbean.easyrent.models.GuestData
+import ru.butterbean.easyrent.database.models.GuestData
 import ru.butterbean.easyrent.utils.APP_DATABASE
 
 class GuestViewModel(application: Application):AndroidViewModel(application) {
     val readAllGuests: LiveData<List<GuestData>>
+    lateinit var currentGuest: GuestData
+
     private val repository: GuestRepository
 
     init {
@@ -25,7 +26,11 @@ class GuestViewModel(application: Application):AndroidViewModel(application) {
         return repository.getById(id)
     }
     fun addGuest(guest:GuestData){
-        viewModelScope.launch(Dispatchers.IO) { repository.addGuest(guest) }
+        viewModelScope.launch(Dispatchers.IO) {
+            val newId = repository.addGuest(guest)
+            currentGuest = guest
+            currentGuest.id = newId
+        }
     }
     fun deleteGuest(guest:GuestData){
         viewModelScope.launch(Dispatchers.IO) { repository.deleteGuest(guest) }

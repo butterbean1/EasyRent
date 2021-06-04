@@ -10,9 +10,6 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import ru.butterbean.easyrent.MainActivity
 import ru.butterbean.easyrent.R
-import ru.butterbean.easyrent.models.GuestData
-import ru.butterbean.easyrent.models.ReserveData
-import ru.butterbean.easyrent.models.RoomData
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -62,6 +59,19 @@ fun String.toDateTimeFormat(): String {
 
 }
 
+fun getCalendarFromString(date: String): Calendar {
+    val d = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault()).parse(date)
+    val cal = Calendar.getInstance()
+    cal.time = d!!
+    return cal
+}
+
+fun getStartOfDay(date: Calendar):Calendar{
+    val cal = Calendar.getInstance()
+    cal.set(date.get(Calendar.YEAR),date.get(Calendar.MONTH),date.get(Calendar.DAY_OF_MONTH))
+    return cal
+}
+
 fun String.toDateFormat(onlyDate: Boolean = false): String {
 
     return if (Build.VERSION.SDK_INT > 25) {
@@ -89,7 +99,6 @@ fun String.toDateFormat(onlyDate: Boolean = false): String {
         val formatter = SimpleDateFormat(inst.toLocalizedPattern(), Locale.getDefault())
         formatter.format(parser.parse(this) ?: Date(0))
     }
-
 }
 
 fun String.toTimeFormat(): String {
@@ -120,7 +129,7 @@ fun getTimeString(hour: Int, minute: Int): String {
     return "$hourText:$minuteText"
 }
 
-fun showCalendarDialogFromListener(context: Context,listener: DatePickerDialog.OnDateSetListener) {
+fun showCalendarDialogFromListener(context: Context, listener: DatePickerDialog.OnDateSetListener) {
     val cal = Calendar.getInstance()
     val dialog = DatePickerDialog(
         context,

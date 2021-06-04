@@ -2,7 +2,6 @@ package ru.butterbean.easyrent.screens.reserves
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
-import android.text.TextWatcher
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -13,7 +12,8 @@ import kotlinx.android.synthetic.main.fragment_edit_reserve.*
 import ru.butterbean.easyrent.R
 import ru.butterbean.easyrent.database.view_models.ReserveViewModel
 import ru.butterbean.easyrent.database.view_models.RoomViewModel
-import ru.butterbean.easyrent.models.ReserveData
+import ru.butterbean.easyrent.database.models.ReserveData
+import ru.butterbean.easyrent.database.models.RoomData
 import ru.butterbean.easyrent.screens.base.BaseFragment
 import ru.butterbean.easyrent.utils.*
 
@@ -21,7 +21,9 @@ class EditReserveFragment() : BaseFragment(R.layout.fragment_edit_reserve) {
 
     private var mIsNew = false
     private lateinit var mReserveViewModel: ReserveViewModel
+    private lateinit var mRoomViewModel: RoomViewModel
     private lateinit var mCurrentReserve: ReserveData
+    private lateinit var mCurrentRoom: RoomData
     private lateinit var mDateCheckInSetListener: DatePickerDialog.OnDateSetListener
     private lateinit var mDateCheckOutSetListener: DatePickerDialog.OnDateSetListener
     private lateinit var mTimeCheckInSetListener: TimePickerDialog.OnTimeSetListener
@@ -90,6 +92,12 @@ class EditReserveFragment() : BaseFragment(R.layout.fragment_edit_reserve) {
                     // если редактируем - записываем изменения
                     mReserveViewModel.updateReserve(reserve)
                 }
+                val room = RoomData(
+                    mCurrentRoom.id,
+                    mCurrentRoom.name,
+                    mCurrentRoom.address,
+                    getCurrentRoomStatus(mCurrentRoom,viewLifecycleOwner))
+                mRoomViewModel.updateRoom(room)
                 APP_ACTIVITY.supportFragmentManager.popBackStack()
 
             }
@@ -105,9 +113,10 @@ class EditReserveFragment() : BaseFragment(R.layout.fragment_edit_reserve) {
 
         APP_ACTIVITY.title = getString(R.string.reserve)
 
-        // получим название помещения из таблицы помещений
-        val roomViewModel = ViewModelProvider(APP_ACTIVITY).get(RoomViewModel::class.java)
-        roomViewModel.getById(roomViewModel.currentRoom.id).observe(viewLifecycleOwner, { room ->
+        // получим название помещения из БД таблицы помещений
+        mRoomViewModel = ViewModelProvider(APP_ACTIVITY).get(RoomViewModel::class.java)
+        mRoomViewModel.getById(mCurrentReserve.roomId).observe(viewLifecycleOwner, { room ->
+            mCurrentRoom = room
             edit_reserve_room_name.text = room.name
         })
 

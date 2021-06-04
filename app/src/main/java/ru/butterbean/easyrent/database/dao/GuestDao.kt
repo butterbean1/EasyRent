@@ -3,12 +3,12 @@ package ru.butterbean.easyrent.database.dao
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import ru.butterbean.easyrent.database.TABLE_GUESTS_NAME
-import ru.butterbean.easyrent.models.GuestData
+import ru.butterbean.easyrent.database.models.GuestData
 
 @Dao
 interface GuestDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun addGuest(guest:GuestData)
+    suspend fun addGuest(guest:GuestData):Long
 
     @Update
     suspend fun updateGuest(guest:GuestData)

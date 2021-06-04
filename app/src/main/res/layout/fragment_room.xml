@@ -35,7 +35,8 @@
         android:textColor="@color/white"
         app:layout_constraintTop_toBottomOf="@id/room_address"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_margin="@dimen/app_margin"
+        android:layout_marginTop="@dimen/app_margin"
+        android:layout_marginStart="16dp"
         android:text="@string/def_status"
         />
 
@@ -46,6 +47,18 @@
         app:layout_constraintTop_toBottomOf="@id/room_status"
         />
 
+    <TextView
+        android:id="@+id/room_text_empty_reserves_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/room_separator"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_margin="@dimen/app_margin"
+        android:text="@string/reserves_list_is_empty"
+        />
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/room_reserves_recycler_view"
         android:layout_width="match_parent"
@@ -55,7 +68,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/room_separator"
+        app:layout_constraintTop_toBottomOf="@+id/room_text_empty_reserves_list"
         app:layout_constraintVertical_bias="0.0"
         tools:listitem="@layout/reserve_item" />
 

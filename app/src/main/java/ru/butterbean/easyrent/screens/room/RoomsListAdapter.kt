@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.room_item.view.*
 import ru.butterbean.easyrent.R
 import ru.butterbean.easyrent.database.view_models.RoomViewModel
-import ru.butterbean.easyrent.models.RoomData
+import ru.butterbean.easyrent.database.models.RoomData
 import ru.butterbean.easyrent.utils.APP_ACTIVITY
 import ru.butterbean.easyrent.utils.replaceFragment
 import ru.butterbean.easyrent.utils.showEditDeleteRoomDialog

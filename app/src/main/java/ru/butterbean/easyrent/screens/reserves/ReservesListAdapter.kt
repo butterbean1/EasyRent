@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.reserve_item.view.*
 import ru.butterbean.easyrent.R
 import ru.butterbean.easyrent.database.view_models.ReserveViewModel
-import ru.butterbean.easyrent.models.ReserveData
+import ru.butterbean.easyrent.database.models.ReserveData
 import ru.butterbean.easyrent.utils.APP_ACTIVITY
 import ru.butterbean.easyrent.utils.replaceFragment
 import ru.butterbean.easyrent.utils.showEditDeleteReserveDialog

@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import ru.butterbean.easyrent.database.repository.RoomRepository
-import ru.butterbean.easyrent.models.RoomData
+import ru.butterbean.easyrent.database.models.RoomData
 import ru.butterbean.easyrent.utils.APP_DATABASE
 
 class RoomViewModel(application: Application) : AndroidViewModel(application) {
@@ -27,8 +27,9 @@ class RoomViewModel(application: Application) : AndroidViewModel(application) {
 
     fun addRoom(room: RoomData) {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.addRoom(room)
+            val newId = repository.addRoom(room)
             currentRoom = room
+            currentRoom.id = newId
         }
     }
 

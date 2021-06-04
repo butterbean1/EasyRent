@@ -3,12 +3,13 @@ package ru.butterbean.easyrent.screens.room
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.fragment_room.*
 import ru.butterbean.easyrent.R
 import ru.butterbean.easyrent.database.view_models.ReserveViewModel
 import ru.butterbean.easyrent.database.view_models.RoomViewModel
-import ru.butterbean.easyrent.models.RoomData
+import ru.butterbean.easyrent.database.models.RoomData
 import ru.butterbean.easyrent.screens.base.BaseFragment
 import ru.butterbean.easyrent.screens.reserves.EditReserveFragment
 import ru.butterbean.easyrent.screens.reserves.ReservesListAdapter
@@ -51,6 +52,11 @@ class RoomFragment() : BaseFragment(R.layout.fragment_room) {
         val roomViewModel = ViewModelProvider(APP_ACTIVITY).get(RoomViewModel::class.java)
         mCurrentRoom = roomViewModel.currentRoom
         APP_ACTIVITY.title = mCurrentRoom.name
+
+        roomViewModel.getReservesCount(mCurrentRoom.id).observe(viewLifecycleOwner){reservesCount->
+            if (reservesCount == 0) room_text_empty_reserves_list.visibility = View.VISIBLE
+            else room_text_empty_reserves_list.visibility = View.GONE
+        }
 
         mReserveViewModel = ViewModelProvider(APP_ACTIVITY).get(ReserveViewModel::class.java)
         mReserveViewModel.getReservesByRoomId(mCurrentRoom.id).observe(viewLifecycleOwner, { reserves ->

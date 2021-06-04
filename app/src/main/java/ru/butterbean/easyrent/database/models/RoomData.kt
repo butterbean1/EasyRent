@@ -1,4 +1,4 @@
-package ru.butterbean.easyrent.models
+package ru.butterbean.easyrent.database.models
 
 import android.os.Parcelable
 import androidx.room.Entity
@@ -10,8 +10,8 @@ import ru.butterbean.easyrent.database.TABLE_ROOMS_NAME
 @Entity(tableName = TABLE_ROOMS_NAME)
 data class RoomData(
     @PrimaryKey(autoGenerate = true)
-    val id:Int,
+    var id:Int,
     val name:String = "",
     val address:String = "",
-    val status:String = ""
+    var status:String = ""
 ):Parcelable

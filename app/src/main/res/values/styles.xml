@@ -41,6 +41,7 @@
     <style name="date_time_text">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">@dimen/app_small_margin</item>
         <item name="android:layout_margin">@dimen/app_margin</item>
         <item name="android:minWidth">@dimen/min_width_datetime_text</item>
         <item name="android:textColor">@color/black</item>
@@ -73,6 +74,8 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/normal_separator_height</item>
         <item name="android:layout_margin">@dimen/app_margin</item>
+        <item name="layout_constraintStart_toStartOf">parent</item>
+        <item name="layout_constraintEnd_toEndOf">parent</item>
     </style>
     <style name="normal_separator_edit" parent="normal_separator">
         <item name="android:background">@color/grey</item>

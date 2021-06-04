@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import ru.butterbean.easyrent.database.repository.ReserveRepository
-import ru.butterbean.easyrent.models.ReserveData
+import ru.butterbean.easyrent.database.models.ReserveData
 import ru.butterbean.easyrent.utils.APP_DATABASE
 
 class ReserveViewModel(application: Application) : AndroidViewModel(application) {
@@ -23,10 +23,15 @@ class ReserveViewModel(application: Application) : AndroidViewModel(application)
 
     fun getReservesByRoomId(roomId:Int):LiveData<List<ReserveData>> = repository.getReservesByRoomId(roomId)
 
+    fun getActualReservesByRoomId(roomId:Int):LiveData<List<ReserveData>> = repository.getActualReservesByRoomId(roomId)
+
+    fun getEqualseservesByRoomId(roomId:Int):LiveData<List<ReserveData>> = repository.getEqualseservesByRoomId(roomId)
+
     fun addReserve(reserve: ReserveData) {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.addReserve(reserve)
+            val newId = repository.addReserve(reserve)
             currentReserve = reserve
+            currentReserve.id = newId
         }
     }
 

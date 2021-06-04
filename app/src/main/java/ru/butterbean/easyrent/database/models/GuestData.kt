@@ -1,4 +1,4 @@
-package ru.butterbean.easyrent.models
+package ru.butterbean.easyrent.database.models
 
 import android.os.Parcelable
 import androidx.room.Entity
@@ -10,7 +10,7 @@ import ru.butterbean.easyrent.database.TABLE_GUESTS_NAME
 @Entity(tableName = TABLE_GUESTS_NAME)
 data class GuestData(
     @PrimaryKey(autoGenerate = true)
-    val id:Int,
+    var id:Int,
     val name:String = "",
     val fullname:String = "",
     val document:String = ""

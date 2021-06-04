@@ -9,7 +9,7 @@ import kotlinx.android.synthetic.main.fragment_edit_room.*
 import ru.butterbean.easyrent.R
 import ru.butterbean.easyrent.database.STATUS_FREE
 import ru.butterbean.easyrent.database.view_models.RoomViewModel
-import ru.butterbean.easyrent.models.RoomData
+import ru.butterbean.easyrent.database.models.RoomData
 import ru.butterbean.easyrent.screens.base.BaseFragment
 import ru.butterbean.easyrent.utils.APP_ACTIVITY
 import ru.butterbean.easyrent.utils.deleteRoomWithDialog
@@ -43,12 +43,10 @@ class EditRoomFragment() : BaseFragment(R.layout.fragment_edit_room) {
 
     private fun change() {
         val name = room_change_name.text.toString()
-        val address = room_change_address.text.toString()
-        val status = room_change_status.text.toString()
         if (name.isEmpty()) {
             showToast("Введите название!")
         } else {
-            val room = RoomData(mCurrentRoom.id, name, address, status)
+            val room = RoomData(mCurrentRoom.id, name, mCurrentRoom.address, mCurrentRoom.status)
             if (mIsNew) {
                 // если новое помещение - добавляем в базу и переходим в список
                 mRoomViewModel.addRoom(room)
@@ -56,10 +54,8 @@ class EditRoomFragment() : BaseFragment(R.layout.fragment_edit_room) {
                 // если редактируем - записываем изменения и переходим в карточку помещения
                 mRoomViewModel.updateRoom(room)
             }
-            if (mIsNew) replaceFragment(RoomFragment(),false)
+            if (mIsNew) replaceFragment(RoomFragment(), false)
             else APP_ACTIVITY.supportFragmentManager.popBackStack()
-
-
         }
     }
 

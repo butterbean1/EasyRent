@@ -2,25 +2,44 @@ package ru.butterbean.easyrent.utils
 
 import android.app.AlertDialog
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.ViewModelProvider
 import ru.butterbean.easyrent.R
 import ru.butterbean.easyrent.database.view_models.ReserveViewModel
 import ru.butterbean.easyrent.database.view_models.RoomViewModel
-import ru.butterbean.easyrent.models.GuestData
-import ru.butterbean.easyrent.models.ReserveData
-import ru.butterbean.easyrent.models.RoomData
+import ru.butterbean.easyrent.database.models.GuestData
+import ru.butterbean.easyrent.database.models.ReserveData
+import ru.butterbean.easyrent.database.models.RoomData
 import ru.butterbean.easyrent.screens.reserves.EditReserveFragment
 import ru.butterbean.easyrent.screens.room.EditRoomFragment
+import java.util.*
 
 fun getEmptyRoom(): RoomData {
     return RoomData(0)
 }
 
-fun getEmptyReserve(roomId:Int): ReserveData {
-    return ReserveData(0,roomId)
+fun getEmptyReserve(roomId: Int): ReserveData {
+    return ReserveData(0, roomId)
 }
 
 fun getEmptyGuest(): GuestData {
     return GuestData(0)
+}
+
+fun getCurrentRoomStatus(room: RoomData, lo: LifecycleOwner): String {
+
+    val reserveViewModel = ViewModelProvider(APP_ACTIVITY).get(ReserveViewModel::class.java)
+    reserveViewModel.getEqualseservesByRoomId(room.id).observe(lo, { reservesList ->
+        val currentDate = getStartOfDay(Calendar.getInstance())
+        reservesList.forEach {reserve ->
+            val dateCheckIn = getCalendarFromString(reserve.dateCheckIn)
+            val dateCheckOut = getCalendarFromString(reserve.dateCheckOut)
+            if (currentDate.before(getStartOfDay(dateCheckIn))){
+
+            }
+        }
+    })
+
+    return "Свободно"
 }
 
 fun showEditDeleteReserveDialog(reserve: ReserveData) {
@@ -48,7 +67,6 @@ fun showEditDeleteRoomDialog(room: RoomData, lo: LifecycleOwner) {
         when (i) {
             0 -> replaceFragment(EditRoomFragment())
             1 -> deleteRoomWithDialog(room, lo)
-           // 1 -> RoomViewModel(APP_ACTIVITY.application).deleteRoom(room)
         }
     }
         .show()
