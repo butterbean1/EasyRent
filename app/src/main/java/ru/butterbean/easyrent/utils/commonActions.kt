@@ -25,23 +25,6 @@ fun getEmptyGuest(): GuestData {
     return GuestData(0)
 }
 
-fun getCurrentRoomStatus(room: RoomData, lo: LifecycleOwner): String {
-
-    val reserveViewModel = ViewModelProvider(APP_ACTIVITY).get(ReserveViewModel::class.java)
-    reserveViewModel.getEqualseservesByRoomId(room.id).observe(lo, { reservesList ->
-        val currentDate = getStartOfDay(Calendar.getInstance())
-        reservesList.forEach {reserve ->
-            val dateCheckIn = getCalendarFromString(reserve.dateCheckIn)
-            val dateCheckOut = getCalendarFromString(reserve.dateCheckOut)
-            if (currentDate.before(getStartOfDay(dateCheckIn))){
-
-            }
-        }
-    })
-
-    return "Свободно"
-}
-
 fun showEditDeleteReserveDialog(reserve: ReserveData) {
     val actions = arrayOf(
         APP_ACTIVITY.getString(R.string.edit), // 0

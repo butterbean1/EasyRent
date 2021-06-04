@@ -70,6 +70,7 @@ class EditReserveFragment() : BaseFragment(R.layout.fragment_edit_reserve) {
             timeCheckIn.isEmpty() -> showToast("Выберите время заселения!")
             dateCheckOut.isEmpty() -> showToast("Выберите дату выселения!")
             timeCheckOut.isEmpty() -> showToast("Выберите время выселения!")
+            getCalendarFromString(dateCheckInText).after(getCalendarFromString(dateCheckOutText)) -> showToast("Заселение позже выселения!")
             guest.isEmpty() -> showToast("Введите имя гостя!")
             guestsCount == 0 -> showToast("Введите количество постояльцев!")
             else -> {
@@ -92,17 +93,13 @@ class EditReserveFragment() : BaseFragment(R.layout.fragment_edit_reserve) {
                     // если редактируем - записываем изменения
                     mReserveViewModel.updateReserve(reserve)
                 }
-                val room = RoomData(
-                    mCurrentRoom.id,
-                    mCurrentRoom.name,
-                    mCurrentRoom.address,
-                    getCurrentRoomStatus(mCurrentRoom,viewLifecycleOwner))
-                mRoomViewModel.updateRoom(room)
+
                 APP_ACTIVITY.supportFragmentManager.popBackStack()
 
             }
         }
     }
+
 
     override fun onResume() {
         super.onResume()

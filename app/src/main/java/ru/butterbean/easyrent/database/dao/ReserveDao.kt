@@ -25,10 +25,7 @@ interface ReserveDao {
     @Query("SELECT * FROM $TABLE_RESERVES_NAME WHERE roomId= :roomId ORDER BY id ASC")
     fun getReservesByRoomId(roomId: Long): LiveData<List<ReserveData>>
 
-    @Query("SELECT * FROM $TABLE_RESERVES_NAME WHERE date('now','start of day')==date(dateCheckOut,'start of day') & roomId= :roomId ORDER BY dateCheckIn ASC")
-    fun getActualReservesByRoomId(roomId: Long): LiveData<List<ReserveData>>
-
-    @Query("SELECT * FROM $TABLE_RESERVES_NAME WHERE date(roomId,'start of day')==date(dateCheckOut,'start of day') & roomId= :roomId ORDER BY dateCheckIn ASC")
-    fun getEqualseservesByRoomId(roomId: Long): LiveData<List<ReserveData>>
+    @Query("SELECT * FROM $TABLE_RESERVES_NAME WHERE (date('now','start of day')<=date(dateCheckOut,'start of day')) & (roomId= :roomId) ORDER BY dateCheckIn ASC")
+    fun getActualReservesByRoomId(roomId: Long): List<ReserveData>
 
 }

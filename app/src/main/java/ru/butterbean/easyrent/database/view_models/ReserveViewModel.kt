@@ -23,15 +23,12 @@ class ReserveViewModel(application: Application) : AndroidViewModel(application)
 
     fun getReservesByRoomId(roomId:Long):LiveData<List<ReserveData>> = repository.getReservesByRoomId(roomId)
 
-    fun getActualReservesByRoomId(roomId:Long):LiveData<List<ReserveData>> = repository.getActualReservesByRoomId(roomId)
-
-    fun getEqualseservesByRoomId(roomId:Long):LiveData<List<ReserveData>> = repository.getEqualseservesByRoomId(roomId)
-
     fun addReserve(reserve: ReserveData) {
         viewModelScope.launch(Dispatchers.IO) {
             val newId = repository.addReserve(reserve)
             currentReserve = reserve
             currentReserve.id = newId
+            launch { repository.updateRoomStatus(currentReserve.roomId)}
         }
     }
 
@@ -45,6 +42,7 @@ class ReserveViewModel(application: Application) : AndroidViewModel(application)
         viewModelScope.launch(Dispatchers.IO) {
             repository.updateReserve(reserve)
             currentReserve = reserve
+            launch { repository.updateRoomStatus(currentReserve.roomId)}
         }
     }
 

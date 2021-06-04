@@ -72,6 +72,12 @@ fun getStartOfDay(date: Calendar):Calendar{
     return cal
 }
 
+fun Calendar.toDateFormat():String{
+    val inst = SimpleDateFormat.getDateInstance() as SimpleDateFormat
+    val formatter = SimpleDateFormat("dd MMMM", Locale.getDefault())
+    return formatter.format(this.time)
+}
+
 fun String.toDateFormat(onlyDate: Boolean = false): String {
 
     return if (Build.VERSION.SDK_INT > 25) {
@@ -95,8 +101,7 @@ fun String.toDateFormat(onlyDate: Boolean = false): String {
         }
         val parser = SimpleDateFormat(patternParser, Locale.getDefault())
 
-        val inst = SimpleDateFormat.getDateInstance() as SimpleDateFormat
-        val formatter = SimpleDateFormat(inst.toLocalizedPattern(), Locale.getDefault())
+        val formatter = SimpleDateFormat("dd.MM.YYYY", Locale.getDefault())
         formatter.format(parser.parse(this) ?: Date(0))
     }
 }
