@@ -20,7 +20,7 @@ interface RoomDao {
     @Query("DELETE FROM $TABLE_ROOMS_NAME")
     suspend fun deleteAllRooms()
 
-    @Query("SELECT * FROM $TABLE_ROOMS_NAME ORDER BY id ASC")
+    @Query("SELECT * FROM $TABLE_ROOMS_NAME ORDER BY name ASC")
     fun readAllRooms(): LiveData<List<RoomData>>
 
     @Query("SELECT COUNT(*) FROM $TABLE_RESERVES_NAME WHERE roomId = :roomId")

@@ -2,6 +2,7 @@ package ru.butterbean.easyrent.utils
 
 import android.app.AlertDialog
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.ViewModelProvider
 import ru.butterbean.easyrent.R
 import ru.butterbean.easyrent.database.models.GuestData
 import ru.butterbean.easyrent.database.models.ReserveData
@@ -68,7 +69,7 @@ fun deleteReserveWithDialog(reserve: ReserveData) {
 }
 
 fun deleteRoomWithDialog(room: RoomData, lo: LifecycleOwner) {
-    val roomViewModel = RoomViewModel(APP_ACTIVITY.application)
+    val roomViewModel = ViewModelProvider(APP_ACTIVITY).get(RoomViewModel::class.java)
     // если нет бронирований, то не будем ничего спрашивать
     roomViewModel.getReservesCount().observe(lo, { count ->
         if (count == 0) {
