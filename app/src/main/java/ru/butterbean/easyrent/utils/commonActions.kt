@@ -72,7 +72,7 @@ fun deleteReserveWithDialog(reserve: ReserveData) {
 fun deleteRoomWithDialog(room: RoomData, lo: LifecycleOwner) {
     val roomViewModel = RoomViewModel(APP_ACTIVITY.application)
     // если нет бронирований, то не будем ничего спрашивать
-    roomViewModel.getReservesCount(room.id).observe(lo, { count ->
+    roomViewModel.getReservesCount().observe(lo, { count ->
         if (count == 0) {
             roomViewModel.deleteRoom(room)
             APP_ACTIVITY.supportFragmentManager.popBackStack()

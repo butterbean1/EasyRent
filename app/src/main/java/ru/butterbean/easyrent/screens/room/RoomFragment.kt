@@ -53,7 +53,7 @@ class RoomFragment() : BaseFragment(R.layout.fragment_room) {
         mCurrentRoom = roomViewModel.currentRoom
         APP_ACTIVITY.title = mCurrentRoom.name
 
-        roomViewModel.getReservesCount(mCurrentRoom.id).observe(viewLifecycleOwner){reservesCount->
+        roomViewModel.getReservesCount().observe(viewLifecycleOwner){reservesCount->
             if (reservesCount == 0) room_text_empty_reserves_list.visibility = View.VISIBLE
             else room_text_empty_reserves_list.visibility = View.GONE
         }
@@ -69,7 +69,9 @@ class RoomFragment() : BaseFragment(R.layout.fragment_room) {
         }else {
             room_address.text = mCurrentRoom.address
         }
-        room_status.text = mCurrentRoom.status
+        roomViewModel.getStatus().observe(viewLifecycleOwner, { status ->
+            room_status.text = status
+        })
 
         // add menu
         setHasOptionsMenu(true)

@@ -32,5 +32,8 @@ interface RoomDao {
     @Query("SELECT * FROM $TABLE_ROOMS_NAME WHERE id = :id")
     fun getByIdNow(id:Long): RoomData
 
+    @Query("SELECT Status FROM $TABLE_ROOMS_NAME WHERE id = :id")
+    fun getStatus(id: Long): LiveData<String>
+
 
 }
