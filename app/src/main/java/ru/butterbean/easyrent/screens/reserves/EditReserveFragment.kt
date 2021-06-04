@@ -2,6 +2,8 @@ package ru.butterbean.easyrent.screens.reserves
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.text.InputFilter
+import android.text.Spanned
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -16,6 +18,7 @@ import ru.butterbean.easyrent.database.models.ReserveData
 import ru.butterbean.easyrent.database.models.RoomData
 import ru.butterbean.easyrent.screens.base.BaseFragment
 import ru.butterbean.easyrent.utils.*
+import java.lang.NumberFormatException
 
 class EditReserveFragment() : BaseFragment(R.layout.fragment_edit_reserve) {
 
@@ -52,9 +55,9 @@ class EditReserveFragment() : BaseFragment(R.layout.fragment_edit_reserve) {
 
     private fun change() {
         val guest = edit_reserve_guest.text.toString()
-        val guestsCount = Integer.parseInt(edit_reserve_guests_count.text.toString())
-        val sum = Integer.parseInt(edit_reserve_sum.text.toString())
-        val payment = Integer.parseInt(edit_reserve_payment.text.toString())
+        val guestsCount = edit_reserve_guests_count.text.toString()
+        val sum = edit_reserve_sum.text.toString()
+        val payment = edit_reserve_payment.text.toString()
         val wasCheckIn = edit_reserve_was_check_in.isChecked
         val wasCheckOut = edit_reserve_was_check_out.isChecked
         val dateCheckIn = edit_reserve_date_check_in.text.toString()
@@ -62,25 +65,27 @@ class EditReserveFragment() : BaseFragment(R.layout.fragment_edit_reserve) {
         val timeCheckIn = edit_reserve_time_check_in.text.toString()
         val timeCheckOut = edit_reserve_time_check_out.text.toString()
 
-        val dateCheckInText = "${mCurrentDateCheckIn}T${timeCheckIn}:00"
-        val dateCheckOutText = "${mCurrentDateCheckOut}T${timeCheckOut}:00"
+        val dateCheckInText = getDateTimeInDatabaseFormat(mCurrentDateCheckIn,timeCheckIn)
+        val dateCheckOutText = getDateTimeInDatabaseFormat(mCurrentDateCheckOut,timeCheckOut)
 
         when {
             dateCheckIn.isEmpty() -> showToast("Выберите дату заселения!")
             timeCheckIn.isEmpty() -> showToast("Выберите время заселения!")
             dateCheckOut.isEmpty() -> showToast("Выберите дату выселения!")
             timeCheckOut.isEmpty() -> showToast("Выберите время выселения!")
-            getCalendarFromString(dateCheckInText).after(getCalendarFromString(dateCheckOutText)) -> showToast("Заселение позже выселения!")
+            getCalendarFromString(dateCheckInText).after(getCalendarFromString(dateCheckOutText)) -> showToast(
+                "Заселение позже выселения!"
+            )
             guest.isEmpty() -> showToast("Введите имя гостя!")
-            guestsCount == 0 -> showToast("Введите количество постояльцев!")
+            guestsCount.isEmpty() -> showToast("Введите количество постояльцев!")
             else -> {
                 val reserve = ReserveData(
                     mCurrentReserve.id,
                     mCurrentReserve.roomId,
                     guest,
-                    guestsCount,
-                    sum,
-                    payment,
+                    Integer.parseInt(guestsCount),
+                    Integer.parseInt(sum),
+                    Integer.parseInt(payment),
                     dateCheckInText,
                     dateCheckOutText,
                     wasCheckIn,
@@ -99,7 +104,6 @@ class EditReserveFragment() : BaseFragment(R.layout.fragment_edit_reserve) {
             }
         }
     }
-
 
     override fun onResume() {
         super.onResume()
@@ -130,6 +134,7 @@ class EditReserveFragment() : BaseFragment(R.layout.fragment_edit_reserve) {
             edit_reserve_time_check_in.text = mCurrentReserve.dateCheckIn.toTimeFormat()
             edit_reserve_time_check_out.text = mCurrentReserve.dateCheckOut.toTimeFormat()
         }
+        changePaymentBtnVisibility()
 
         edit_reserve_date_check_in.setOnClickListener {
             hideKeyboard()
@@ -169,7 +174,13 @@ class EditReserveFragment() : BaseFragment(R.layout.fragment_edit_reserve) {
             edit_reserve_guests_count.setText(mCurrentReserve.guestsCount.toString())
         }
 
-        edit_reserve_sum.addTextChangedListener{
+        edit_reserve_guests_count.filters = arrayOf<InputFilter>(GuestsCountInputFilter());
+
+        edit_reserve_sum.addTextChangedListener {
+            changePaymentBtnVisibility()
+        }
+
+        edit_reserve_payment.addTextChangedListener {
             changePaymentBtnVisibility()
         }
 
@@ -182,9 +193,43 @@ class EditReserveFragment() : BaseFragment(R.layout.fragment_edit_reserve) {
         setHasOptionsMenu(true)
     }
 
-    private fun changePaymentBtnVisibility(){
-        if (edit_reserve_payment.text == edit_reserve_sum.text) edit_reserve_btn_payment_full.visibility = View.INVISIBLE
-        else edit_reserve_btn_payment_full.visibility = View.VISIBLE
+    private fun changePaymentBtnVisibility() {
+        if (edit_reserve_payment.text.toString() == edit_reserve_sum.text.toString()) {
+            edit_reserve_btn_payment_full.visibility = View.INVISIBLE
+        } else {
+            edit_reserve_btn_payment_full.visibility = View.VISIBLE
+        }
+
+    }
+
+    private class GuestsCountInputFilter : InputFilter {
+        private val mMinValue: Int = 1 // минимум гостей для размещения
+        private val mMaxValue: Int = 20 // максимум гостей для размещения
+
+        override fun filter(
+            source: CharSequence?,
+            start: Int,
+            end: Int,
+            dest: Spanned?,
+            dstart: Int,
+            dend: Int
+        ): CharSequence? {
+            try {
+                val input = (dest?.subSequence(0, dstart).toString() + source + dest?.subSequence(
+                    dend,
+                    dest.length
+                )).toInt()
+                if (isInRange(input))
+                    return null
+            } catch (e: NumberFormatException) {
+            }
+            return ""
+        }
+
+        private fun isInRange(c: Int): Boolean {
+            return c in mMinValue..mMaxValue
+        }
+
 
     }
 

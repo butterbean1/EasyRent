@@ -19,10 +19,10 @@ interface ReserveDao {
     @Query("DELETE FROM $TABLE_RESERVES_NAME")
     suspend fun deleteAllReserves()
 
-    @Query("SELECT * FROM $TABLE_RESERVES_NAME ORDER BY id ASC")
+    @Query("SELECT * FROM $TABLE_RESERVES_NAME ORDER BY dateCheckIn ASC")
     fun readAllReserves(): LiveData<List<ReserveData>>
 
-    @Query("SELECT * FROM $TABLE_RESERVES_NAME WHERE roomId= :roomId ORDER BY id ASC")
+    @Query("SELECT * FROM $TABLE_RESERVES_NAME WHERE roomId= :roomId ORDER BY dateCheckIn ASC")
     fun getReservesByRoomId(roomId: Long): LiveData<List<ReserveData>>
 
     @Query("SELECT * FROM $TABLE_RESERVES_NAME WHERE (date('now','start of day')<=date(dateCheckOut,'start of day')) & (roomId= :roomId) ORDER BY dateCheckIn ASC")

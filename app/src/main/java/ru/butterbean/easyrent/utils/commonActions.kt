@@ -2,16 +2,14 @@ package ru.butterbean.easyrent.utils
 
 import android.app.AlertDialog
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.ViewModelProvider
 import ru.butterbean.easyrent.R
-import ru.butterbean.easyrent.database.view_models.ReserveViewModel
-import ru.butterbean.easyrent.database.view_models.RoomViewModel
 import ru.butterbean.easyrent.database.models.GuestData
 import ru.butterbean.easyrent.database.models.ReserveData
 import ru.butterbean.easyrent.database.models.RoomData
+import ru.butterbean.easyrent.database.view_models.ReserveViewModel
+import ru.butterbean.easyrent.database.view_models.RoomViewModel
 import ru.butterbean.easyrent.screens.reserves.EditReserveFragment
 import ru.butterbean.easyrent.screens.room.EditRoomFragment
-import java.util.*
 
 fun getEmptyRoom(): RoomData {
     return RoomData(0)
