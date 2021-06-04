@@ -8,8 +8,8 @@ class RoomRepository(private val roomDao: RoomDao) {
 
     val readAllRooms:LiveData<List<RoomData>> = roomDao.readAllRooms()
 
-    suspend fun addRoom(room:RoomData):Int{
-        return roomDao.addRoom(room).toInt()
+    suspend fun addRoom(room:RoomData):Long{
+        return roomDao.addRoom(room)
     }
     suspend fun deleteRoom(room:RoomData){
         roomDao.deleteRoom(room)
@@ -21,6 +21,6 @@ class RoomRepository(private val roomDao: RoomDao) {
         roomDao.deleteAllRooms()
     }
 
-    fun getReservesCount(roomId:Int):LiveData<Int> = roomDao.getReservesCount(roomId)
-    fun getById(id:Int):LiveData<RoomData> = roomDao.getById(id)
+    fun getReservesCount(roomId:Long):LiveData<Int> = roomDao.getReservesCount(roomId)
+    fun getById(id:Long):LiveData<RoomData> = roomDao.getById(id)
 }

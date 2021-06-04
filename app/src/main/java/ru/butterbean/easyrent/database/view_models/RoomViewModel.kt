@@ -21,9 +21,9 @@ class RoomViewModel(application: Application) : AndroidViewModel(application) {
         readAllRooms = repository.readAllRooms
     }
 
-    fun getReservesCount(roomId:Int): LiveData<Int> = repository.getReservesCount(roomId)
+    fun getReservesCount(roomId:Long): LiveData<Int> = repository.getReservesCount(roomId)
 
-    fun getById(id:Int): LiveData<RoomData> = repository.getById(id)
+    fun getById(id:Long): LiveData<RoomData> = repository.getById(id)
 
     fun addRoom(room: RoomData) {
         viewModelScope.launch(Dispatchers.IO) {

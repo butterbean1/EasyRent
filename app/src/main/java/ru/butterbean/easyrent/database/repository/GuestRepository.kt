@@ -8,10 +8,10 @@ class GuestRepository(private val guestDao: GuestDao) {
 
     val readAllGuests:LiveData<List<GuestData>> = guestDao.readAllGuests()
 
-    suspend fun addGuest(guest:GuestData):Int{
-        return guestDao.addGuest(guest).toInt()
+    suspend fun addGuest(guest:GuestData):Long{
+        return guestDao.addGuest(guest)
     }
-    fun getById(id:Int):GuestData{
+    fun getById(id:Long):GuestData{
         return guestDao.getById(id)
     }
     suspend fun deleteGuest(guest:GuestData){

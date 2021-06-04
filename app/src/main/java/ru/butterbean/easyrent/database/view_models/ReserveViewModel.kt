@@ -21,11 +21,11 @@ class ReserveViewModel(application: Application) : AndroidViewModel(application)
         readAllReserves = repository.readAllReserves
     }
 
-    fun getReservesByRoomId(roomId:Int):LiveData<List<ReserveData>> = repository.getReservesByRoomId(roomId)
+    fun getReservesByRoomId(roomId:Long):LiveData<List<ReserveData>> = repository.getReservesByRoomId(roomId)
 
-    fun getActualReservesByRoomId(roomId:Int):LiveData<List<ReserveData>> = repository.getActualReservesByRoomId(roomId)
+    fun getActualReservesByRoomId(roomId:Long):LiveData<List<ReserveData>> = repository.getActualReservesByRoomId(roomId)
 
-    fun getEqualseservesByRoomId(roomId:Int):LiveData<List<ReserveData>> = repository.getEqualseservesByRoomId(roomId)
+    fun getEqualseservesByRoomId(roomId:Long):LiveData<List<ReserveData>> = repository.getEqualseservesByRoomId(roomId)
 
     fun addReserve(reserve: ReserveData) {
         viewModelScope.launch(Dispatchers.IO) {

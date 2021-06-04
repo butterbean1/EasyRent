@@ -17,7 +17,7 @@ fun getEmptyRoom(): RoomData {
     return RoomData(0)
 }
 
-fun getEmptyReserve(roomId: Int): ReserveData {
+fun getEmptyReserve(roomId: Long): ReserveData {
     return ReserveData(0, roomId)
 }
 

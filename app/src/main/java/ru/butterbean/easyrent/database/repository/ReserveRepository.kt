@@ -8,8 +8,8 @@ class ReserveRepository(private val reserveDao: ReserveDao) {
 
     val readAllReserves:LiveData<List<ReserveData>> = reserveDao.readAllReserves()
 
-    suspend fun addReserve(reserve:ReserveData):Int{
-        return reserveDao.addReserve(reserve).toInt()
+    suspend fun addReserve(reserve:ReserveData):Long{
+        return reserveDao.addReserve(reserve)
     }
     suspend fun deleteReserve(reserve:ReserveData){
         reserveDao.deleteReserve(reserve)
@@ -24,10 +24,10 @@ class ReserveRepository(private val reserveDao: ReserveDao) {
         reserveDao.deleteAllReserves()
     }
 
-    fun getReservesByRoomId(roomId: Int): LiveData<List<ReserveData>> = reserveDao.getReservesByRoomId(roomId)
+    fun getReservesByRoomId(roomId: Long): LiveData<List<ReserveData>> = reserveDao.getReservesByRoomId(roomId)
 
-    fun getActualReservesByRoomId(roomId: Int): LiveData<List<ReserveData>> = reserveDao.getActualReservesByRoomId(roomId)
+    fun getActualReservesByRoomId(roomId: Long): LiveData<List<ReserveData>> = reserveDao.getActualReservesByRoomId(roomId)
 
-    fun getEqualseservesByRoomId(roomId: Int): LiveData<List<ReserveData>> = reserveDao.getEqualseservesByRoomId(roomId)
+    fun getEqualseservesByRoomId(roomId: Long): LiveData<List<ReserveData>> = reserveDao.getEqualseservesByRoomId(roomId)
 
 }

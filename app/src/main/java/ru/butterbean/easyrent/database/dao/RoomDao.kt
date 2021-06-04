@@ -24,10 +24,10 @@ interface RoomDao {
     fun readAllRooms(): LiveData<List<RoomData>>
 
     @Query("SELECT COUNT(*) FROM $TABLE_RESERVES_NAME WHERE roomId = :roomId")
-    fun getReservesCount(roomId:Int): LiveData<Int>
+    fun getReservesCount(roomId:Long): LiveData<Int>
 
     @Query("SELECT * FROM $TABLE_ROOMS_NAME WHERE id = :id")
-    fun getById(id:Int): LiveData<RoomData>
+    fun getById(id:Long): LiveData<RoomData>
 
 
 }

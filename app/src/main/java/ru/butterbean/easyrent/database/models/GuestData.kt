@@ -6,12 +6,11 @@ import androidx.room.PrimaryKey
 import kotlinx.android.parcel.Parcelize
 import ru.butterbean.easyrent.database.TABLE_GUESTS_NAME
 
-@Parcelize
 @Entity(tableName = TABLE_GUESTS_NAME)
 data class GuestData(
     @PrimaryKey(autoGenerate = true)
-    var id:Int,
+    var id:Long,
     val name:String = "",
     val fullname:String = "",
     val document:String = ""
-):Parcelable
+)

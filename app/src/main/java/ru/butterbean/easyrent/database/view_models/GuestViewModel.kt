@@ -22,7 +22,7 @@ class GuestViewModel(application: Application):AndroidViewModel(application) {
         readAllGuests = repository.readAllGuests
     }
 
-    fun getById(id:Int):GuestData{
+    fun getById(id:Long):GuestData{
         return repository.getById(id)
     }
     fun addGuest(guest:GuestData){

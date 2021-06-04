@@ -23,6 +23,6 @@ interface GuestDao {
     fun readAllGuests(): LiveData<List<GuestData>>
 
     @Query("SELECT * FROM $TABLE_GUESTS_NAME WHERE id = :id")
-    fun getById(id:Int): GuestData
+    fun getById(id:Long): GuestData
 
 }
