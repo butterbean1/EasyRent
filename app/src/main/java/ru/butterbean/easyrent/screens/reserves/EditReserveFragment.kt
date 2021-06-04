@@ -54,6 +54,7 @@ class EditReserveFragment() : BaseFragment(R.layout.fragment_edit_reserve) {
     }
 
     private fun change() {
+        hideKeyboard()
         val guest = edit_reserve_guest.text.toString()
         val guestsCount = edit_reserve_guests_count.text.toString()
         val sum = edit_reserve_sum.text.toString()
@@ -76,8 +77,8 @@ class EditReserveFragment() : BaseFragment(R.layout.fragment_edit_reserve) {
             getCalendarFromString(dateCheckInText).after(getCalendarFromString(dateCheckOutText)) -> showToast(
                 "Заселение позже выселения!"
             )
-            guest.isEmpty() -> showToast("Введите имя гостя!")
-            guestsCount.isEmpty() -> showToast("Введите количество постояльцев!")
+            guest.isEmpty() -> showToast("Укажите имя гостя!")
+            guestsCount.isEmpty() -> showToast("Укажите количество постояльцев!")
             else -> {
                 val reserve = ReserveData(
                     mCurrentReserve.id,
@@ -138,7 +139,7 @@ class EditReserveFragment() : BaseFragment(R.layout.fragment_edit_reserve) {
 
         edit_reserve_date_check_in.setOnClickListener {
             hideKeyboard()
-            showCalendarDialogFromListener(requireContext(), mDateCheckInSetListener)
+            showCalendarDialogFromListener(requireContext(), mDateCheckInSetListener,mCurrentDateCheckIn)
         }
         mDateCheckInSetListener = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
             mCurrentDateCheckIn = getDateFormatISO(year, month, dayOfMonth)
@@ -146,14 +147,14 @@ class EditReserveFragment() : BaseFragment(R.layout.fragment_edit_reserve) {
         }
 
         edit_reserve_time_check_in.setOnClickListener {
-            showTimeDialogFromListener(requireContext(), mTimeCheckInSetListener)
+            showTimeDialogFromListener(requireContext(), mTimeCheckInSetListener,edit_reserve_time_check_in.text.toString())
         }
         mTimeCheckInSetListener = TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
             edit_reserve_time_check_in.text = getTimeString(hourOfDay, minute)
         }
 
         edit_reserve_date_check_out.setOnClickListener {
-            showCalendarDialogFromListener(requireContext(), mDateCheckOutSetListener)
+            showCalendarDialogFromListener(requireContext(), mDateCheckOutSetListener,mCurrentDateCheckOut)
         }
         mDateCheckOutSetListener =
             DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
@@ -162,7 +163,7 @@ class EditReserveFragment() : BaseFragment(R.layout.fragment_edit_reserve) {
             }
 
         edit_reserve_time_check_out.setOnClickListener {
-            showTimeDialogFromListener(requireContext(), mTimeCheckOutSetListener)
+            showTimeDialogFromListener(requireContext(), mTimeCheckOutSetListener,edit_reserve_time_check_out.text.toString())
         }
         mTimeCheckOutSetListener = TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
             edit_reserve_time_check_out.text = getTimeString(hourOfDay, minute)

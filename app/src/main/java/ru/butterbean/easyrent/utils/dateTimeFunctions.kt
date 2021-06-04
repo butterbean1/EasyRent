@@ -31,8 +31,8 @@ fun String.toDateTimeFormat(): String {
 
 }
 
-fun getCalendarFromString(date: String): Calendar {
-    val d = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault()).parse(date)
+fun getCalendarFromString(date: String,pattern:String = "yyyy-MM-dd'T'HH:mm:ss"): Calendar {
+    val d = SimpleDateFormat(pattern, Locale.getDefault()).parse(date)
     val cal = Calendar.getInstance()
     cal.time = d!!
     return cal
@@ -40,8 +40,15 @@ fun getCalendarFromString(date: String): Calendar {
 
 fun getStartOfDay(date: Calendar): Calendar {
     val cal = Calendar.getInstance()
-    cal.set(date.get(Calendar.YEAR), date.get(Calendar.MONTH), date.get(Calendar.DAY_OF_MONTH),0,0,0)
-    cal.set(Calendar.MILLISECOND,0)
+    cal.set(
+        date.get(Calendar.YEAR),
+        date.get(Calendar.MONTH),
+        date.get(Calendar.DAY_OF_MONTH),
+        0,
+        0,
+        0
+    )
+    cal.set(Calendar.MILLISECOND, 0)
     return cal
 }
 
@@ -110,8 +117,15 @@ fun getTimeString(hour: Int, minute: Int): String {
     return "$hourText:$minuteText"
 }
 
-fun showCalendarDialogFromListener(context: Context, listener: DatePickerDialog.OnDateSetListener) {
-    val cal = Calendar.getInstance()
+fun showCalendarDialogFromListener(
+    context: Context,
+    listener: DatePickerDialog.OnDateSetListener,
+    date: String // в формате yyyy-MM-dd
+) {
+
+    val cal = (if (date.isEmpty()) Calendar.getInstance()
+    else getCalendarFromString(date,"yyyy-MM-dd"))
+
     val dialog = DatePickerDialog(
         context,
         android.R.style.Theme_Material_Light_Dialog_MinWidth,
@@ -123,13 +137,23 @@ fun showCalendarDialogFromListener(context: Context, listener: DatePickerDialog.
     dialog.show()
 }
 
-fun showTimeDialogFromListener(context: Context, listener: TimePickerDialog.OnTimeSetListener) {
+fun showTimeDialogFromListener(
+    context: Context,
+    listener: TimePickerDialog.OnTimeSetListener,
+    time: String // в формате HH:mm
+) {
+    val cal = (if (time.isEmpty()) {
+        val c = Calendar.getInstance()
+        c.set(0, 0, 0, 12, 0, 0)
+        c
+    } else getCalendarFromString(time,"HH:mm"))
+
     val dialog = TimePickerDialog(
         context,
         android.R.style.Theme_Material_Light_Dialog,
         listener,
-        12,
-        0,
+        cal.get(Calendar.HOUR_OF_DAY),
+        cal.get(Calendar.MINUTE),
         true
     )
     dialog.show()
