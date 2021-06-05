@@ -8,8 +8,9 @@ class RoomRepository(private val roomDao: RoomDao) {
 
     val readAllRooms:LiveData<List<RoomData>> = roomDao.readAllRooms()
 
-    suspend fun addRoom(room:RoomData):Long{
-        return roomDao.addRoom(room)
+    suspend fun addRoom(room:RoomData,onSuccess: (newId:Long) -> Unit){
+        val newId = roomDao.addRoom(room)
+        onSuccess(newId)
     }
     suspend fun deleteRoom(room:RoomData){
         roomDao.deleteRoom(room)

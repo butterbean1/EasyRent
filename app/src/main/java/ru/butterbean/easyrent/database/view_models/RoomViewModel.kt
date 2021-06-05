@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import ru.butterbean.easyrent.database.repository.RoomRepository
 import ru.butterbean.easyrent.database.models.RoomData
 import ru.butterbean.easyrent.utils.APP_DATABASE
@@ -27,11 +28,11 @@ class RoomViewModel(application: Application) : AndroidViewModel(application) {
 
     fun getById(id:Long): LiveData<RoomData> = repository.getById(id)
 
-    fun addRoom(room: RoomData) {
+    fun addRoom(room: RoomData,onSuccess:(newId:Long) -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
-            val newId = repository.addRoom(room)
-            currentRoom = room
-            currentRoom.id = newId
+            repository.addRoom(room){newId->
+                onSuccess(newId)
+            }
         }
     }
 

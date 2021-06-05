@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
 import ru.butterbean.easyrent.R
+import ru.butterbean.easyrent.database.STATUS_FREE
 import ru.butterbean.easyrent.database.models.GuestData
 import ru.butterbean.easyrent.database.models.ReserveData
 import ru.butterbean.easyrent.database.models.RoomData
@@ -13,7 +14,7 @@ import ru.butterbean.easyrent.screens.reserves.EditReserveFragment
 import ru.butterbean.easyrent.screens.room.EditRoomFragment
 
 fun getEmptyRoom(): RoomData {
-    return RoomData(0)
+    return RoomData(0,"","", STATUS_FREE)
 }
 
 fun getEmptyReserve(roomId: Long): ReserveData {

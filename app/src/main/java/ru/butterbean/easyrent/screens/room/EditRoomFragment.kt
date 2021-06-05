@@ -49,13 +49,17 @@ class EditRoomFragment() : BaseFragment(R.layout.fragment_edit_room) {
             val room = RoomData(mCurrentRoom.id, name, mCurrentRoom.address, mCurrentRoom.status)
             if (mIsNew) {
                 // если новое помещение - добавляем в базу и переходим в список
-                mRoomViewModel.addRoom(room)
+                mRoomViewModel.addRoom(room) { newRoomId ->
+                    room.id = newRoomId
+                    mRoomViewModel.currentRoom = room
+                    replaceFragment(RoomFragment(), false)
+                }
             } else {
                 // если редактируем - записываем изменения и переходим в карточку помещения
                 mRoomViewModel.updateRoom(room)
+                APP_ACTIVITY.supportFragmentManager.popBackStack()
             }
-            if (mIsNew) replaceFragment(RoomFragment(), false)
-            else APP_ACTIVITY.supportFragmentManager.popBackStack()
+
         }
     }
 

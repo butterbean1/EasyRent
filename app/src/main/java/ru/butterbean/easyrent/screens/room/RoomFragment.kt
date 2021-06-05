@@ -13,10 +13,7 @@ import ru.butterbean.easyrent.database.models.RoomData
 import ru.butterbean.easyrent.screens.base.BaseFragment
 import ru.butterbean.easyrent.screens.reserves.EditReserveFragment
 import ru.butterbean.easyrent.screens.reserves.ReservesListAdapter
-import ru.butterbean.easyrent.utils.APP_ACTIVITY
-import ru.butterbean.easyrent.utils.deleteRoomWithDialog
-import ru.butterbean.easyrent.utils.getEmptyReserve
-import ru.butterbean.easyrent.utils.replaceFragment
+import ru.butterbean.easyrent.utils.*
 
 class RoomFragment() : BaseFragment(R.layout.fragment_room) {
     private lateinit var mReserveViewModel: ReserveViewModel
