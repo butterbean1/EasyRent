@@ -1,14 +1,9 @@
 package ru.butterbean.easyrent.database.repository
 
 import androidx.lifecycle.LiveData
-import ru.butterbean.easyrent.database.STATUS_BUSY
-import ru.butterbean.easyrent.database.STATUS_FREE
 import ru.butterbean.easyrent.database.dao.ReserveDao
 import ru.butterbean.easyrent.database.models.ReserveData
-import ru.butterbean.easyrent.utils.APP_DATABASE
-import ru.butterbean.easyrent.utils.getCalendarFromString
-import ru.butterbean.easyrent.utils.getStartOfDay
-import ru.butterbean.easyrent.utils.toDateFormat
+import ru.butterbean.easyrent.utils.*
 import java.util.*
 
 class ReserveRepository(private val reserveDao: ReserveDao) {
@@ -40,14 +35,14 @@ class ReserveRepository(private val reserveDao: ReserveDao) {
             val dateCheckOut = getCalendarFromString(reserve.dateCheckOut)
             if (currentDate.before(getStartOfDay(dateCheckIn))) {
                 if (!tmpBusy) {
-                    newStatus = "$STATUS_FREE до ${dateCheckIn.toDateFormat()}"
+                    newStatus = "$STATUS_FREE $STATUS_UNTIL ${dateCheckIn.toDateFormat()}"
                     break
                 }else{
-                    newStatus = "$STATUS_BUSY до ${currentDate.toDateFormat()}"
+                    newStatus = "$STATUS_BUSY $STATUS_UNTIL ${currentDate.toDateFormat()}"
                     break
                 }
             }else {
-                newStatus = "$STATUS_BUSY до ${dateCheckOut.toDateFormat()}"
+                newStatus = "$STATUS_BUSY $STATUS_UNTIL ${dateCheckOut.toDateFormat()}"
                 tmpBusy = true
                 currentDate = dateCheckOut
             }

@@ -6,9 +6,7 @@ import androidx.appcompat.widget.Toolbar
 import ru.butterbean.easyrent.database.MainDatabase
 import ru.butterbean.easyrent.databinding.ActivityMainBinding
 import ru.butterbean.easyrent.screens.SplashFragment
-import ru.butterbean.easyrent.utils.APP_ACTIVITY
-import ru.butterbean.easyrent.utils.APP_DATABASE
-import ru.butterbean.easyrent.utils.replaceFragment
+import ru.butterbean.easyrent.utils.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -22,6 +20,11 @@ class MainActivity : AppCompatActivity() {
 
         APP_ACTIVITY = this
         APP_DATABASE = MainDatabase.getDatabase(applicationContext)
+
+        STATUS_FREE = getString(R.string.status_free)
+        STATUS_BUSY = getString(R.string.status_busy)
+        STATUS_REPAIRS = getString(R.string.status_on_repair)
+        STATUS_UNTIL = getString(R.string.status_until)
 
         mToolbar = mBinding.mainToolbar
         setSupportActionBar(mToolbar)

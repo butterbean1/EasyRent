@@ -7,14 +7,10 @@ import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.fragment_edit_room.*
 import ru.butterbean.easyrent.R
-import ru.butterbean.easyrent.database.STATUS_FREE
 import ru.butterbean.easyrent.database.view_models.RoomViewModel
 import ru.butterbean.easyrent.database.models.RoomData
 import ru.butterbean.easyrent.screens.base.BaseFragment
-import ru.butterbean.easyrent.utils.APP_ACTIVITY
-import ru.butterbean.easyrent.utils.deleteRoomWithDialog
-import ru.butterbean.easyrent.utils.replaceFragment
-import ru.butterbean.easyrent.utils.showToast
+import ru.butterbean.easyrent.utils.*
 
 class EditRoomFragment() : BaseFragment(R.layout.fragment_edit_room) {
 
@@ -42,9 +38,9 @@ class EditRoomFragment() : BaseFragment(R.layout.fragment_edit_room) {
     }
 
     private fun change() {
-        val name = room_change_name.text.toString()
+        val name = room_change_name.text.toString().trim()
         if (name.isEmpty()) {
-            showToast("Введите название!")
+            showToast(getString(R.string.enter_room_name))
         } else {
             val room = RoomData(mCurrentRoom.id, name, mCurrentRoom.address, mCurrentRoom.status)
             if (mIsNew) {

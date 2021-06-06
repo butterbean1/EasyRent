@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">EasyRent</string>
+    <string name="app_name">Легкая аренда</string>
 
     <string name="def_room_name">ЖК Самый Лучший</string>
     <string name="def_room_address">Жилинская, д.12, кв.159</string>
@@ -13,14 +13,14 @@
     <string name="delete">Удалить</string>
     <string name="empty_address">Адрес не заполнен</string>
     <string name="def_date_representation">22 сентября</string>
-    <string name="def_time_representation">12:00</string>
+    <string name="def_time_representation" translatable="false">12:00</string>
     <string name="check_in">Заселение</string>
     <string name="check_out">Выселение</string>
     <string name="check_in_date">Дата</string>
-    <string name="check_in_time">12:00</string>
+    <string name="check_in_time" translatable="false">12:00</string>
     <string name="was_check_in">Заселение произошло</string>
     <string name="check_out_date">Дата</string>
-    <string name="check_out_time">14:00</string>
+    <string name="check_out_time" translatable="false">14:00</string>
     <string name="was_check_out">Выселение произошло</string>
     <string name="def_guest_name">Спиридон Красносельский</string>
     <string name="guest_name">Имя гостя</string>
@@ -36,4 +36,16 @@
     <string name="people_abbr">чел.</string>
     <string name="def_currency_symbol">₽</string>
     <string name="reserves_list_is_empty">Пока что нет ни одного бронирования</string>
+    <string name="status_free">Свободно</string>
+    <string name="status_busy">Занято</string>
+    <string name="status_on_repair">Ремонт</string>
+    <string name="status_until">до</string>
+    <string name="enter_room_name">Введите название!</string>
+    <string name="enter_guest_name">Укажите имя гостя!</string>
+    <string name="enter_guests_count">Укажите количество постояльцев!</string>
+    <string name="checkin_after_checkout">Заселение позже выселения!</string>
+    <string name="enter_checkout_time">Выберите время выселения!</string>
+    <string name="enter_checkout_date">Выберите дату выселения!</string>
+    <string name="enter_checkin_time">Выберите время заселения!</string>
+    <string name="enter_checkin_date">Выберите дату заселения!</string>
 </resources>

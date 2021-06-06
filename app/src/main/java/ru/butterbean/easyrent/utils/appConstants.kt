@@ -5,3 +5,8 @@ import ru.butterbean.easyrent.database.MainDatabase
 
 lateinit var APP_ACTIVITY:MainActivity
 lateinit var APP_DATABASE:MainDatabase
+
+lateinit var STATUS_FREE : String
+lateinit var STATUS_BUSY : String
+lateinit var STATUS_REPAIRS : String
+lateinit var STATUS_UNTIL : String

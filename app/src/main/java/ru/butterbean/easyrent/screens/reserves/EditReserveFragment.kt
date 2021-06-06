@@ -55,10 +55,10 @@ class EditReserveFragment() : BaseFragment(R.layout.fragment_edit_reserve) {
 
     private fun change() {
         hideKeyboard()
-        val guest = edit_reserve_guest.text.toString()
-        val guestsCount = edit_reserve_guests_count.text.toString()
-        val sum = edit_reserve_sum.text.toString()
-        val payment = edit_reserve_payment.text.toString()
+        val guest = edit_reserve_guest.text.toString().trim()
+        val guestsCount = edit_reserve_guests_count.text.toString().trim()
+        val sum = edit_reserve_sum.text.toString().trim()
+        val payment = edit_reserve_payment.text.toString().trim()
         val wasCheckIn = edit_reserve_was_check_in.isChecked
         val wasCheckOut = edit_reserve_was_check_out.isChecked
         val dateCheckIn = edit_reserve_date_check_in.text.toString()
@@ -70,15 +70,15 @@ class EditReserveFragment() : BaseFragment(R.layout.fragment_edit_reserve) {
         val dateCheckOutText = getDateTimeInDatabaseFormat(mCurrentDateCheckOut,timeCheckOut)
 
         when {
-            dateCheckIn.isEmpty() -> showToast("Выберите дату заселения!")
-            timeCheckIn.isEmpty() -> showToast("Выберите время заселения!")
-            dateCheckOut.isEmpty() -> showToast("Выберите дату выселения!")
-            timeCheckOut.isEmpty() -> showToast("Выберите время выселения!")
+            dateCheckIn.isEmpty() -> showToast(getString(R.string.enter_checkin_date))
+            timeCheckIn.isEmpty() -> showToast(getString(R.string.enter_checkin_time))
+            dateCheckOut.isEmpty() -> showToast(getString(R.string.enter_checkout_date))
+            timeCheckOut.isEmpty() -> showToast(getString(R.string.enter_checkout_time))
             getCalendarFromString(dateCheckInText).after(getCalendarFromString(dateCheckOutText)) -> showToast(
-                "Заселение позже выселения!"
+                getString(R.string.checkin_after_checkout)
             )
-            guest.isEmpty() -> showToast("Укажите имя гостя!")
-            guestsCount.isEmpty() -> showToast("Укажите количество постояльцев!")
+            guest.isEmpty() -> showToast(getString(R.string.enter_guest_name))
+            guestsCount.isEmpty() -> showToast(getString(R.string.enter_guests_count))
             else -> {
                 val reserve = ReserveData(
                     mCurrentReserve.id,
