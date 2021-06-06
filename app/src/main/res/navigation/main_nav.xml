@@ -1,6 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/main_nav">
-
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_nav"
+    app:startDestination="@id/splashFragment">
+    <fragment
+        android:id="@+id/editReserveFragment"
+        android:name="ru.butterbean.easyrent.screens.reserves.EditReserveFragment"
+        android:label="EditReserveFragment" >
+        <action
+            android:id="@+id/action_editReserveFragment_to_roomFragment"
+            app:destination="@id/roomFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editRoomFragment"
+        android:name="ru.butterbean.easyrent.screens.room.EditRoomFragment"
+        android:label="fragment_edit_room"
+        tools:layout="@layout/fragment_edit_room" >
+        <action
+            android:id="@+id/action_editRoomFragment_to_roomsListFragment"
+            app:destination="@id/roomsListFragment" />
+        <action
+            android:id="@+id/action_editRoomFragment_to_roomFragment"
+            app:destination="@id/roomFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/roomFragment"
+        android:name="ru.butterbean.easyrent.screens.room.RoomFragment"
+        android:label="fragment_room"
+        tools:layout="@layout/fragment_room" >
+        <action
+            android:id="@+id/action_roomFragment_to_editReserveFragment"
+            app:destination="@id/editReserveFragment" />
+        <action
+            android:id="@+id/action_roomFragment_to_editRoomFragment"
+            app:destination="@id/editRoomFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="ru.butterbean.easyrent.screens.SplashFragment"
+        android:label="fragment_splash"
+        tools:layout="@layout/fragment_splash" >
+        <action
+            android:id="@+id/action_splashFragment_to_roomsListFragment"
+            app:destination="@id/roomsListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/roomsListFragment"
+        android:name="ru.butterbean.easyrent.screens.room.RoomsListFragment"
+        android:label="fragment_rooms_list"
+        tools:layout="@layout/fragment_rooms_list" >
+        <action
+            android:id="@+id/action_roomsListFragment_to_roomFragment"
+            app:destination="@id/roomFragment" />
+        <action
+            android:id="@+id/action_roomsListFragment_to_editRoomFragment"
+            app:destination="@id/editRoomFragment" />
+    </fragment>
 </navigation>

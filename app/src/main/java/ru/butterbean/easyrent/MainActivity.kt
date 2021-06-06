@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import ru.butterbean.easyrent.database.MainDatabase
 import ru.butterbean.easyrent.databinding.ActivityMainBinding
 import ru.butterbean.easyrent.screens.SplashFragment
@@ -12,7 +13,7 @@ import ru.butterbean.easyrent.utils.*
 class MainActivity : AppCompatActivity() {
 
     private var _binding:ActivityMainBinding? = null
-    val mBinding get() = _binding!!
+    private val mBinding get() = _binding!!
     lateinit var mToolbar: Toolbar
     lateinit var mNavController: NavController
 
@@ -32,7 +33,8 @@ class MainActivity : AppCompatActivity() {
         mToolbar = mBinding.mainToolbar
         setSupportActionBar(mToolbar)
 
-        replaceFragment(SplashFragment(),false)
+        //mNavController.navigate()
+        //replaceFragment(SplashFragment(),false)
     }
 
     override fun onDestroy() {
