@@ -7,8 +7,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.reserve_item.view.*
 import ru.butterbean.easyrent.R
-import ru.butterbean.easyrent.database.view_models.ReserveViewModel
-import ru.butterbean.easyrent.database.models.ReserveData
+import ru.butterbean.easyrent.database.view_models.EditReserveViewModel
+import ru.butterbean.easyrent.models.ReserveData
 import ru.butterbean.easyrent.utils.APP_ACTIVITY
 import ru.butterbean.easyrent.utils.replaceFragment
 import ru.butterbean.easyrent.utils.showEditDeleteReserveDialog
@@ -22,7 +22,7 @@ class ReservesListAdapter :RecyclerView.Adapter<ReservesListAdapter.ReservesList
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReservesListHolder {
         val holder = ReservesListHolder(LayoutInflater.from(parent.context).inflate(R.layout.reserve_item,parent,false) )
-        val reserveViewModel = ViewModelProvider(APP_ACTIVITY).get(ReserveViewModel::class.java)
+        val reserveViewModel = ViewModelProvider(APP_ACTIVITY).get(EditReserveViewModel::class.java)
         holder.itemView.setOnClickListener {
             reserveViewModel.currentReserve = listReserves[holder.adapterPosition]
             replaceFragment(EditReserveFragment())

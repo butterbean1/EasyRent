@@ -2,7 +2,7 @@ package ru.butterbean.easyrent.database.repository
 
 import androidx.lifecycle.LiveData
 import ru.butterbean.easyrent.database.dao.RoomDao
-import ru.butterbean.easyrent.database.models.RoomData
+import ru.butterbean.easyrent.models.RoomData
 
 class RoomRepository(private val roomDao: RoomDao) {
 
@@ -23,6 +23,4 @@ class RoomRepository(private val roomDao: RoomDao) {
     }
 
     fun getReservesCount(roomId:Long):LiveData<Int> = roomDao.getReservesCount(roomId)
-    fun getById(id:Long):LiveData<RoomData> = roomDao.getById(id)
-    fun getStatus(id: Long): LiveData<String> = roomDao.getStatus(id)
 }

@@ -4,35 +4,41 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.room_item.view.*
 import ru.butterbean.easyrent.R
-import ru.butterbean.easyrent.database.view_models.RoomViewModel
-import ru.butterbean.easyrent.database.models.RoomData
-import ru.butterbean.easyrent.utils.APP_ACTIVITY
-import ru.butterbean.easyrent.utils.replaceFragment
-import ru.butterbean.easyrent.utils.showEditDeleteRoomDialog
+import ru.butterbean.easyrent.models.RoomData
 
-class RoomsListAdapter(private val f: Fragment) :RecyclerView.Adapter<RoomsListAdapter.RoomsListHolder>() {
+class RoomsListAdapter(private val lo: LifecycleOwner) :RecyclerView.Adapter<RoomsListAdapter.RoomsListHolder>() {
 
     private var listRooms = emptyList<RoomData>()
 
     class RoomsListHolder(view: View):RecyclerView.ViewHolder(view)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RoomsListHolder {
-        val holder = RoomsListHolder(LayoutInflater.from(parent.context).inflate(R.layout.room_item,parent,false) )
-        val roomViewModel = ViewModelProvider(APP_ACTIVITY).get(RoomViewModel::class.java)
+    override fun onViewAttachedToWindow(holder: RoomsListHolder) {
+        val currentRoom = listRooms[holder.adapterPosition]
         holder.itemView.setOnClickListener {
-            roomViewModel.currentRoom = listRooms[holder.adapterPosition]
-            replaceFragment(RoomFragment())
-        }
+            RoomsListFragment.clickOnListItem(currentRoom)
+             }
         holder.itemView.setOnLongClickListener {
-            roomViewModel.currentRoom = listRooms[holder.adapterPosition]
-            showEditDeleteRoomDialog(roomViewModel.currentRoom,f.viewLifecycleOwner)
+            RoomsListFragment.longClickOnListItem(currentRoom,lo)
             true
         }
-        return holder
+        super.onViewAttachedToWindow(holder)
+    }
+
+    override fun onViewDetachedFromWindow(holder: RoomsListHolder) {
+        holder.itemView.setOnClickListener(null)
+        holder.itemView.setOnLongClickListener(null)
+        super.onViewDetachedFromWindow(holder)
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RoomsListHolder {
+
+        return RoomsListHolder(
+            LayoutInflater.from(parent.context).inflate(R.layout.room_item, parent, false)
+        )
     }
 
     override fun onBindViewHolder(holder: RoomsListHolder, position: Int) {

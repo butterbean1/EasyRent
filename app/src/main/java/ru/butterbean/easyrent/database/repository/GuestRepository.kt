@@ -2,7 +2,7 @@ package ru.butterbean.easyrent.database.repository
 
 import androidx.lifecycle.LiveData
 import ru.butterbean.easyrent.database.dao.GuestDao
-import ru.butterbean.easyrent.database.models.GuestData
+import ru.butterbean.easyrent.models.GuestData
 
 class GuestRepository(private val guestDao: GuestDao) {
 

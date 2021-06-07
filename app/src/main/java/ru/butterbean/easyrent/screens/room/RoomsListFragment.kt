@@ -1,33 +1,78 @@
 package ru.butterbean.easyrent.screens.room
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import kotlinx.android.synthetic.main.fragment_rooms_list.*
+import androidx.recyclerview.widget.RecyclerView
 import ru.butterbean.easyrent.R
-import ru.butterbean.easyrent.database.view_models.RoomViewModel
+import ru.butterbean.easyrent.database.view_models.RoomsListViewModel
 import ru.butterbean.easyrent.databinding.FragmentRoomsListBinding
+import ru.butterbean.easyrent.models.RoomData
 import ru.butterbean.easyrent.utils.APP_ACTIVITY
+import ru.butterbean.easyrent.utils.createArgsBundle
+import ru.butterbean.easyrent.utils.deleteRoomWithDialog
 import ru.butterbean.easyrent.utils.getEmptyRoom
-import ru.butterbean.easyrent.utils.replaceFragment
 
-class RoomsListFragment : Fragment(R.layout.fragment_rooms_list) {
+class RoomsListFragment : Fragment() {
 
-    private lateinit var mRoomViewModel: RoomViewModel
+    private lateinit var mViewModel: RoomsListViewModel
+    private lateinit var mRecyclerView: RecyclerView
+    private lateinit var mObserverList: Observer<List<RoomData>>
     private var _binding: FragmentRoomsListBinding? = null
     private val mBinding get() = _binding!!
 
+    companion object {
+        fun clickOnListItem(room: RoomData) {
+            goToEditRoomFragment(room)
+        }
+
+        fun longClickOnListItem(room: RoomData, lo: LifecycleOwner) {
+            showEditDeleteRoomDialog(room, lo)
+        }
+
+        private fun showEditDeleteRoomDialog(room: RoomData, lo: LifecycleOwner) {
+            val actions = arrayOf(
+                APP_ACTIVITY.getString(R.string.edit), // 0
+                APP_ACTIVITY.getString(R.string.delete) // 1
+            )
+            val builder = AlertDialog.Builder(APP_ACTIVITY)
+            builder.setItems(actions) { _, i ->
+                when (i) {
+                    0 -> goToEditRoomFragment(room)
+                    1 -> deleteRoomWithDialog(room, lo)
+                }
+            }
+                .show()
+        }
+
+        private fun goToEditRoomFragment(room: RoomData) {
+            APP_ACTIVITY.navController.navigate(
+                R.id.action_roomsListFragment_to_roomFragment,
+                createArgsBundle("room", room)
+            )
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentRoomsListBinding.inflate(layoutInflater, container, false)
         return mBinding.root
     }
 
-    override fun onStart(){
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+        mViewModel.readAllRooms.removeObserver(mObserverList)
+        mRecyclerView.adapter = null
+    }
+
+    override fun onStart() {
         super.onStart()
         initialization()
     }
@@ -39,26 +84,24 @@ class RoomsListFragment : Fragment(R.layout.fragment_rooms_list) {
         setHasOptionsMenu(true)
 
         //Recycler view
-        val adapter = RoomsListAdapter(this)
-        val recyclerView = rooms_recycler_view
-        recyclerView.adapter = adapter
+        val adapter = RoomsListAdapter(viewLifecycleOwner)
+        mRecyclerView = mBinding.roomsRecyclerView
+        mRecyclerView.adapter = adapter
 
         // ViewModel
-        mRoomViewModel = ViewModelProvider(APP_ACTIVITY).get(RoomViewModel::class.java)
-        mRoomViewModel.readAllRooms.observe(viewLifecycleOwner, { rooms ->
-            adapter.setData(rooms)
-        })
+        mObserverList = Observer {
+            adapter.setData(it.asReversed())
+        }
+        mViewModel = ViewModelProvider(APP_ACTIVITY).get(RoomsListViewModel::class.java)
+        mViewModel.readAllRooms.observe(viewLifecycleOwner, mObserverList)
 
-        rooms_btn_add.setOnClickListener {
-            mRoomViewModel.currentRoom = getEmptyRoom()
-            APP_ACTIVITY.navController.navigate(R.id.action_roomsListFragment_to_roomFragment)
+        mBinding.roomsBtnAdd.setOnClickListener {
+            APP_ACTIVITY.navController.navigate(
+                R.id.action_roomsListFragment_to_roomFragment,
+                createArgsBundle("room", getEmptyRoom())
+            )
         }
 
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

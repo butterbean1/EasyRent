@@ -7,9 +7,9 @@ import androidx.room.RoomDatabase
 import ru.butterbean.easyrent.database.dao.GuestDao
 import ru.butterbean.easyrent.database.dao.ReserveDao
 import ru.butterbean.easyrent.database.dao.RoomDao
-import ru.butterbean.easyrent.database.models.GuestData
-import ru.butterbean.easyrent.database.models.ReserveData
-import ru.butterbean.easyrent.database.models.RoomData
+import ru.butterbean.easyrent.models.GuestData
+import ru.butterbean.easyrent.models.ReserveData
+import ru.butterbean.easyrent.models.RoomData
 
 @Database(entities=[RoomData::class,GuestData::class,ReserveData::class],version=1,exportSchema = false)
 abstract class MainDatabase: RoomDatabase(){

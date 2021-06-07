@@ -2,11 +2,13 @@ package ru.butterbean.easyrent.utils
 
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import ru.butterbean.easyrent.MainActivity
 import ru.butterbean.easyrent.R
+import java.io.Serializable
 
 fun showToast(message: String) {
     Toast.makeText(APP_ACTIVITY, message, Toast.LENGTH_SHORT).show()
@@ -17,15 +19,16 @@ fun hideKeyboard() {
     imm.hideSoftInputFromWindow(APP_ACTIVITY.window.decorView.windowToken, 0)
 }
 
-fun restartActivity() {
-    APP_ACTIVITY.startActivity(Intent(APP_ACTIVITY, MainActivity::class.java))
-    APP_ACTIVITY.finish()
-}
-
 fun replaceFragment(fragment: Fragment, addStack: Boolean = true) {
     var tran = APP_ACTIVITY.supportFragmentManager.beginTransaction()
     if (addStack) {
         tran = tran.addToBackStack(null)
     }
     tran.replace(R.id.nav_host_fragment_container, fragment).commit()
+}
+
+fun createArgsBundle(key:String,value:Serializable):Bundle{
+    val args = Bundle()
+    args.putSerializable(key, value)
+    return args
 }

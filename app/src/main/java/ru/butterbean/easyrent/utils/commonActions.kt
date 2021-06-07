@@ -4,13 +4,11 @@ import android.app.AlertDialog
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
 import ru.butterbean.easyrent.R
-import ru.butterbean.easyrent.database.models.GuestData
-import ru.butterbean.easyrent.database.models.ReserveData
-import ru.butterbean.easyrent.database.models.RoomData
-import ru.butterbean.easyrent.database.view_models.ReserveViewModel
-import ru.butterbean.easyrent.database.view_models.RoomViewModel
-import ru.butterbean.easyrent.screens.reserves.EditReserveFragment
-import ru.butterbean.easyrent.screens.room.EditRoomFragment
+import ru.butterbean.easyrent.database.view_models.EditReserveViewModel
+import ru.butterbean.easyrent.database.view_models.RoomDialogViewModel
+import ru.butterbean.easyrent.models.GuestData
+import ru.butterbean.easyrent.models.ReserveData
+import ru.butterbean.easyrent.models.RoomData
 
 fun getEmptyRoom(): RoomData {
     return RoomData(0,"","", STATUS_FREE)
@@ -24,41 +22,11 @@ fun getEmptyGuest(): GuestData {
     return GuestData(0)
 }
 
-fun showEditDeleteReserveDialog(reserve: ReserveData) {
-    val actions = arrayOf(
-        APP_ACTIVITY.getString(R.string.edit), // 0
-        APP_ACTIVITY.getString(R.string.delete) // 1
-    )
-    val builder = AlertDialog.Builder(APP_ACTIVITY)
-    builder.setItems(actions) { _, i ->
-        when (i) {
-            0 -> replaceFragment(EditReserveFragment())
-            1 -> ReserveViewModel(APP_ACTIVITY.application).deleteReserve(reserve)
-        }
-    }
-        .show()
-}
-
-fun showEditDeleteRoomDialog(room: RoomData, lo: LifecycleOwner) {
-    val actions = arrayOf(
-        APP_ACTIVITY.getString(R.string.edit), // 0
-        APP_ACTIVITY.getString(R.string.delete) // 1
-    )
-    val builder = AlertDialog.Builder(APP_ACTIVITY)
-    builder.setItems(actions) { _, i ->
-        when (i) {
-            0 -> replaceFragment(EditRoomFragment())
-            1 -> deleteRoomWithDialog(room, lo)
-        }
-    }
-        .show()
-}
-
 fun deleteReserveWithDialog(reserve: ReserveData) {
     val builder = AlertDialog.Builder(APP_ACTIVITY)
     builder.setMessage(APP_ACTIVITY.getString(R.string.question_delete_reserve))
         .setPositiveButton(APP_ACTIVITY.getString(R.string.yes)) { dialog, _ ->
-            ReserveViewModel(APP_ACTIVITY.application).deleteReserve(reserve)
+            EditReserveViewModel(APP_ACTIVITY.application).deleteReserve(reserve)
             dialog.cancel()
             APP_ACTIVITY.supportFragmentManager.popBackStack()
         }
@@ -69,17 +37,17 @@ fun deleteReserveWithDialog(reserve: ReserveData) {
 }
 
 fun deleteRoomWithDialog(room: RoomData, lo: LifecycleOwner) {
-    val roomViewModel = ViewModelProvider(APP_ACTIVITY).get(RoomViewModel::class.java)
+    val viewModel = ViewModelProvider(APP_ACTIVITY).get(RoomDialogViewModel::class.java)
     // если нет бронирований, то не будем ничего спрашивать
-    roomViewModel.getReservesCount().observe(lo, { count ->
+    viewModel.getReservesCount(room.id).observe(lo, { count ->
         if (count == 0) {
-            roomViewModel.deleteRoom(room)
+            viewModel.deleteRoom(room)
             APP_ACTIVITY.supportFragmentManager.popBackStack()
         } else {
             val builder = AlertDialog.Builder(APP_ACTIVITY)
             builder.setMessage(APP_ACTIVITY.getString(R.string.question_delete_room))
                 .setPositiveButton(APP_ACTIVITY.getString(R.string.yes)) { dialog, _ ->
-                    roomViewModel.deleteRoom(room)
+                    viewModel.deleteRoom(room)
                     dialog.cancel()
                     APP_ACTIVITY.supportFragmentManager.popBackStack()
                 }

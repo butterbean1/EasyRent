@@ -2,37 +2,49 @@ package ru.butterbean.easyrent.screens.reserves
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.os.Bundle
 import android.text.InputFilter
 import android.text.Spanned
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.View
-import androidx.core.widget.addTextChangedListener
+import android.view.*
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.fragment_edit_reserve.*
 import ru.butterbean.easyrent.R
-import ru.butterbean.easyrent.database.view_models.ReserveViewModel
-import ru.butterbean.easyrent.database.view_models.RoomViewModel
-import ru.butterbean.easyrent.database.models.ReserveData
-import ru.butterbean.easyrent.database.models.RoomData
-import ru.butterbean.easyrent.screens.base.BaseFragment
+import ru.butterbean.easyrent.database.view_models.EditRoomViewModel
+import ru.butterbean.easyrent.database.view_models.EditReserveViewModel
+import ru.butterbean.easyrent.databinding.FragmentRoomBinding
+import ru.butterbean.easyrent.models.ReserveData
+import ru.butterbean.easyrent.models.RoomData
 import ru.butterbean.easyrent.utils.*
-import java.lang.NumberFormatException
 
-class EditReserveFragment() : BaseFragment(R.layout.fragment_edit_reserve) {
+class EditReserveFragment : Fragment() {
 
     private var mIsNew = false
-    private lateinit var mReserveViewModel: ReserveViewModel
-    private lateinit var mRoomViewModel: RoomViewModel
+    private lateinit var mReserveViewModel: EditReserveViewModel
+    private lateinit var mViewModel: EditRoomViewModel
     private lateinit var mCurrentReserve: ReserveData
-    private lateinit var mCurrentRoom: RoomData
     private lateinit var mDateCheckInSetListener: DatePickerDialog.OnDateSetListener
     private lateinit var mDateCheckOutSetListener: DatePickerDialog.OnDateSetListener
     private lateinit var mTimeCheckInSetListener: TimePickerDialog.OnTimeSetListener
     private lateinit var mTimeCheckOutSetListener: TimePickerDialog.OnTimeSetListener
     private var mCurrentDateCheckIn = "" // date in format yyyy-MM-dd
     private var mCurrentDateCheckOut = "" // date in format yyyy-MM-dd
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+
+        _binding = FragmentRoomBinding.inflate(layoutInflater, container, false)
+        mCurrentRoom = arguments?.getSerializable("room") as RoomData
+        return mBinding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+        mRecyclerView.adapter = null
+    }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         if (mIsNew) inflater.inflate(R.menu.confirm_menu, menu)
@@ -109,16 +121,15 @@ class EditReserveFragment() : BaseFragment(R.layout.fragment_edit_reserve) {
     override fun onResume() {
         super.onResume()
 
-        mReserveViewModel = ViewModelProvider(APP_ACTIVITY).get(ReserveViewModel::class.java)
+        mReserveViewModel = ViewModelProvider(APP_ACTIVITY).get(EditReserveViewModel::class.java)
         mCurrentReserve = mReserveViewModel.currentReserve
         mIsNew = mCurrentReserve.guestName.isEmpty()
 
         APP_ACTIVITY.title = getString(R.string.reserve)
 
         // получим название помещения из БД таблицы помещений
-        mRoomViewModel = ViewModelProvider(APP_ACTIVITY).get(RoomViewModel::class.java)
-        mRoomViewModel.getById(mCurrentReserve.roomId).observe(viewLifecycleOwner, { room ->
-            mCurrentRoom = room
+        mViewModel = ViewModelProvider(APP_ACTIVITY).get(EditRoomViewModel::class.java)
+        mViewModel.getById(mCurrentReserve.roomId).observe(viewLifecycleOwner, { room ->
             edit_reserve_room_name.text = room.name
         })
 

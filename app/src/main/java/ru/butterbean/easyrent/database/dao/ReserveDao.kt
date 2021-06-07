@@ -3,7 +3,9 @@ package ru.butterbean.easyrent.database.dao
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import ru.butterbean.easyrent.database.TABLE_RESERVES_NAME
-import ru.butterbean.easyrent.database.models.ReserveData
+import ru.butterbean.easyrent.database.TABLE_ROOMS_NAME
+import ru.butterbean.easyrent.models.ReserveData
+import ru.butterbean.easyrent.models.RoomData
 
 @Dao
 interface ReserveDao {
@@ -19,13 +21,22 @@ interface ReserveDao {
     @Query("DELETE FROM $TABLE_RESERVES_NAME")
     suspend fun deleteAllReserves()
 
+    @Query("SELECT * FROM $TABLE_ROOMS_NAME WHERE id = :id")
+    fun getRoomById(id:Long): LiveData<RoomData>
+
     @Query("SELECT * FROM $TABLE_RESERVES_NAME ORDER BY dateCheckIn ASC")
     fun readAllReserves(): LiveData<List<ReserveData>>
+
+    @Query("SELECT COUNT(*) FROM $TABLE_RESERVES_NAME WHERE roomId = :roomId")
+    fun getReservesCount(roomId:Long): LiveData<Int>
 
     @Query("SELECT *,CASE WHEN (wasCheckOut=0) THEN (strftime('%s','now') + strftime('%s',dateCheckIn)) ELSE (strftime('%s','now') - strftime('%s',dateCheckOut)) END orderField FROM  $TABLE_RESERVES_NAME WHERE roomId= :roomId ORDER BY wasCheckOut,orderField")
     fun getReservesByRoomId(roomId: Long): LiveData<List<ReserveData>>
 
     @Query("SELECT * FROM $TABLE_RESERVES_NAME WHERE (date('now','start of day')<=date(dateCheckOut,'start of day')) & (roomId= :roomId) ORDER BY dateCheckIn ASC")
     fun getActualReservesByRoomId(roomId: Long): List<ReserveData>
+
+    @Query("SELECT Status FROM $TABLE_ROOMS_NAME WHERE id = :id")
+    fun getStatus(id: Long): LiveData<String>
 
 }

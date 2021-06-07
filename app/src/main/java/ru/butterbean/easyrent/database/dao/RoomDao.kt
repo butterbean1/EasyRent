@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.room.*
 import ru.butterbean.easyrent.database.TABLE_RESERVES_NAME
 import ru.butterbean.easyrent.database.TABLE_ROOMS_NAME
-import ru.butterbean.easyrent.database.models.RoomData
+import ru.butterbean.easyrent.models.RoomData
 
 @Dao
 interface RoomDao {
@@ -25,9 +25,6 @@ interface RoomDao {
 
     @Query("SELECT COUNT(*) FROM $TABLE_RESERVES_NAME WHERE roomId = :roomId")
     fun getReservesCount(roomId:Long): LiveData<Int>
-
-    @Query("SELECT * FROM $TABLE_ROOMS_NAME WHERE id = :id")
-    fun getById(id:Long): LiveData<RoomData>
 
     @Query("SELECT * FROM $TABLE_ROOMS_NAME WHERE id = :id")
     fun getByIdNow(id:Long): RoomData

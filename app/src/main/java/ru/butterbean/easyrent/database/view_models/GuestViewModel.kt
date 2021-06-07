@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import ru.butterbean.easyrent.database.repository.GuestRepository
-import ru.butterbean.easyrent.database.models.GuestData
+import ru.butterbean.easyrent.models.GuestData
 import ru.butterbean.easyrent.utils.APP_DATABASE
 
 class GuestViewModel(application: Application):AndroidViewModel(application) {

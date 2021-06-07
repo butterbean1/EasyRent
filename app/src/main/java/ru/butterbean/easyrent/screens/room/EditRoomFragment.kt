@@ -1,22 +1,40 @@
 package ru.butterbean.easyrent.screens.room
 
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.View
+import android.os.Bundle
+import android.view.*
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.fragment_edit_room.*
 import ru.butterbean.easyrent.R
-import ru.butterbean.easyrent.database.view_models.RoomViewModel
-import ru.butterbean.easyrent.database.models.RoomData
-import ru.butterbean.easyrent.screens.base.BaseFragment
+import ru.butterbean.easyrent.database.view_models.EditRoomViewModel
+import ru.butterbean.easyrent.databinding.FragmentEditRoomBinding
+import ru.butterbean.easyrent.databinding.FragmentRoomBinding
+import ru.butterbean.easyrent.models.RoomData
 import ru.butterbean.easyrent.utils.*
 
-class EditRoomFragment() : BaseFragment(R.layout.fragment_edit_room) {
+class EditRoomFragment : Fragment() {
 
     private var mIsNew = false
-    private lateinit var mRoomViewModel: RoomViewModel
+    private lateinit var mViewModel: EditRoomViewModel
     private lateinit var mCurrentRoom: RoomData
+    private var _binding: FragmentEditRoomBinding? = null
+    private val mBinding get() = _binding!!
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+
+        _binding = FragmentEditRoomBinding.inflate(layoutInflater, container, false)
+        mCurrentRoom = arguments?.getSerializable("room") as RoomData
+        return mBinding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         if (mIsNew) inflater.inflate(R.menu.confirm_menu, menu)
@@ -45,25 +63,26 @@ class EditRoomFragment() : BaseFragment(R.layout.fragment_edit_room) {
             val room = RoomData(mCurrentRoom.id, name, mCurrentRoom.address, mCurrentRoom.status)
             if (mIsNew) {
                 // если новое помещение - добавляем в базу и переходим в список
-                mRoomViewModel.addRoom(room) { newRoomId ->
-                    room.id = newRoomId
-                    mRoomViewModel.currentRoom = room
+                mViewModel.addRoom(room) { newRoomId ->
                     replaceFragment(RoomFragment(), false)
                 }
             } else {
                 // если редактируем - записываем изменения и переходим в карточку помещения
-                mRoomViewModel.updateRoom(room)
+                mViewModel.updateRoom(room)
                 APP_ACTIVITY.supportFragmentManager.popBackStack()
             }
 
         }
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onStart() {
+        super.onStart()
+        initialize()
+    }
 
-        mRoomViewModel = ViewModelProvider(APP_ACTIVITY).get(RoomViewModel::class.java)
-        mCurrentRoom = mRoomViewModel.currentRoom
+    private fun initialize() {
+
+        mViewModel = ViewModelProvider(APP_ACTIVITY).get(EditRoomViewModel::class.java)
         mIsNew = mCurrentRoom.name.isEmpty()
 
         if (mIsNew) {
@@ -71,16 +90,15 @@ class EditRoomFragment() : BaseFragment(R.layout.fragment_edit_room) {
         } else {
             APP_ACTIVITY.title = mCurrentRoom.name
         }
-        room_change_name.setText(mCurrentRoom.name)
-        room_change_address.setText(mCurrentRoom.address)
+        mBinding.roomChangeName.setText(mCurrentRoom.name)
+        mBinding.roomChangeAddress.setText(mCurrentRoom.address)
         if (mIsNew) {
-            room_change_status.text = STATUS_FREE
-            room_change_status.visibility = View.INVISIBLE
+            mBinding.roomChangeStatus.visibility = View.INVISIBLE
         } else {
-            room_change_status.text = mCurrentRoom.status
+            mBinding.roomChangeStatus.text = mCurrentRoom.status
         }
 
-        room_change_name.requestFocus()
+        mBinding.roomChangeName.requestFocus()
         // add menu
         setHasOptionsMenu(true)
     }

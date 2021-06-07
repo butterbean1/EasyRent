@@ -1,12 +1,13 @@
-package ru.butterbean.easyrent.database.models
+package ru.butterbean.easyrent.models
 
 import androidx.room.*
 import ru.butterbean.easyrent.database.TABLE_RESERVES_NAME
+import java.io.Serializable
 
 @Entity(tableName = TABLE_RESERVES_NAME,foreignKeys = [ForeignKey(entity = RoomData::class,parentColumns = ["id"],childColumns = ["roomId"],onDelete = ForeignKey.CASCADE)])
 data class ReserveData(
     @PrimaryKey(autoGenerate = true)
-    var id:Long,
+    val id:Long,
     @ColumnInfo(index = true)
     val roomId:Long = 0,
     val guestName:String = "",
@@ -17,4 +18,4 @@ data class ReserveData(
     val dateCheckOut:String = "",
     val wasCheckIn:Boolean = false,
     val wasCheckOut:Boolean = false
-)
+):Serializable

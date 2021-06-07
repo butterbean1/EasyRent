@@ -3,7 +3,7 @@ package ru.butterbean.easyrent.database.dao
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import ru.butterbean.easyrent.database.TABLE_GUESTS_NAME
-import ru.butterbean.easyrent.database.models.GuestData
+import ru.butterbean.easyrent.models.GuestData
 
 @Dao
 interface GuestDao {
