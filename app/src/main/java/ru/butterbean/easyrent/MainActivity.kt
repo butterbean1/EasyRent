@@ -4,10 +4,9 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
+import androidx.navigation.Navigation
 import ru.butterbean.easyrent.database.MainDatabase
 import ru.butterbean.easyrent.databinding.ActivityMainBinding
-import ru.butterbean.easyrent.screens.SplashFragment
 import ru.butterbean.easyrent.utils.*
 
 class MainActivity : AppCompatActivity() {
@@ -15,7 +14,7 @@ class MainActivity : AppCompatActivity() {
     private var _binding:ActivityMainBinding? = null
     private val mBinding get() = _binding!!
     lateinit var mToolbar: Toolbar
-    lateinit var mNavController: NavController
+    lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,10 +30,8 @@ class MainActivity : AppCompatActivity() {
         STATUS_UNTIL = getString(R.string.status_until)
 
         mToolbar = mBinding.mainToolbar
+        navController = Navigation.findNavController(this,R.id.nav_host_fragment)
         setSupportActionBar(mToolbar)
-
-        //mNavController.navigate()
-        //replaceFragment(SplashFragment(),false)
     }
 
     override fun onDestroy() {

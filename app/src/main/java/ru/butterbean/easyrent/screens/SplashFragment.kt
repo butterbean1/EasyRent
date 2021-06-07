@@ -24,20 +24,23 @@ class SplashFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
+        _binding = FragmentSplashBinding.inflate(layoutInflater, container, false)
+        return mBinding.root
+    }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    override fun onStart() {
+        super.onStart()
         Handler(Looper.getMainLooper()).postDelayed({
-            findNavController().navigate(R.id.action_splashFragment_to_roomsListFragment)
-           // replaceFragment(RoomsListFragment(), false)
             APP_ACTIVITY.supportActionBar?.show()
+            APP_ACTIVITY.navController.navigate(R.id.action_splashFragment_to_roomsListFragment)
         }, 2000)
 
         APP_ACTIVITY.supportActionBar?.hide()
 
-        _binding = FragmentSplashBinding.inflate(layoutInflater, container, false)
-        return mBinding.root
-    }
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
     }
 
-}
+ }

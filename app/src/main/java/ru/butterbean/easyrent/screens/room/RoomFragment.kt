@@ -1,23 +1,42 @@
 package ru.butterbean.easyrent.screens.room
 
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.View
+import android.os.Bundle
+import android.view.*
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_room.*
 import ru.butterbean.easyrent.R
+import ru.butterbean.easyrent.database.models.RoomData
 import ru.butterbean.easyrent.database.view_models.ReserveViewModel
 import ru.butterbean.easyrent.database.view_models.RoomViewModel
-import ru.butterbean.easyrent.database.models.RoomData
-import ru.butterbean.easyrent.screens.base.BaseFragment
+import ru.butterbean.easyrent.databinding.FragmentRoomBinding
+import ru.butterbean.easyrent.databinding.FragmentSplashBinding
 import ru.butterbean.easyrent.screens.reserves.EditReserveFragment
 import ru.butterbean.easyrent.screens.reserves.ReservesListAdapter
 import ru.butterbean.easyrent.utils.*
 
-class RoomFragment() : BaseFragment(R.layout.fragment_room) {
+class RoomFragment : Fragment() {
     private lateinit var mReserveViewModel: ReserveViewModel
     private lateinit var mCurrentRoom: RoomData
+    private var _binding: FragmentRoomBinding? = null
+    private val mBinding get() = _binding!!
+    private lateinit var mAdapter: ReservesListAdapter
+    private lateinit var mRecyclerView: RecyclerView
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+
+        _binding = FragmentRoomBinding.inflate(layoutInflater, container, false)
+        return mBinding.root
+    }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+        mRecyclerView.adapter = null
+    }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.edit_menu,menu)
@@ -26,7 +45,7 @@ class RoomFragment() : BaseFragment(R.layout.fragment_room) {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId){
             R.id.confirm_edit -> {
-                replaceFragment(EditRoomFragment())
+                APP_ACTIVITY.navController.navigate(R.id.action_roomFragment_to_editRoomFragment)
                 true
             }
             R.id.delete -> {
@@ -37,13 +56,13 @@ class RoomFragment() : BaseFragment(R.layout.fragment_room) {
         }
     }
 
-    override fun onResume(){
-        super.onResume()
+    override fun onStart(){
+        super.onStart()
 
         //Recycler view
-        val adapter = ReservesListAdapter()
-        val recyclerView = room_reserves_recycler_view
-        recyclerView.adapter = adapter
+        mAdapter = ReservesListAdapter()
+        mRecyclerView = mBinding.roomReservesRecyclerView
+        mRecyclerView.adapter = mAdapter
 
         // ViewModel
         val roomViewModel = ViewModelProvider(APP_ACTIVITY).get(RoomViewModel::class.java)
@@ -57,7 +76,7 @@ class RoomFragment() : BaseFragment(R.layout.fragment_room) {
 
         mReserveViewModel = ViewModelProvider(APP_ACTIVITY).get(ReserveViewModel::class.java)
         mReserveViewModel.getReservesByRoomId(mCurrentRoom.id).observe(viewLifecycleOwner, { reserves ->
-            adapter.setData(reserves)
+            mAdapter.setData(reserves)
         })
 
         room_name.text = mCurrentRoom.name
@@ -75,7 +94,7 @@ class RoomFragment() : BaseFragment(R.layout.fragment_room) {
 
         room_btn_add_reserve.setOnClickListener {
             mReserveViewModel.currentReserve = getEmptyReserve(mCurrentRoom.id)
-            replaceFragment(EditReserveFragment())
+           APP_ACTIVITY.navController.navigate(R.id.action_roomFragment_to_editReserveFragment)
         }
     }
 

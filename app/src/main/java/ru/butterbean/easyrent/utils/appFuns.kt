@@ -27,5 +27,5 @@ fun replaceFragment(fragment: Fragment, addStack: Boolean = true) {
     if (addStack) {
         tran = tran.addToBackStack(null)
     }
-    tran.replace(R.id.data_container, fragment).commit()
+    tran.replace(R.id.nav_host_fragment_container, fragment).commit()
 }
