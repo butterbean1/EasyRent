@@ -3,18 +3,14 @@ package ru.butterbean.easyrent.screens.reserves
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.reserve_item.view.*
 import ru.butterbean.easyrent.R
-import ru.butterbean.easyrent.database.view_models.EditReserveViewModel
 import ru.butterbean.easyrent.models.ReserveData
-import ru.butterbean.easyrent.utils.APP_ACTIVITY
-import ru.butterbean.easyrent.utils.replaceFragment
-import ru.butterbean.easyrent.utils.showEditDeleteReserveDialog
+import ru.butterbean.easyrent.screens.room.RoomFragment
 import ru.butterbean.easyrent.utils.toDateTimeFormat
 
-class ReservesListAdapter :RecyclerView.Adapter<ReservesListAdapter.ReservesListHolder>() {
+class ReservesListAdapter(val fragment: RoomFragment) :RecyclerView.Adapter<ReservesListAdapter.ReservesListHolder>() {
 
     private var listReserves = emptyList<ReserveData>()
 
@@ -22,14 +18,12 @@ class ReservesListAdapter :RecyclerView.Adapter<ReservesListAdapter.ReservesList
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReservesListHolder {
         val holder = ReservesListHolder(LayoutInflater.from(parent.context).inflate(R.layout.reserve_item,parent,false) )
-        val reserveViewModel = ViewModelProvider(APP_ACTIVITY).get(EditReserveViewModel::class.java)
+        val currentReserve = listReserves[holder.adapterPosition]
         holder.itemView.setOnClickListener {
-            reserveViewModel.currentReserve = listReserves[holder.adapterPosition]
-            replaceFragment(EditReserveFragment())
+            RoomFragment.clickOnListItem(currentReserve)
         }
         holder.itemView.setOnLongClickListener {
-            reserveViewModel.currentReserve = listReserves[holder.adapterPosition]
-            showEditDeleteReserveDialog(reserveViewModel.currentReserve)
+            RoomFragment.longClickOnListItem(currentReserve,fragment)
             true
         }
         return holder

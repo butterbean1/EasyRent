@@ -63,7 +63,7 @@ class EditRoomFragment : Fragment() {
             val room = RoomData(mCurrentRoom.id, name, mCurrentRoom.address, mCurrentRoom.status)
             if (mIsNew) {
                 // если новое помещение - добавляем в базу и переходим в список
-                mViewModel.addRoom(room) { newRoomId ->
+                mViewModel.addRoom(room) {
                     replaceFragment(RoomFragment(), false)
                 }
             } else {

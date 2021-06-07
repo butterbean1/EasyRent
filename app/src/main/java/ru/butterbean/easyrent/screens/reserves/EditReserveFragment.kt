@@ -20,8 +20,9 @@ import ru.butterbean.easyrent.utils.*
 class EditReserveFragment : Fragment() {
 
     private var mIsNew = false
-    private lateinit var mReserveViewModel: EditReserveViewModel
-    private lateinit var mViewModel: EditRoomViewModel
+    private var _binding: FragmentRoomBinding? = null
+    private val mBinding get() = _binding!!
+    private lateinit var mViewModel: EditReserveViewModel
     private lateinit var mCurrentReserve: ReserveData
     private lateinit var mDateCheckInSetListener: DatePickerDialog.OnDateSetListener
     private lateinit var mDateCheckOutSetListener: DatePickerDialog.OnDateSetListener
@@ -36,14 +37,13 @@ class EditReserveFragment : Fragment() {
     ): View {
 
         _binding = FragmentRoomBinding.inflate(layoutInflater, container, false)
-        mCurrentRoom = arguments?.getSerializable("room") as RoomData
+        mCurrentReserve = arguments?.getSerializable("reserve") as ReserveData
         return mBinding.root
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        mRecyclerView.adapter = null
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -106,10 +106,10 @@ class EditReserveFragment : Fragment() {
                 )
                 if (mIsNew) {
                     // если новое бронирование - добавляем в базу
-                    mReserveViewModel.addReserve(reserve)
+                    mViewModel.addReserve(reserve){ }
                 } else {
                     // если редактируем - записываем изменения
-                    mReserveViewModel.updateReserve(reserve)
+                    mViewModel.updateReserve(reserve)
                 }
 
                 APP_ACTIVITY.supportFragmentManager.popBackStack()
@@ -118,10 +118,15 @@ class EditReserveFragment : Fragment() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
 
-        mReserveViewModel = ViewModelProvider(APP_ACTIVITY).get(EditReserveViewModel::class.java)
+    override fun onStart() {
+        super.onStart()
+        initialize()
+    }
+
+    fun initialize() {
+
+        mViewModel = ViewModelProvider(APP_ACTIVITY).get(EditReserveViewModel::class.java)
         mCurrentReserve = mReserveViewModel.currentReserve
         mIsNew = mCurrentReserve.guestName.isEmpty()
 

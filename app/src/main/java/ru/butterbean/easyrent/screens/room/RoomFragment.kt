@@ -4,21 +4,18 @@ import android.app.AlertDialog
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import ru.butterbean.easyrent.R
-import ru.butterbean.easyrent.database.view_models.EditReserveViewModel
 import ru.butterbean.easyrent.database.view_models.RoomViewModel
 import ru.butterbean.easyrent.databinding.FragmentRoomBinding
 import ru.butterbean.easyrent.models.ReserveData
 import ru.butterbean.easyrent.models.RoomData
-import ru.butterbean.easyrent.screens.reserves.EditReserveFragment
 import ru.butterbean.easyrent.screens.reserves.ReservesListAdapter
 import ru.butterbean.easyrent.utils.*
 
 class RoomFragment : Fragment() {
-    private lateinit var mViewModel: RoomViewModel
+    lateinit var viewModel: RoomViewModel
     private lateinit var mCurrentRoom: RoomData
     private var _binding: FragmentRoomBinding? = null
     private val mBinding get() = _binding!!
@@ -29,10 +26,10 @@ class RoomFragment : Fragment() {
             goToEditReserveFragment(reserve)
         }
 
-        fun longClickOnListItem(room: RoomData, lo: LifecycleOwner) {
-            showEditDeleteReserveDialog(room, lo)
+        fun longClickOnListItem(reserve: ReserveData,fragment: RoomFragment) {
+            showEditDeleteReserveDialog(reserve,fragment)
         }
-        fun showEditDeleteReserveDialog(reserve: ReserveData) {
+        private fun showEditDeleteReserveDialog(reserve: ReserveData,fragment: RoomFragment) {
             val actions = arrayOf(
                 APP_ACTIVITY.getString(R.string.edit), // 0
                 APP_ACTIVITY.getString(R.string.delete) // 1
@@ -41,7 +38,7 @@ class RoomFragment : Fragment() {
             builder.setItems(actions) { _, i ->
                 when (i) {
                     0 -> goToEditReserveFragment(reserve)
-                    1 -> EditReserveViewModel(APP_ACTIVITY.application).deleteReserve(reserve)
+                    1 -> fragment.viewModel.deleteReserve(reserve)
                 }
             }
                 .show()
@@ -79,7 +76,7 @@ class RoomFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.confirm_edit -> {
-                mViewModel.getRoomById(mCurrentRoom.id).observe(viewLifecycleOwner) {
+                viewModel.getRoomById(mCurrentRoom.id).observe(viewLifecycleOwner) {
                     APP_ACTIVITY.navController.navigate(
                         R.id.action_roomFragment_to_editRoomFragment,
                         createArgsBundle("room", it)
@@ -102,21 +99,21 @@ class RoomFragment : Fragment() {
 
     private fun initialize() {
         //Recycler view
-        val adapter = ReservesListAdapter()
+        val adapter = ReservesListAdapter(this)
         mRecyclerView = mBinding.roomReservesRecyclerView
         mRecyclerView.adapter = adapter
 
         // ViewModel
-        mViewModel = ViewModelProvider(APP_ACTIVITY).get(RoomViewModel::class.java)
+        viewModel = ViewModelProvider(APP_ACTIVITY).get(RoomViewModel::class.java)
         APP_ACTIVITY.title = mCurrentRoom.name
 
-        mViewModel.getReservesCount(mCurrentRoom.id).observe(viewLifecycleOwner) { reservesCount ->
+        viewModel.getReservesCount(mCurrentRoom.id).observe(viewLifecycleOwner) { reservesCount ->
             if (reservesCount == 0) mBinding.roomTextEmptyReservesList.visibility = View.VISIBLE
             else mBinding.roomTextEmptyReservesList.visibility = View.GONE
         }
 
-        mViewModel = ViewModelProvider(this).get(RoomViewModel::class.java)
-        mViewModel.getReservesByRoomId(mCurrentRoom.id).observe(viewLifecycleOwner, { reserves ->
+        viewModel = ViewModelProvider(this).get(RoomViewModel::class.java)
+        viewModel.getReservesByRoomId(mCurrentRoom.id).observe(viewLifecycleOwner, { reserves ->
             adapter.setData(reserves)
         })
 
@@ -126,7 +123,7 @@ class RoomFragment : Fragment() {
         } else {
             mBinding.roomAddress.text = mCurrentRoom.address
         }
-        mViewModel.getStatus(mCurrentRoom.id).observe(viewLifecycleOwner) { status ->
+        viewModel.getStatus(mCurrentRoom.id).observe(viewLifecycleOwner) { status ->
             mBinding.roomStatus.text = status
         }
 
