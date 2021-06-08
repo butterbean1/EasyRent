@@ -33,7 +33,7 @@ interface ReserveDao {
     @Query("SELECT *,CASE WHEN (wasCheckOut=0) THEN (strftime('%s','now') + strftime('%s',dateCheckIn)) ELSE (strftime('%s','now') - strftime('%s',dateCheckOut)) END orderField FROM  $TABLE_RESERVES_NAME WHERE roomId= :roomId ORDER BY wasCheckOut,orderField")
     fun getReservesByRoomId(roomId: Long): LiveData<List<ReserveData>>
 
-    @Query("SELECT * FROM $TABLE_RESERVES_NAME WHERE (date('now','start of day')<=date(dateCheckOut,'start of day')) & (roomId= :roomId) ORDER BY dateCheckIn ASC")
+    @Query("SELECT * FROM $TABLE_RESERVES_NAME WHERE (date('now','start of day')<=date(dateCheckOut,'start of day')) & (NOT wasCheckOut) & (roomId= :roomId) ORDER BY dateCheckIn,dateCheckOut ASC")
     fun getActualReservesByRoomId(roomId: Long): List<ReserveData>
 
     @Query("SELECT Status FROM $TABLE_ROOMS_NAME WHERE id = :id")

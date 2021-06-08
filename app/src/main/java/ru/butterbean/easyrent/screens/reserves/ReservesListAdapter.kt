@@ -39,10 +39,10 @@ class ReservesListAdapter(val fragment: RoomFragment) :RecyclerView.Adapter<Rese
         holder.itemView.reserves_list_date_check_in.text = currentItem.dateCheckIn.toDateTimeFormat()
         holder.itemView.reserves_list_date_check_out.text = currentItem.dateCheckOut.toDateTimeFormat()
         holder.itemView.reserves_list_was_check_in.visibility = if(currentItem.wasCheckIn) View.VISIBLE else View.GONE
-        holder.itemView.reserves_list_was_check_out.visibility = if(currentItem.wasCheckOut) View.VISIBLE else View.GONE
         if (currentItem.wasCheckOut){
-            holder.itemView.setBackgroundColor(APP_ACTIVITY.getColor(R.color.light_green_grey))
-        }
+            holder.itemView.reserves_list_was_check_out.visibility = View.VISIBLE
+            holder.itemView.background = APP_ACTIVITY.getDrawable(R.drawable.ripple_effect_grey)
+        }else holder.itemView.reserves_list_was_check_out.visibility = View.GONE
     }
 
     override fun getItemCount(): Int = listReserves.size
