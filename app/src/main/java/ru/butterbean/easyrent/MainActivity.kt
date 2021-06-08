@@ -15,7 +15,6 @@ class MainActivity : AppCompatActivity() {
 
     private var _binding:ActivityMainBinding? = null
     private val mBinding get() = _binding!!
-    lateinit var mToolbar: Toolbar
     lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,8 +31,7 @@ class MainActivity : AppCompatActivity() {
         STATUS_UNTIL = getString(R.string.status_until)
 
         navController = Navigation.findNavController(this,R.id.nav_host_fragment)
-        mToolbar = mBinding.mainToolbar
-        setSupportActionBar(mToolbar)
+        setSupportActionBar(mBinding.mainToolbar)
 
     }
 

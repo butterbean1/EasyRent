@@ -1,5 +1,6 @@
 package ru.butterbean.easyrent.screens.reserves
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +9,7 @@ import kotlinx.android.synthetic.main.reserve_item.view.*
 import ru.butterbean.easyrent.R
 import ru.butterbean.easyrent.models.ReserveData
 import ru.butterbean.easyrent.screens.room.RoomFragment
+import ru.butterbean.easyrent.utils.APP_ACTIVITY
 import ru.butterbean.easyrent.utils.toDateTimeFormat
 
 class ReservesListAdapter(val fragment: RoomFragment) :RecyclerView.Adapter<ReservesListAdapter.ReservesListHolder>() {
@@ -38,6 +40,9 @@ class ReservesListAdapter(val fragment: RoomFragment) :RecyclerView.Adapter<Rese
         holder.itemView.reserves_list_date_check_out.text = currentItem.dateCheckOut.toDateTimeFormat()
         holder.itemView.reserves_list_was_check_in.visibility = if(currentItem.wasCheckIn) View.VISIBLE else View.GONE
         holder.itemView.reserves_list_was_check_out.visibility = if(currentItem.wasCheckOut) View.VISIBLE else View.GONE
+        if (currentItem.wasCheckOut){
+            holder.itemView.setBackgroundColor(APP_ACTIVITY.getColor(R.color.light_green_grey))
+        }
     }
 
     override fun getItemCount(): Int = listReserves.size
