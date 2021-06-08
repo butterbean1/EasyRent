@@ -43,7 +43,7 @@ class RoomsListFragment : Fragment() {
             builder.setItems(actions) { _, i ->
                 when (i) {
                     0 -> goToRoomFragment(room)
-                    1 -> deleteRoomWithDialog(room, lo)
+                    1 -> deleteRoomWithDialog(room, lo){}
                 }
             }
                 .show()

@@ -21,15 +21,16 @@ class RoomFragment : Fragment() {
     private val mBinding get() = _binding!!
     private lateinit var mRecyclerView: RecyclerView
 
-    companion object{
+    companion object {
         fun clickOnListItem(reserve: ReserveData) {
             goToEditReserveFragment(reserve)
         }
 
-        fun longClickOnListItem(reserve: ReserveData,fragment: RoomFragment) {
-            showEditDeleteReserveDialog(reserve,fragment)
+        fun longClickOnListItem(reserve: ReserveData, fragment: RoomFragment) {
+            showEditDeleteReserveDialog(reserve, fragment)
         }
-        private fun showEditDeleteReserveDialog(reserve: ReserveData,fragment: RoomFragment) {
+
+        private fun showEditDeleteReserveDialog(reserve: ReserveData, fragment: RoomFragment) {
             val actions = arrayOf(
                 APP_ACTIVITY.getString(R.string.open), // 0
                 APP_ACTIVITY.getString(R.string.delete) // 1
@@ -75,6 +76,7 @@ class RoomFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
+            android.R.id.home -> APP_ACTIVITY.navController.popBackStack()
             R.id.confirm_edit -> {
                 viewModel.getRoomById(mCurrentRoom.id).observe(viewLifecycleOwner) {
                     APP_ACTIVITY.navController.navigate(
@@ -85,7 +87,9 @@ class RoomFragment : Fragment() {
                 true
             }
             R.id.delete -> {
-                deleteRoomWithDialog(mCurrentRoom, viewLifecycleOwner)
+                deleteRoomWithDialog(mCurrentRoom, viewLifecycleOwner) { wasDeleted ->
+                    if (wasDeleted) APP_ACTIVITY.navController.navigate(R.id.action_roomFragment_to_roomsListFragment)
+                }
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -98,6 +102,9 @@ class RoomFragment : Fragment() {
     }
 
     private fun initialize() {
+        APP_ACTIVITY.title = mCurrentRoom.name
+        APP_ACTIVITY.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
         //Recycler view
         val adapter = ReservesListAdapter(this)
         mRecyclerView = mBinding.roomReservesRecyclerView
@@ -105,7 +112,6 @@ class RoomFragment : Fragment() {
 
         // ViewModel
         viewModel = ViewModelProvider(APP_ACTIVITY).get(RoomViewModel::class.java)
-        APP_ACTIVITY.title = mCurrentRoom.name
 
         viewModel.getReservesCount(mCurrentRoom.id).observe(viewLifecycleOwner) { reservesCount ->
             if (reservesCount == 0) mBinding.roomTextEmptyReservesList.visibility = View.VISIBLE
@@ -137,5 +143,6 @@ class RoomFragment : Fragment() {
             )
         }
     }
+
 
 }

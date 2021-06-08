@@ -17,8 +17,7 @@ class RoomViewModel(application: Application):AndroidViewModel(application) {
     fun deleteReserve(reserve: ReserveData) {
         viewModelScope.launch(Dispatchers.IO) {
             mRepository.deleteReserve(reserve)
-            mRepository.updateRoomStatus(reserve.roomId) {
-            }
+            mRepository.updateRoomStatus(reserve.roomId)
         }
     }
 

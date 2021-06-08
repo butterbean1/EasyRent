@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupWithNavController
 import ru.butterbean.easyrent.database.MainDatabase
 import ru.butterbean.easyrent.databinding.ActivityMainBinding
 import ru.butterbean.easyrent.utils.*
@@ -29,13 +31,16 @@ class MainActivity : AppCompatActivity() {
         STATUS_REPAIRS = getString(R.string.status_on_repair)
         STATUS_UNTIL = getString(R.string.status_until)
 
-        mToolbar = mBinding.mainToolbar
         navController = Navigation.findNavController(this,R.id.nav_host_fragment)
+        mToolbar = mBinding.mainToolbar
         setSupportActionBar(mToolbar)
+
     }
 
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
     }
+
+
 }

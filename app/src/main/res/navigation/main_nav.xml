@@ -10,7 +10,9 @@
         android:label="EditReserveFragment" >
         <action
             android:id="@+id/action_editReserveFragment_to_roomFragment"
-            app:destination="@id/roomFragment" />
+            app:destination="@id/roomFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/roomsListFragment" />
     </fragment>
     <fragment
         android:id="@+id/editRoomFragment"
@@ -19,10 +21,14 @@
         tools:layout="@layout/fragment_edit_room" >
         <action
             android:id="@+id/action_editRoomFragment_to_roomsListFragment"
-            app:destination="@id/roomsListFragment" />
+            app:destination="@id/roomsListFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/main_nav" />
         <action
             android:id="@+id/action_editRoomFragment_to_roomFragment"
-            app:destination="@id/roomFragment" />
+            app:destination="@id/roomFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/roomsListFragment" />
     </fragment>
     <fragment
         android:id="@+id/roomFragment"
@@ -35,6 +41,11 @@
         <action
             android:id="@+id/action_roomFragment_to_editRoomFragment"
             app:destination="@id/editRoomFragment" />
+        <action
+            android:id="@+id/action_roomFragment_to_roomsListFragment"
+            app:destination="@id/roomsListFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/main_nav" />
     </fragment>
     <fragment
         android:id="@+id/splashFragment"
@@ -43,7 +54,9 @@
         tools:layout="@layout/fragment_splash" >
         <action
             android:id="@+id/action_splashFragment_to_roomsListFragment"
-            app:destination="@id/roomsListFragment" />
+            app:destination="@id/roomsListFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/main_nav" />
     </fragment>
     <fragment
         android:id="@+id/roomsListFragment"
@@ -55,6 +68,7 @@
             app:destination="@id/roomFragment" />
         <action
             android:id="@+id/action_roomsListFragment_to_editRoomFragment"
-            app:destination="@id/editRoomFragment" />
+            app:destination="@id/editRoomFragment"
+            app:launchSingleTop="false" />
     </fragment>
 </navigation>

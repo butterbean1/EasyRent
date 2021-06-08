@@ -54,6 +54,7 @@ class EditReserveFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
+            android.R.id.home -> APP_ACTIVITY.navController.popBackStack()
             R.id.confirm_change -> {
                 change()
                 true
@@ -127,11 +128,11 @@ class EditReserveFragment : Fragment() {
     }
 
     private fun initialize() {
+        APP_ACTIVITY.title = getString(R.string.reserve)
+        APP_ACTIVITY.supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         mViewModel = ViewModelProvider(APP_ACTIVITY).get(EditReserveViewModel::class.java)
         mIsNew = mCurrentReserve.guestName.isEmpty()
-
-        APP_ACTIVITY.title = getString(R.string.reserve)
 
         // получим название помещения из БД таблицы помещений
         mViewModel.getRoomById(mCurrentReserve.roomId).observe(viewLifecycleOwner, { room ->

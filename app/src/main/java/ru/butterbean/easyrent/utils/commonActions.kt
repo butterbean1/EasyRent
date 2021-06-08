@@ -4,7 +4,6 @@ import android.app.AlertDialog
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
 import ru.butterbean.easyrent.R
-import ru.butterbean.easyrent.database.view_models.EditReserveViewModel
 import ru.butterbean.easyrent.database.view_models.RoomDialogViewModel
 import ru.butterbean.easyrent.models.GuestData
 import ru.butterbean.easyrent.models.ReserveData
@@ -38,23 +37,23 @@ fun deleteReserveWithDialog(reserve: ReserveData) {
 }
 */
 
-fun deleteRoomWithDialog(room: RoomData, lo: LifecycleOwner) {
+fun deleteRoomWithDialog(room: RoomData, lo: LifecycleOwner, onSuccess: (Boolean) -> Unit) {
     val viewModel = ViewModelProvider(APP_ACTIVITY).get(RoomDialogViewModel::class.java)
     // если нет бронирований, то не будем ничего спрашивать
     viewModel.getReservesCount(room.id).observe(lo, { count ->
         if (count == 0) {
-            viewModel.deleteRoom(room)
-            APP_ACTIVITY.supportFragmentManager.popBackStack()
+            viewModel.deleteRoom(room){onSuccess(true)}
+
         } else {
             val builder = AlertDialog.Builder(APP_ACTIVITY)
             builder.setMessage(APP_ACTIVITY.getString(R.string.question_delete_room))
                 .setPositiveButton(APP_ACTIVITY.getString(R.string.yes)) { dialog, _ ->
-                    viewModel.deleteRoom(room)
                     dialog.cancel()
-                    APP_ACTIVITY.supportFragmentManager.popBackStack()
+                    viewModel.deleteRoom(room){onSuccess(true)}
                 }
                 .setNegativeButton(APP_ACTIVITY.getString(R.string.no)) { dialog, _ ->
                     dialog.cancel()
+                    onSuccess(false)
                 }
                 .show()
         }

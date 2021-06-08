@@ -21,7 +21,7 @@ class ReserveRepository(private val reserveDao: ReserveDao) {
         reserveDao.updateReserve(reserve)
     }
 
-    suspend fun updateRoomStatus(roomId: Long,onSuccess: () -> Unit) {
+    suspend fun updateRoomStatus(roomId: Long) {
         val roomDao = APP_DATABASE.roomDao()
         val room = roomDao.getByIdNow(roomId)
 
@@ -48,7 +48,6 @@ class ReserveRepository(private val reserveDao: ReserveDao) {
         }
         room.status = newStatus
         roomDao.updateRoom(room)
-        onSuccess()
     }
 
     fun getRoomById(id: Long): LiveData<RoomData> = reserveDao.getRoomById(id)

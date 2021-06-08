@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import ru.butterbean.easyrent.database.repository.ReserveRepository
 import ru.butterbean.easyrent.models.ReserveData
 import ru.butterbean.easyrent.models.RoomData
@@ -22,7 +23,8 @@ class EditReserveViewModel(application: Application) : AndroidViewModel(applicat
     fun addReserve(reserve: ReserveData, onSuccess: () -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             mRepository.addReserve(reserve)
-            mRepository.updateRoomStatus(reserve.roomId) {
+            mRepository.updateRoomStatus(reserve.roomId)
+            withContext(Dispatchers.Main) {
                 onSuccess()
             }
         }
@@ -31,18 +33,20 @@ class EditReserveViewModel(application: Application) : AndroidViewModel(applicat
     fun deleteReserve(reserve: ReserveData) {
         viewModelScope.launch(Dispatchers.IO) {
             mRepository.deleteReserve(reserve)
-            mRepository.updateRoomStatus(reserve.roomId) {}
+            mRepository.updateRoomStatus(reserve.roomId)
         }
     }
+
     fun updateReserve(reserve: ReserveData, onSuccess: () -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             mRepository.updateReserve(reserve)
-            mRepository.updateRoomStatus(reserve.roomId) {
+            mRepository.updateRoomStatus(reserve.roomId)
+            withContext(Dispatchers.Main) {
                 onSuccess()
             }
         }
     }
 
-    fun getRoomById(id:Long): LiveData<RoomData> = mRepository.getRoomById(id)
+    fun getRoomById(id: Long): LiveData<RoomData> = mRepository.getRoomById(id)
 
 }

@@ -45,12 +45,15 @@ class EditRoomFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
+            android.R.id.home -> APP_ACTIVITY.navController.popBackStack()
             R.id.confirm_change -> {
                 change()
                 true
             }
             R.id.delete -> {
-                deleteRoomWithDialog(mCurrentRoom, viewLifecycleOwner)
+                deleteRoomWithDialog(mCurrentRoom, viewLifecycleOwner) { wasDeleted ->
+                    if (wasDeleted) APP_ACTIVITY.navController.navigate(R.id.action_editRoomFragment_to_roomsListFragment)
+                }
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -65,24 +68,25 @@ class EditRoomFragment : Fragment() {
             val room = RoomData(mCurrentRoom.id, name, mCurrentRoom.address, mCurrentRoom.status)
             if (mIsNew) {
                 // если новое помещение - добавляем в базу и переходим в карточку помещения
-                mViewModel.addRoom(room) {newId->
-                    APP_ACTIVITY.navController.navigate(
-                        R.id.action_editRoomFragment_to_roomFragment,
-                        createArgsBundle("room",RoomData(newId,room.name,room.address,room.status))
-                    )
+                mViewModel.addRoom(room) { newId ->
+                    goToRoomFragment(RoomData(newId, room.name, room.address, room.status))
                 }
             } else {
                 // если редактируем - записываем изменения и переходим в карточку помещения
-                mViewModel.updateRoom(room){
-                    APP_ACTIVITY.navController.navigate(
-                        R.id.action_editRoomFragment_to_roomFragment,
-                        createArgsBundle("room",room)
-                    )
+                mViewModel.updateRoom(room) {
+                    goToRoomFragment(room)
                 }
 
             }
 
         }
+    }
+
+    private fun goToRoomFragment(room: RoomData) {
+        APP_ACTIVITY.navController.navigate(
+            R.id.action_editRoomFragment_to_roomFragment,
+            createArgsBundle("room", room)
+        )
     }
 
     override fun onStart() {
@@ -91,8 +95,6 @@ class EditRoomFragment : Fragment() {
     }
 
     private fun initialize() {
-
-        mViewModel = ViewModelProvider(APP_ACTIVITY).get(EditRoomViewModel::class.java)
         mIsNew = mCurrentRoom.name.isEmpty()
 
         if (mIsNew) {
@@ -100,6 +102,10 @@ class EditRoomFragment : Fragment() {
         } else {
             APP_ACTIVITY.title = mCurrentRoom.name
         }
+        APP_ACTIVITY.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        mViewModel = ViewModelProvider(APP_ACTIVITY).get(EditRoomViewModel::class.java)
+
         mBinding.roomChangeName.setText(mCurrentRoom.name)
         mBinding.roomChangeAddress.setText(mCurrentRoom.address)
         if (mIsNew) {
