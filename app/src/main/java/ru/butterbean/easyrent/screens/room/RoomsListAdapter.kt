@@ -17,12 +17,11 @@ class RoomsListAdapter(private val lo: LifecycleOwner) :RecyclerView.Adapter<Roo
     class RoomsListHolder(view: View):RecyclerView.ViewHolder(view)
 
     override fun onViewAttachedToWindow(holder: RoomsListHolder) {
-        val currentRoom = listRooms[holder.adapterPosition]
         holder.itemView.setOnClickListener {
-            RoomsListFragment.clickOnListItem(currentRoom)
+            RoomsListFragment.clickOnListItem(listRooms[holder.adapterPosition])
              }
         holder.itemView.setOnLongClickListener {
-            RoomsListFragment.longClickOnListItem(currentRoom,lo)
+            RoomsListFragment.longClickOnListItem(listRooms[holder.adapterPosition],lo)
             true
         }
         super.onViewAttachedToWindow(holder)

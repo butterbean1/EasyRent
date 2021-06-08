@@ -21,15 +21,10 @@ class EditRoomViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
-    fun deleteRoom(room: RoomData) {
-        viewModelScope.launch(Dispatchers.IO) {
-            mRepository.deleteRoom(room)
-        }
-    }
-
-    fun updateRoom(room: RoomData) {
+    fun updateRoom(room: RoomData,onSuccess:() -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             mRepository.updateRoom(room)
+            onSuccess()
         }
     }
 

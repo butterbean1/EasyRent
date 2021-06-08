@@ -18,12 +18,11 @@ class ReservesListAdapter(val fragment: RoomFragment) :RecyclerView.Adapter<Rese
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReservesListHolder {
         val holder = ReservesListHolder(LayoutInflater.from(parent.context).inflate(R.layout.reserve_item,parent,false) )
-        val currentReserve = listReserves[holder.adapterPosition]
         holder.itemView.setOnClickListener {
-            RoomFragment.clickOnListItem(currentReserve)
+            RoomFragment.clickOnListItem(listReserves[holder.adapterPosition])
         }
         holder.itemView.setOnLongClickListener {
-            RoomFragment.longClickOnListItem(currentReserve,fragment)
+            RoomFragment.longClickOnListItem(listReserves[holder.adapterPosition],fragment)
             true
         }
         return holder

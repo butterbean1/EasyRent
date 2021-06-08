@@ -48,4 +48,5 @@
     <string name="enter_checkout_date">Выберите дату выселения!</string>
     <string name="enter_checkin_time">Выберите время заселения!</string>
     <string name="enter_checkin_date">Выберите дату заселения!</string>
+    <string name="open">Открыть</string>
 </resources>

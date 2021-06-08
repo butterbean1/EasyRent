@@ -12,8 +12,6 @@ import ru.butterbean.easyrent.utils.APP_DATABASE
 
 class GuestViewModel(application: Application):AndroidViewModel(application) {
     val readAllGuests: LiveData<List<GuestData>>
-    lateinit var currentGuest: GuestData
-
     private val repository: GuestRepository
 
     init {
@@ -28,8 +26,6 @@ class GuestViewModel(application: Application):AndroidViewModel(application) {
     fun addGuest(guest:GuestData){
         viewModelScope.launch(Dispatchers.IO) {
             val newId = repository.addGuest(guest)
-            currentGuest = guest
-            currentGuest.id = newId
         }
     }
     fun deleteGuest(guest:GuestData){

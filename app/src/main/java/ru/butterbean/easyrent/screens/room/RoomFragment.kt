@@ -31,7 +31,7 @@ class RoomFragment : Fragment() {
         }
         private fun showEditDeleteReserveDialog(reserve: ReserveData,fragment: RoomFragment) {
             val actions = arrayOf(
-                APP_ACTIVITY.getString(R.string.edit), // 0
+                APP_ACTIVITY.getString(R.string.open), // 0
                 APP_ACTIVITY.getString(R.string.delete) // 1
             )
             val builder = AlertDialog.Builder(APP_ACTIVITY)

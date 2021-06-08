@@ -27,7 +27,7 @@ class RoomsListFragment : Fragment() {
 
     companion object {
         fun clickOnListItem(room: RoomData) {
-            goToEditRoomFragment(room)
+            goToRoomFragment(room)
         }
 
         fun longClickOnListItem(room: RoomData, lo: LifecycleOwner) {
@@ -36,20 +36,20 @@ class RoomsListFragment : Fragment() {
 
         private fun showEditDeleteRoomDialog(room: RoomData, lo: LifecycleOwner) {
             val actions = arrayOf(
-                APP_ACTIVITY.getString(R.string.edit), // 0
+                APP_ACTIVITY.getString(R.string.open), // 0
                 APP_ACTIVITY.getString(R.string.delete) // 1
             )
             val builder = AlertDialog.Builder(APP_ACTIVITY)
             builder.setItems(actions) { _, i ->
                 when (i) {
-                    0 -> goToEditRoomFragment(room)
+                    0 -> goToRoomFragment(room)
                     1 -> deleteRoomWithDialog(room, lo)
                 }
             }
                 .show()
         }
 
-        private fun goToEditRoomFragment(room: RoomData) {
+        private fun goToRoomFragment(room: RoomData) {
             APP_ACTIVITY.navController.navigate(
                 R.id.action_roomsListFragment_to_roomFragment,
                 createArgsBundle("room", room)
@@ -97,7 +97,7 @@ class RoomsListFragment : Fragment() {
 
         mBinding.roomsBtnAdd.setOnClickListener {
             APP_ACTIVITY.navController.navigate(
-                R.id.action_roomsListFragment_to_roomFragment,
+                R.id.action_roomsListFragment_to_editRoomFragment,
                 createArgsBundle("room", getEmptyRoom())
             )
         }

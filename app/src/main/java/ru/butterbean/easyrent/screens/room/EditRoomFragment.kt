@@ -8,9 +8,11 @@ import kotlinx.android.synthetic.main.fragment_edit_room.*
 import ru.butterbean.easyrent.R
 import ru.butterbean.easyrent.database.view_models.EditRoomViewModel
 import ru.butterbean.easyrent.databinding.FragmentEditRoomBinding
-import ru.butterbean.easyrent.databinding.FragmentRoomBinding
 import ru.butterbean.easyrent.models.RoomData
-import ru.butterbean.easyrent.utils.*
+import ru.butterbean.easyrent.utils.APP_ACTIVITY
+import ru.butterbean.easyrent.utils.createArgsBundle
+import ru.butterbean.easyrent.utils.deleteRoomWithDialog
+import ru.butterbean.easyrent.utils.showToast
 
 class EditRoomFragment : Fragment() {
 
@@ -62,14 +64,22 @@ class EditRoomFragment : Fragment() {
         } else {
             val room = RoomData(mCurrentRoom.id, name, mCurrentRoom.address, mCurrentRoom.status)
             if (mIsNew) {
-                // если новое помещение - добавляем в базу и переходим в список
-                mViewModel.addRoom(room) {
-                    replaceFragment(RoomFragment(), false)
+                // если новое помещение - добавляем в базу и переходим в карточку помещения
+                mViewModel.addRoom(room) {newId->
+                    APP_ACTIVITY.navController.navigate(
+                        R.id.action_editRoomFragment_to_roomFragment,
+                        createArgsBundle("room",RoomData(newId,room.name,room.address,room.status))
+                    )
                 }
             } else {
                 // если редактируем - записываем изменения и переходим в карточку помещения
-                mViewModel.updateRoom(room)
-                APP_ACTIVITY.supportFragmentManager.popBackStack()
+                mViewModel.updateRoom(room){
+                    APP_ACTIVITY.navController.navigate(
+                        R.id.action_editRoomFragment_to_roomFragment,
+                        createArgsBundle("room",room)
+                    )
+                }
+
             }
 
         }

@@ -19,14 +19,6 @@ fun hideKeyboard() {
     imm.hideSoftInputFromWindow(APP_ACTIVITY.window.decorView.windowToken, 0)
 }
 
-fun replaceFragment(fragment: Fragment, addStack: Boolean = true) {
-    var tran = APP_ACTIVITY.supportFragmentManager.beginTransaction()
-    if (addStack) {
-        tran = tran.addToBackStack(null)
-    }
-    tran.replace(R.id.nav_host_fragment_container, fragment).commit()
-}
-
 fun createArgsBundle(key:String,value:Serializable):Bundle{
     val args = Bundle()
     args.putSerializable(key, value)

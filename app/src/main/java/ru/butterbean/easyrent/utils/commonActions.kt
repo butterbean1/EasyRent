@@ -22,6 +22,7 @@ fun getEmptyGuest(): GuestData {
     return GuestData(0)
 }
 
+/* Пока что решил удалять без лишних вопросов
 fun deleteReserveWithDialog(reserve: ReserveData) {
     val builder = AlertDialog.Builder(APP_ACTIVITY)
     builder.setMessage(APP_ACTIVITY.getString(R.string.question_delete_reserve))
@@ -35,6 +36,7 @@ fun deleteReserveWithDialog(reserve: ReserveData) {
         }
         .show()
 }
+*/
 
 fun deleteRoomWithDialog(room: RoomData, lo: LifecycleOwner) {
     val viewModel = ViewModelProvider(APP_ACTIVITY).get(RoomDialogViewModel::class.java)

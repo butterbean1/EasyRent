@@ -6,13 +6,13 @@ import android.os.Bundle
 import android.text.InputFilter
 import android.text.Spanned
 import android.view.*
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.fragment_edit_reserve.*
 import ru.butterbean.easyrent.R
-import ru.butterbean.easyrent.database.view_models.EditRoomViewModel
 import ru.butterbean.easyrent.database.view_models.EditReserveViewModel
-import ru.butterbean.easyrent.databinding.FragmentRoomBinding
+import ru.butterbean.easyrent.databinding.FragmentEditReserveBinding
 import ru.butterbean.easyrent.models.ReserveData
 import ru.butterbean.easyrent.models.RoomData
 import ru.butterbean.easyrent.utils.*
@@ -20,10 +20,11 @@ import ru.butterbean.easyrent.utils.*
 class EditReserveFragment : Fragment() {
 
     private var mIsNew = false
-    private var _binding: FragmentRoomBinding? = null
+    private var _binding: FragmentEditReserveBinding? = null
     private val mBinding get() = _binding!!
     private lateinit var mViewModel: EditReserveViewModel
     private lateinit var mCurrentReserve: ReserveData
+    private lateinit var mCurrentRoom: RoomData
     private lateinit var mDateCheckInSetListener: DatePickerDialog.OnDateSetListener
     private lateinit var mDateCheckOutSetListener: DatePickerDialog.OnDateSetListener
     private lateinit var mTimeCheckInSetListener: TimePickerDialog.OnTimeSetListener
@@ -36,7 +37,7 @@ class EditReserveFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        _binding = FragmentRoomBinding.inflate(layoutInflater, container, false)
+        _binding = FragmentEditReserveBinding.inflate(layoutInflater, container, false)
         mCurrentReserve = arguments?.getSerializable("reserve") as ReserveData
         return mBinding.root
     }
@@ -58,7 +59,7 @@ class EditReserveFragment : Fragment() {
                 true
             }
             R.id.delete -> {
-                deleteReserveWithDialog(mCurrentReserve)
+                mViewModel.deleteReserve(mCurrentReserve)
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -67,28 +68,26 @@ class EditReserveFragment : Fragment() {
 
     private fun change() {
         hideKeyboard()
-        val guest = edit_reserve_guest.text.toString().trim()
-        val guestsCount = edit_reserve_guests_count.text.toString().trim()
-        val sum = edit_reserve_sum.text.toString().trim()
-        val payment = edit_reserve_payment.text.toString().trim()
-        val wasCheckIn = edit_reserve_was_check_in.isChecked
-        val wasCheckOut = edit_reserve_was_check_out.isChecked
-        val dateCheckIn = edit_reserve_date_check_in.text.toString()
-        val dateCheckOut = edit_reserve_date_check_out.text.toString()
-        val timeCheckIn = edit_reserve_time_check_in.text.toString()
-        val timeCheckOut = edit_reserve_time_check_out.text.toString()
+        val guest = mBinding.editReserveGuest.text.toString().trim()
+        val guestsCount = mBinding.editReserveGuestsCount.text.toString().trim()
+        val sum = mBinding.editReserveSum.text.toString().trim()
+        val payment = mBinding.editReservePayment.text.toString().trim()
+        val wasCheckIn = mBinding.editReserveWasCheckIn.isChecked
+        val wasCheckOut = mBinding.editReserveWasCheckOut.isChecked
+        val dateCheckIn = mBinding.editReserveDateCheckIn.text.toString()
+        val dateCheckOut = mBinding.editReserveDateCheckOut.text.toString()
+        val timeCheckIn = mBinding.editReserveTimeCheckIn.text.toString()
+        val timeCheckOut = mBinding.editReserveTimeCheckOut.text.toString()
 
-        val dateCheckInText = getDateTimeInDatabaseFormat(mCurrentDateCheckIn,timeCheckIn)
-        val dateCheckOutText = getDateTimeInDatabaseFormat(mCurrentDateCheckOut,timeCheckOut)
+        val dateCheckInText = getDateTimeInDatabaseFormat(mCurrentDateCheckIn, timeCheckIn)
+        val dateCheckOutText = getDateTimeInDatabaseFormat(mCurrentDateCheckOut, timeCheckOut)
 
         when {
             dateCheckIn.isEmpty() -> showToast(getString(R.string.enter_checkin_date))
             timeCheckIn.isEmpty() -> showToast(getString(R.string.enter_checkin_time))
             dateCheckOut.isEmpty() -> showToast(getString(R.string.enter_checkout_date))
             timeCheckOut.isEmpty() -> showToast(getString(R.string.enter_checkout_time))
-            getCalendarFromString(dateCheckInText).after(getCalendarFromString(dateCheckOutText)) -> showToast(
-                getString(R.string.checkin_after_checkout)
-            )
+            getCalendarFromString(dateCheckInText).after(getCalendarFromString(dateCheckOutText)) -> showToast(getString(R.string.checkin_after_checkout))
             guest.isEmpty() -> showToast(getString(R.string.enter_guest_name))
             guestsCount.isEmpty() -> showToast(getString(R.string.enter_guests_count))
             else -> {
@@ -106,103 +105,126 @@ class EditReserveFragment : Fragment() {
                 )
                 if (mIsNew) {
                     // если новое бронирование - добавляем в базу
-                    mViewModel.addReserve(reserve){ }
+                    mViewModel.addReserve(reserve) { goToRoomFragment() }
                 } else {
                     // если редактируем - записываем изменения
-                    mViewModel.updateReserve(reserve)
+                    mViewModel.updateReserve(reserve) { goToRoomFragment() }
                 }
-
-                APP_ACTIVITY.supportFragmentManager.popBackStack()
-
             }
         }
     }
 
+    private fun goToRoomFragment() {
+        APP_ACTIVITY.navController.navigate(
+            R.id.action_editReserveFragment_to_roomFragment,
+            createArgsBundle("room", mCurrentRoom)
+        )
+    }
 
     override fun onStart() {
         super.onStart()
         initialize()
     }
 
-    fun initialize() {
+    private fun initialize() {
 
         mViewModel = ViewModelProvider(APP_ACTIVITY).get(EditReserveViewModel::class.java)
-        mCurrentReserve = mReserveViewModel.currentReserve
         mIsNew = mCurrentReserve.guestName.isEmpty()
 
         APP_ACTIVITY.title = getString(R.string.reserve)
 
         // получим название помещения из БД таблицы помещений
-        mViewModel = ViewModelProvider(APP_ACTIVITY).get(EditRoomViewModel::class.java)
-        mViewModel.getById(mCurrentReserve.roomId).observe(viewLifecycleOwner, { room ->
-            edit_reserve_room_name.text = room.name
+        mViewModel.getRoomById(mCurrentReserve.roomId).observe(viewLifecycleOwner, { room ->
+            mCurrentRoom = room
+            mBinding.editReserveRoomName.text = room.name
         })
 
-        edit_reserve_guest.setText(mCurrentReserve.guestName)
-        edit_reserve_sum.setText(mCurrentReserve.sum.toString())
-        edit_reserve_payment.setText(mCurrentReserve.payment.toString())
-        edit_reserve_was_check_in.isChecked = mCurrentReserve.wasCheckIn
-        edit_reserve_was_check_out.isChecked = mCurrentReserve.wasCheckOut
+        mBinding.editReserveGuest.setText(mCurrentReserve.guestName)
+        mBinding.editReserveSum.setText(mCurrentReserve.sum.toString())
+        mBinding.editReservePayment.setText(mCurrentReserve.payment.toString())
+        mBinding.editReserveWasCheckIn.isChecked = mCurrentReserve.wasCheckIn
+        mBinding.editReserveWasCheckOut.isChecked = mCurrentReserve.wasCheckOut
         if (!mIsNew) {
             mCurrentDateCheckIn = mCurrentReserve.dateCheckIn.substring(0, 10)
             mCurrentDateCheckOut = mCurrentReserve.dateCheckOut.substring(0, 10)
-            edit_reserve_date_check_in.text = mCurrentReserve.dateCheckIn.toDateFormat(false)
-            edit_reserve_date_check_out.text = mCurrentReserve.dateCheckOut.toDateFormat(false)
-            edit_reserve_time_check_in.text = mCurrentReserve.dateCheckIn.toTimeFormat()
-            edit_reserve_time_check_out.text = mCurrentReserve.dateCheckOut.toTimeFormat()
+            mBinding.editReserveDateCheckIn.text = mCurrentReserve.dateCheckIn.toDateFormat(false)
+            mBinding.editReserveDateCheckOut.text = mCurrentReserve.dateCheckOut.toDateFormat(false)
+            mBinding.editReserveTimeCheckIn.text = mCurrentReserve.dateCheckIn.toTimeFormat()
+            mBinding.editReserveTimeCheckOut.text = mCurrentReserve.dateCheckOut.toTimeFormat()
         }
         changePaymentBtnVisibility()
 
-        edit_reserve_date_check_in.setOnClickListener {
+        // date check-in dialog
+        mBinding.editReserveDateCheckIn.setOnClickListener {
             hideKeyboard()
-            showCalendarDialogFromListener(requireContext(), mDateCheckInSetListener,mCurrentDateCheckIn)
+            showCalendarDialogFromListener(
+                requireContext(),
+                mDateCheckInSetListener,
+                mCurrentDateCheckIn
+            )
         }
         mDateCheckInSetListener = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
             mCurrentDateCheckIn = getDateFormatISO(year, month, dayOfMonth)
-            edit_reserve_date_check_in.text = mCurrentDateCheckIn.toDateFormat(true)
+            mBinding.editReserveDateCheckIn.text = mCurrentDateCheckIn.toDateFormat(true)
         }
 
-        edit_reserve_time_check_in.setOnClickListener {
-            showTimeDialogFromListener(requireContext(), mTimeCheckInSetListener,edit_reserve_time_check_in.text.toString())
+        // time check-in dialog
+        mBinding.editReserveTimeCheckIn.setOnClickListener {
+            showTimeDialogFromListener(
+                requireContext(),
+                mTimeCheckInSetListener,
+                mBinding.editReserveTimeCheckIn.text.toString()
+            )
         }
         mTimeCheckInSetListener = TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
-            edit_reserve_time_check_in.text = getTimeString(hourOfDay, minute)
+            mBinding.editReserveTimeCheckIn.text = getTimeString(hourOfDay, minute)
         }
 
-        edit_reserve_date_check_out.setOnClickListener {
-            showCalendarDialogFromListener(requireContext(), mDateCheckOutSetListener,mCurrentDateCheckOut)
+        // date check-out dialog
+        mBinding.editReserveDateCheckOut.setOnClickListener {
+            showCalendarDialogFromListener(
+                requireContext(),
+                mDateCheckOutSetListener,
+                mCurrentDateCheckOut
+            )
         }
-        mDateCheckOutSetListener =
-            DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+        mDateCheckOutSetListener = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
                 mCurrentDateCheckOut = getDateFormatISO(year, month, dayOfMonth)
-                edit_reserve_date_check_out.text = mCurrentDateCheckOut.toDateFormat(true)
+                mBinding.editReserveDateCheckOut.text = mCurrentDateCheckOut.toDateFormat(true)
             }
 
-        edit_reserve_time_check_out.setOnClickListener {
-            showTimeDialogFromListener(requireContext(), mTimeCheckOutSetListener,edit_reserve_time_check_out.text.toString())
+        // time check-out dialog
+        mBinding.editReserveTimeCheckOut.setOnClickListener {
+            showTimeDialogFromListener(
+                requireContext(),
+                mTimeCheckOutSetListener,
+                mBinding.editReserveTimeCheckOut.text.toString()
+            )
         }
         mTimeCheckOutSetListener = TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
-            edit_reserve_time_check_out.text = getTimeString(hourOfDay, minute)
+            mBinding.editReserveTimeCheckOut.text = getTimeString(hourOfDay, minute)
         }
 
+        // guest count
         if (mIsNew) {
-            edit_reserve_guests_count.setText("1")
+            mBinding.editReserveGuestsCount.setText("1")
         } else {
-            edit_reserve_guests_count.setText(mCurrentReserve.guestsCount.toString())
+            mBinding.editReserveGuestsCount.setText(mCurrentReserve.guestsCount.toString())
         }
 
-        edit_reserve_guests_count.filters = arrayOf<InputFilter>(GuestsCountInputFilter());
+        mBinding.editReserveGuestsCount.filters = arrayOf<InputFilter>(GuestsCountInputFilter())
 
-        edit_reserve_sum.addTextChangedListener {
+        // суммы
+        mBinding.editReserveSum.addTextChangedListener {
             changePaymentBtnVisibility()
         }
 
-        edit_reserve_payment.addTextChangedListener {
+        mBinding.editReservePayment.addTextChangedListener {
             changePaymentBtnVisibility()
         }
 
-        edit_reserve_btn_payment_full.setOnClickListener {
-            edit_reserve_payment.setText(edit_reserve_sum.text.toString())
+        mBinding.editReserveBtnPaymentFull.setOnClickListener {
+            mBinding.editReservePayment.setText(edit_reserve_sum.text.toString())
             changePaymentBtnVisibility()
         }
 
@@ -211,10 +233,10 @@ class EditReserveFragment : Fragment() {
     }
 
     private fun changePaymentBtnVisibility() {
-        if (edit_reserve_payment.text.toString() == edit_reserve_sum.text.toString()) {
-            edit_reserve_btn_payment_full.visibility = View.INVISIBLE
+        if (mBinding.editReservePayment.text.toString() == mBinding.editReserveSum.text.toString()) {
+            mBinding.editReserveBtnPaymentFull.visibility = View.INVISIBLE
         } else {
-            edit_reserve_btn_payment_full.visibility = View.VISIBLE
+            mBinding.editReserveBtnPaymentFull.visibility = View.VISIBLE
         }
 
     }

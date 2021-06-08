@@ -45,4 +45,5 @@
     <string name="enter_checkin_time">Select the check-in time</string>
     <string name="enter_checkout_date">Select the check-out date</string>
     <string name="enter_checkin_date">Select the check-in date</string>
+    <string name="open">Open</string>
 </resources>

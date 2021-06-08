@@ -7,12 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import ru.butterbean.easyrent.R
 import ru.butterbean.easyrent.databinding.FragmentSplashBinding
-import ru.butterbean.easyrent.screens.room.RoomsListFragment
 import ru.butterbean.easyrent.utils.APP_ACTIVITY
-import ru.butterbean.easyrent.utils.replaceFragment
 
 class SplashFragment : Fragment() {
 
