@@ -88,7 +88,7 @@ class ReserveRepository(private val reserveDao: ReserveDao) {
                     resList.add(fm)
                 }
                 if (dateCheckOut.get(Calendar.HOUR_OF_DAY)<14) dateCheckOut.set(Calendar.HOUR_OF_DAY,14)
-                currentDate = getStartOfDay(dateCheckOut)
+                currentDate = dateCheckOut
             }
             val sm = createSimpleModel(reserve)
             resList.add(sm)
