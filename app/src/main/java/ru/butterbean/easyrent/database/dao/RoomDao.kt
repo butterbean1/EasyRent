@@ -23,6 +23,9 @@ interface RoomDao {
     @Query("SELECT * FROM $TABLE_ROOMS_NAME ORDER BY name ASC")
     fun readAllRooms(): LiveData<List<RoomData>>
 
+    @Query("SELECT COUNT(*) FROM $TABLE_ROOMS_NAME")
+    fun getRoomsCount(): LiveData<Int>
+
     @Query("SELECT COUNT(*) FROM $TABLE_RESERVES_NAME WHERE roomId = :roomId")
     fun getReservesCount(roomId:Long): LiveData<Int>
 

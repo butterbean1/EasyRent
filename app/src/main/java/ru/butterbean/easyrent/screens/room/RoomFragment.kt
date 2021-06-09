@@ -86,7 +86,8 @@ class RoomFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.edit_menu, menu)
+        if (ROOMS_COUNT==1)inflater.inflate(R.menu.edit_room_menu, menu)
+        else inflater.inflate(R.menu.edit_menu, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -118,11 +119,11 @@ class RoomFragment : Fragment() {
 
     private fun initialize() {
         APP_ACTIVITY.title = mCurrentRoom.name
-        APP_ACTIVITY.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        APP_ACTIVITY.supportActionBar?.setDisplayHomeAsUpEnabled(ROOMS_COUNT>1)
 
         //Recycler view
-//        val adapter = ReservesListAdapter(this)
-        val adapter = ReservesListAdapterNew(this)
+        val adapter = ReservesListAdapter(this)
         mRecyclerView = mBinding.roomReservesRecyclerView
         mRecyclerView.adapter = adapter
 
@@ -145,9 +146,6 @@ class RoomFragment : Fragment() {
         } else {
             mBinding.roomAddress.text = mCurrentRoom.address
         }
-//        viewModel.getStatus(mCurrentRoom.id).observe(viewLifecycleOwner) { status ->
-//            mBinding.roomStatus.text = status
-//        }
 
         // add menu
         setHasOptionsMenu(true)

@@ -28,7 +28,7 @@ class RoomViewModel(application: Application) : AndroidViewModel(application) {
     //    fun getReservesByRoomId(roomId:Long): LiveData<List<ReserveData>> = mRepository.getReservesByRoomId(roomId)
     fun getReservesByRoomId(roomId: Long, onSuccess: (List<ReserveType>) -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
-            val list = mRepository.getReservesByRoomIdNew(roomId)
+            val list = mRepository.getReservesByRoomId(roomId)
             withContext(Dispatchers.Main){onSuccess(list)}
         }
     }

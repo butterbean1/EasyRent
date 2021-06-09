@@ -58,7 +58,7 @@ class ReserveRepository(private val reserveDao: ReserveDao) {
 
     fun getStatus(id: Long): LiveData<String> = reserveDao.getStatus(id)
 
-    fun getReservesByRoomIdNew(roomId: Long): List<ReserveType> {
+    fun getReservesByRoomId(roomId: Long): List<ReserveType> {
         val reservesList = reserveDao.getReservesByRoomId(roomId)
         // обработаем список резервов и создадим новый список из различных ххххReserveModel (free, simple и т.д.)
         // для вывода в RecyclerView
