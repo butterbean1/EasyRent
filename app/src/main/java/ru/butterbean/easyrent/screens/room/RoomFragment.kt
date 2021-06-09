@@ -86,13 +86,20 @@ class RoomFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        if (ROOMS_COUNT==1)inflater.inflate(R.menu.edit_room_menu, menu)
+        if (ONLY_ONE_ROOM) inflater.inflate(R.menu.edit_room_menu, menu)
         else inflater.inflate(R.menu.edit_menu, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> APP_ACTIVITY.navController.popBackStack()
+            R.id.new_room -> {
+                APP_ACTIVITY.navController.navigate(
+                    R.id.action_roomFragment_to_editRoomFragment,
+                    createArgsBundle("room", getEmptyRoom())
+                )
+                true
+            }
             R.id.confirm_edit -> {
                 viewModel.getRoomById(mCurrentRoom.id).observe(viewLifecycleOwner) {
                     APP_ACTIVITY.navController.navigate(
@@ -120,7 +127,7 @@ class RoomFragment : Fragment() {
     private fun initialize() {
         APP_ACTIVITY.title = mCurrentRoom.name
 
-        APP_ACTIVITY.supportActionBar?.setDisplayHomeAsUpEnabled(ROOMS_COUNT>1)
+        APP_ACTIVITY.supportActionBar?.setDisplayHomeAsUpEnabled(!ONLY_ONE_ROOM)
 
         //Recycler view
         val adapter = ReservesListAdapter(this)

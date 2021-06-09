@@ -9,10 +9,7 @@ import ru.butterbean.easyrent.R
 import ru.butterbean.easyrent.database.view_models.EditRoomViewModel
 import ru.butterbean.easyrent.databinding.FragmentEditRoomBinding
 import ru.butterbean.easyrent.models.RoomData
-import ru.butterbean.easyrent.utils.APP_ACTIVITY
-import ru.butterbean.easyrent.utils.createArgsBundle
-import ru.butterbean.easyrent.utils.deleteRoomWithDialog
-import ru.butterbean.easyrent.utils.showToast
+import ru.butterbean.easyrent.utils.*
 
 class EditRoomFragment : Fragment() {
 
@@ -69,7 +66,10 @@ class EditRoomFragment : Fragment() {
             if (mIsNew) {
                 // если новое помещение - добавляем в базу и переходим в карточку помещения
                 mViewModel.addRoom(room) { newId ->
-                    goToRoomFragment(RoomData(newId, room.name, room.address, room.status))
+                    mViewModel.getRoomsCount().observe(this){roomsCount->
+                        ONLY_ONE_ROOM = roomsCount==1
+                        goToRoomFragment(RoomData(newId, room.name, room.address, room.status))
+                    }
                 }
             } else {
                 // если редактируем - записываем изменения и переходим в карточку помещения

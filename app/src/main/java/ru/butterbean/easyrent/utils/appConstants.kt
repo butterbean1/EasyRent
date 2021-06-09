@@ -6,7 +6,7 @@ import ru.butterbean.easyrent.database.MainDatabase
 lateinit var APP_ACTIVITY:MainActivity
 lateinit var APP_DATABASE:MainDatabase
 
-var ROOMS_COUNT:Int = 0
+var ONLY_ONE_ROOM:Boolean = false
 
 lateinit var STATUS_FREE : String
 lateinit var STATUS_FREE_FROM : String

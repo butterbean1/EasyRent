@@ -2,6 +2,7 @@ package ru.butterbean.easyrent.database.view_models
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -26,5 +27,7 @@ class EditRoomViewModel(application: Application) : AndroidViewModel(application
             withContext(Dispatchers.Main){onSuccess()}
         }
     }
+
+    fun getRoomsCount():LiveData<Int> = mRepository.getRoomsCount()
 
 }

@@ -57,6 +57,11 @@
             app:destination="@id/roomsListFragment"
             app:launchSingleTop="true"
             app:popUpTo="@id/main_nav" />
+        <action
+            android:id="@+id/action_splashFragment_to_roomFragment"
+            app:destination="@id/roomFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/main_nav" />
     </fragment>
     <fragment
         android:id="@+id/roomsListFragment"

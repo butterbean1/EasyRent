@@ -9,11 +9,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import ru.butterbean.easyrent.R
-import ru.butterbean.easyrent.database.view_models.EditRoomViewModel
 import ru.butterbean.easyrent.database.view_models.SplashViewModel
 import ru.butterbean.easyrent.databinding.FragmentSplashBinding
 import ru.butterbean.easyrent.utils.APP_ACTIVITY
-import ru.butterbean.easyrent.utils.ROOMS_COUNT
+import ru.butterbean.easyrent.utils.ONLY_ONE_ROOM
 
 class SplashFragment : Fragment() {
 
@@ -41,7 +40,7 @@ class SplashFragment : Fragment() {
         val viewModel = ViewModelProvider(APP_ACTIVITY).get(SplashViewModel::class.java)
 
         viewModel.getRoomsCount().observe(this){roomsCount->
-            ROOMS_COUNT = roomsCount
+            ONLY_ONE_ROOM = roomsCount==1
             Handler(Looper.getMainLooper()).postDelayed({
                 APP_ACTIVITY.supportActionBar?.show()
                 APP_ACTIVITY.navController.navigate(R.id.action_splashFragment_to_roomsListFragment)
