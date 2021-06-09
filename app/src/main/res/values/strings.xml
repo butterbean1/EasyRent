@@ -17,10 +17,10 @@
     <string name="check_in">Заселение</string>
     <string name="check_out">Выселение</string>
     <string name="check_in_date">Дата</string>
-    <string name="check_in_time" translatable="false">12:00</string>
+    <string name="check_in_time" translatable="false">14:00</string>
     <string name="was_check_in">Заселение произошло</string>
     <string name="check_out_date">Дата</string>
-    <string name="check_out_time" translatable="false">14:00</string>
+    <string name="check_out_time" translatable="false">12:00</string>
     <string name="was_check_out">Выселение произошло</string>
     <string name="def_guest_name">Спиридон Красносельский</string>
     <string name="guest_name">Имя гостя</string>
@@ -49,4 +49,8 @@
     <string name="enter_checkin_time">Выберите время заселения!</string>
     <string name="enter_checkin_date">Выберите дату заселения!</string>
     <string name="open">Открыть</string>
+    <string name="def_free_reserve_text">Свободно с 25 июля по 12 августа</string>
+    <string name="status_free_from">с</string>
+    <string name="status_free_to">по</string>
+    <string name="status_free_on"></string>
 </resources>

@@ -57,6 +57,19 @@ fun Calendar.toDateFormat(): String {
     return formatter.format(this.time)
 }
 
+fun Calendar.toDateTimeInDatabaseFormat(): String {
+    val d = getDateFormatISO(
+        this.get(Calendar.YEAR),
+        this.get(Calendar.MONTH),
+        this.get(Calendar.DAY_OF_MONTH)
+    )
+    val t = getTimeString(
+        this.get(Calendar.HOUR_OF_DAY),
+        this.get(Calendar.MINUTE)
+    )
+    return getDateTimeInDatabaseFormat(d,t)
+}
+
 fun String.toDateFormat(onlyDate: Boolean = false): String {
 
     return if (Build.VERSION.SDK_INT > 25) {

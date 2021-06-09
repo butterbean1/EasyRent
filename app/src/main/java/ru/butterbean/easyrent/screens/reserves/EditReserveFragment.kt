@@ -16,6 +16,7 @@ import ru.butterbean.easyrent.databinding.FragmentEditReserveBinding
 import ru.butterbean.easyrent.models.ReserveData
 import ru.butterbean.easyrent.models.RoomData
 import ru.butterbean.easyrent.utils.*
+import java.util.*
 
 class EditReserveFragment : Fragment() {
 
@@ -132,7 +133,7 @@ class EditReserveFragment : Fragment() {
         APP_ACTIVITY.supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         mViewModel = ViewModelProvider(APP_ACTIVITY).get(EditReserveViewModel::class.java)
-        mIsNew = mCurrentReserve.guestName.isEmpty()
+        mIsNew = mCurrentReserve.id == 0.toLong()
 
         // получим название помещения из БД таблицы помещений
         mViewModel.getRoomById(mCurrentReserve.roomId).observe(viewLifecycleOwner, { room ->
@@ -145,17 +146,19 @@ class EditReserveFragment : Fragment() {
         mBinding.editReservePayment.setText(mCurrentReserve.payment.toString())
         mBinding.editReserveWasCheckIn.isChecked = mCurrentReserve.wasCheckIn
         mBinding.editReserveWasCheckOut.isChecked = mCurrentReserve.wasCheckOut
-        if (!mIsNew) {
+        if (mCurrentReserve.dateCheckIn.isNotEmpty()){
             mCurrentDateCheckIn = mCurrentReserve.dateCheckIn.substring(0, 10)
-            mCurrentDateCheckOut = mCurrentReserve.dateCheckOut.substring(0, 10)
             mBinding.editReserveDateCheckIn.text = mCurrentReserve.dateCheckIn.toDateFormat(false)
-            mBinding.editReserveDateCheckOut.text = mCurrentReserve.dateCheckOut.toDateFormat(false)
             mBinding.editReserveTimeCheckIn.text = mCurrentReserve.dateCheckIn.toTimeFormat()
+        }
+        if (mCurrentReserve.dateCheckOut.isNotEmpty()) {
+            mCurrentDateCheckOut = mCurrentReserve.dateCheckOut.substring(0, 10)
+            mBinding.editReserveDateCheckOut.text = mCurrentReserve.dateCheckOut.toDateFormat(false)
             mBinding.editReserveTimeCheckOut.text = mCurrentReserve.dateCheckOut.toTimeFormat()
         }
         changePaymentBtnVisibility()
 
-        // date check-in dialog
+        // date check-in диалог
         mBinding.editReserveDateCheckIn.setOnClickListener {
             hideKeyboard()
             showCalendarDialogFromListener(
@@ -169,7 +172,7 @@ class EditReserveFragment : Fragment() {
             mBinding.editReserveDateCheckIn.text = mCurrentDateCheckIn.toDateFormat(true)
         }
 
-        // time check-in dialog
+        // time check-in диалог
         mBinding.editReserveTimeCheckIn.setOnClickListener {
             showTimeDialogFromListener(
                 requireContext(),
@@ -181,7 +184,7 @@ class EditReserveFragment : Fragment() {
             mBinding.editReserveTimeCheckIn.text = getTimeString(hourOfDay, minute)
         }
 
-        // date check-out dialog
+        // date check-out диалог
         mBinding.editReserveDateCheckOut.setOnClickListener {
             showCalendarDialogFromListener(
                 requireContext(),
@@ -194,7 +197,7 @@ class EditReserveFragment : Fragment() {
                 mBinding.editReserveDateCheckOut.text = mCurrentDateCheckOut.toDateFormat(true)
             }
 
-        // time check-out dialog
+        // time check-out диалог
         mBinding.editReserveTimeCheckOut.setOnClickListener {
             showTimeDialogFromListener(
                 requireContext(),
@@ -229,7 +232,7 @@ class EditReserveFragment : Fragment() {
             changePaymentBtnVisibility()
         }
 
-        // add menu
+        // добавляем меню
         setHasOptionsMenu(true)
     }
 

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/recycle_view_item"
+    android:background="@drawable/ripple_effect_blue">
+
+    <TextView
+        android:id="@+id/reserves_list_free_reserve"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/app_margin"
+        android:maxLines="1"
+        android:textStyle="italic"
+        android:textSize="@dimen/small_text_size"
+        android:text="@string/def_free_reserve_text"
+        android:textColor="@color/blue"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -46,4 +46,8 @@
     <string name="enter_checkout_date">Select the check-out date</string>
     <string name="enter_checkin_date">Select the check-in date</string>
     <string name="open">Open</string>
+    <string name="def_free_reserve_text">Free from 25 July to 12 August</string>
+    <string name="status_free_from">from</string>
+    <string name="status_free_to">to</string>
+    <string name="status_free_on">" on"</string>
 </resources>

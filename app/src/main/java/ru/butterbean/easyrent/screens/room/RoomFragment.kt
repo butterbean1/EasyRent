@@ -11,7 +11,7 @@ import ru.butterbean.easyrent.database.view_models.RoomViewModel
 import ru.butterbean.easyrent.databinding.FragmentRoomBinding
 import ru.butterbean.easyrent.models.ReserveData
 import ru.butterbean.easyrent.models.RoomData
-import ru.butterbean.easyrent.screens.reserves.ReservesListAdapter
+import ru.butterbean.easyrent.screens.reserves.*
 import ru.butterbean.easyrent.utils.*
 
 class RoomFragment : Fragment() {
@@ -22,12 +22,27 @@ class RoomFragment : Fragment() {
     private lateinit var mRecyclerView: RecyclerView
 
     companion object {
-        fun clickOnListItem(reserve: ReserveData) {
-            goToEditReserveFragment(reserve)
+        fun clickOnListItem(reserveType: ReserveType) {
+            when (reserveType.getItemViewType()) {
+                ReserveType.SIMPLE -> {
+                    val reserveModel = reserveType as SimpleReserveModel
+                    goToEditReserveFragment(reserveModel.toReserveData())
+                }
+                ReserveType.FREE -> {
+                    val reserveModel = reserveType as FreeReserveModel
+                    goToEditReserveFragment(reserveModel.toReserveData())
+                }
+            }
+
         }
 
-        fun longClickOnListItem(reserve: ReserveData, fragment: RoomFragment) {
-            showEditDeleteReserveDialog(reserve, fragment)
+        fun longClickOnListItem(reserveType: ReserveType, fragment: RoomFragment) {
+            when (reserveType.getItemViewType()) {
+                ReserveType.SIMPLE -> {
+                    val reserveModel = reserveType as SimpleReserveModel
+                    showEditDeleteReserveDialog(reserveModel.toReserveData(), fragment)
+                }
+            }
         }
 
         private fun showEditDeleteReserveDialog(reserve: ReserveData, fragment: RoomFragment) {
@@ -106,7 +121,8 @@ class RoomFragment : Fragment() {
         APP_ACTIVITY.supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         //Recycler view
-        val adapter = ReservesListAdapter(this)
+//        val adapter = ReservesListAdapter(this)
+        val adapter = ReservesListAdapterNew(this)
         mRecyclerView = mBinding.roomReservesRecyclerView
         mRecyclerView.adapter = adapter
 
@@ -119,9 +135,9 @@ class RoomFragment : Fragment() {
         }
 
         viewModel = ViewModelProvider(this).get(RoomViewModel::class.java)
-        viewModel.getReservesByRoomId(mCurrentRoom.id).observe(viewLifecycleOwner, { reserves ->
+        viewModel.getReservesByRoomId(mCurrentRoom.id) { reserves ->
             adapter.setData(reserves)
-        })
+        }
 
         mBinding.roomName.text = mCurrentRoom.name
         if (mCurrentRoom.address.isEmpty()) {
@@ -129,9 +145,9 @@ class RoomFragment : Fragment() {
         } else {
             mBinding.roomAddress.text = mCurrentRoom.address
         }
-        viewModel.getStatus(mCurrentRoom.id).observe(viewLifecycleOwner) { status ->
-            mBinding.roomStatus.text = status
-        }
+//        viewModel.getStatus(mCurrentRoom.id).observe(viewLifecycleOwner) { status ->
+//            mBinding.roomStatus.text = status
+//        }
 
         // add menu
         setHasOptionsMenu(true)

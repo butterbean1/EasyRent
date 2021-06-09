@@ -95,7 +95,7 @@ class EditRoomFragment : Fragment() {
     }
 
     private fun initialize() {
-        mIsNew = mCurrentRoom.name.isEmpty()
+        mIsNew = mCurrentRoom.id == 0.toLong()
 
         if (mIsNew) {
             APP_ACTIVITY.title = getString(R.string.new_room)

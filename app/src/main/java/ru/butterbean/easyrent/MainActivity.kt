@@ -26,6 +26,9 @@ class MainActivity : AppCompatActivity() {
         APP_DATABASE = MainDatabase.getDatabase(applicationContext)
 
         STATUS_FREE = getString(R.string.status_free)
+        STATUS_FREE_FROM = getString(R.string.status_free_from)
+        STATUS_FREE_TO = getString(R.string.status_free_to)
+        STATUS_FREE_ON = getString(R.string.status_free_on)
         STATUS_BUSY = getString(R.string.status_busy)
         STATUS_REPAIRS = getString(R.string.status_on_repair)
         STATUS_UNTIL = getString(R.string.status_until)
