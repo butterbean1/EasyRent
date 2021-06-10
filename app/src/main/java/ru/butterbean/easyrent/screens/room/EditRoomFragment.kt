@@ -105,7 +105,7 @@ class EditRoomFragment : Fragment() {
     private fun initialize() {
         mIsNew = mCurrentRoom.id == 0.toLong()
         val prefs = PreferenceManager.getDefaultSharedPreferences(APP_ACTIVITY)
-        val useAddresses = prefs.getBoolean("useRoomAddresses", false)
+        val useAddresses = prefs.getBoolean("useRoomAddresses", true)
 
         if (mIsNew) {
             APP_ACTIVITY.title = getString(R.string.new_room)

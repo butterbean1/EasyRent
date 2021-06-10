@@ -144,7 +144,7 @@ class RoomFragment : Fragment() {
 
         APP_ACTIVITY.supportActionBar?.setDisplayHomeAsUpEnabled(!ONLY_ONE_ROOM)
         val prefs = PreferenceManager.getDefaultSharedPreferences(APP_ACTIVITY)
-        val useAddresses = prefs.getBoolean("useRoomAddresses", false)
+        val useAddresses = prefs.getBoolean("useRoomAddresses", true)
         var dontShowAddress = true
             if (useAddresses) dontShowAddress = useAddresses&&prefs.getBoolean("doNotShowAddressInRoomCard", false)
 
