@@ -43,7 +43,7 @@ class RoomsListFragment : Fragment() {
             builder.setItems(actions) { _, i ->
                 when (i) {
                     0 -> goToRoomFragment(room)
-                    1 -> deleteRoomWithDialog(room, lo){}
+                    1 -> deleteRoomWithDialog(room, lo) {}
                 }
             }
                 .show()
@@ -105,6 +105,17 @@ class RoomsListFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        menu.clear()
+        inflater.inflate(R.menu.rooms_list_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.settings -> {
+                APP_ACTIVITY.navController.navigate(R.id.action_roomsListFragment_to_settingsFragment)
+                true
+            }
+            else -> return super.onOptionsItemSelected(item)
+        }
+
     }
 }

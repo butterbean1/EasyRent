@@ -51,6 +51,9 @@
             app:destination="@id/roomsListFragment"
             app:launchSingleTop="true"
             app:popUpTo="@id/main_nav" />
+        <action
+            android:id="@+id/action_roomFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
     </fragment>
     <fragment
         android:id="@+id/splashFragment"
@@ -84,5 +87,12 @@
         <action
             android:id="@+id/action_roomsListFragment_to_editRoomFragment"
             app:destination="@id/editRoomFragment" />
+        <action
+            android:id="@+id/action_roomsListFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment"/>
     </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="ru.butterbean.easyrent.screens.SettingsFragment"
+        android:label="SettingsFragment" />
 </navigation>

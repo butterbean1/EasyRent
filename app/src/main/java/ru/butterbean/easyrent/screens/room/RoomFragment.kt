@@ -6,6 +6,7 @@ import android.view.*
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
 import ru.butterbean.easyrent.R
 import ru.butterbean.easyrent.database.view_models.RoomViewModel
@@ -77,9 +78,9 @@ class RoomFragment : Fragment() {
 
         _binding = FragmentRoomBinding.inflate(layoutInflater, container, false)
         mCurrentRoom = arguments?.getSerializable("room") as RoomData
-        APP_ACTIVITY.onBackPressedDispatcher.addCallback{
+        APP_ACTIVITY.onBackPressedDispatcher.addCallback {
             if (ONLY_ONE_ROOM) APP_ACTIVITY.finish()
-                else APP_ACTIVITY.navController.navigate(R.id.action_roomFragment_to_roomsListFragment)
+            else APP_ACTIVITY.navController.navigate(R.id.action_roomFragment_to_roomsListFragment)
 
         }
         return mBinding.root
@@ -89,7 +90,7 @@ class RoomFragment : Fragment() {
         super.onDestroyView()
         _binding = null
         mRecyclerView.adapter = null
-        APP_ACTIVITY.onBackPressedDispatcher.addCallback {APP_ACTIVITY.navController.popBackStack()}
+        APP_ACTIVITY.onBackPressedDispatcher.addCallback { APP_ACTIVITY.navController.popBackStack() }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -101,6 +102,10 @@ class RoomFragment : Fragment() {
         return when (item.itemId) {
             android.R.id.home -> {
                 APP_ACTIVITY.navController.navigate(R.id.action_roomFragment_to_roomsListFragment)
+                true
+            }
+            R.id.settings -> {
+                APP_ACTIVITY.navController.navigate(R.id.action_roomFragment_to_settingsFragment)
                 true
             }
             R.id.new_room -> {
@@ -138,6 +143,10 @@ class RoomFragment : Fragment() {
         APP_ACTIVITY.title = mCurrentRoom.name
 
         APP_ACTIVITY.supportActionBar?.setDisplayHomeAsUpEnabled(!ONLY_ONE_ROOM)
+        val prefs = PreferenceManager.getDefaultSharedPreferences(APP_ACTIVITY)
+        val useAddresses = prefs.getBoolean("useRoomAddresses", false)
+        var dontShowAddress = true
+            if (useAddresses) dontShowAddress = useAddresses&&prefs.getBoolean("doNotShowAddressInRoomCard", false)
 
         //Recycler view
         val adapter = ReservesListAdapter(this)
@@ -157,11 +166,15 @@ class RoomFragment : Fragment() {
             adapter.setData(reserves)
         }
 
-        mBinding.roomName.text = mCurrentRoom.name
-        if (mCurrentRoom.address.isEmpty()) {
-            mBinding.roomAddress.text = getString(R.string.empty_address)
+        if (dontShowAddress) {
+            mBinding.roomAddress.visibility = View.GONE
+            mBinding.roomSeparator.visibility = View.GONE
         } else {
-            mBinding.roomAddress.text = mCurrentRoom.address
+            if (mCurrentRoom.address.isEmpty()) {
+                mBinding.roomAddress.text = getString(R.string.empty_address)
+            } else {
+                mBinding.roomAddress.text = mCurrentRoom.address
+            }
         }
 
         // add menu

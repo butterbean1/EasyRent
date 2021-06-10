@@ -2,11 +2,9 @@ package ru.butterbean.easyrent
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupWithNavController
+import androidx.preference.PreferenceManager
 import ru.butterbean.easyrent.database.MainDatabase
 import ru.butterbean.easyrent.databinding.ActivityMainBinding
 import ru.butterbean.easyrent.utils.*
@@ -35,15 +33,10 @@ class MainActivity : AppCompatActivity() {
 
         navController = Navigation.findNavController(this,R.id.nav_host_fragment)
         setSupportActionBar(mBinding.mainToolbar)
-
     }
 
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
-    }
-
-    override fun onBackPressed() {
-        super.onBackPressed()
     }
 }

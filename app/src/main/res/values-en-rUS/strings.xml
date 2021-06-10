@@ -50,4 +50,10 @@
     <string name="status_free_from">from</string>
     <string name="status_free_to">to</string>
     <string name="status_free_on">" on"</string>
+    <string name="settings">Settings</string>
+    <string name="rooms">Rooms</string>
+    <string name="room_fragment_dont_show_address">Don\'t show address</string>
+    <string name="room_fragment_dont_show_address_summary">at room\'s card</string>
+    <string name="pref_use_addresses_title">Addresses</string>
+    <string name="pref_use_addresses_summary">Enter information about room addresses</string>
 </resources>

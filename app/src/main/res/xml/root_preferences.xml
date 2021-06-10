@@ -1,34 +1,23 @@
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <PreferenceCategory app:title="@string/messages_header">
-
-        <EditTextPreference
-            app:key="signature"
-            app:title="@string/signature_title"
-            app:useSimpleSummaryProvider="true" />
-
-        <ListPreference
-            app:defaultValue="reply"
-            app:entries="@array/reply_entries"
-            app:entryValues="@array/reply_values"
-            app:key="reply"
-            app:title="@string/reply_title"
-            app:useSimpleSummaryProvider="true" />
-
-    </PreferenceCategory>
-
-    <PreferenceCategory app:title="@string/sync_header">
+    <PreferenceCategory app:title="@string/rooms" app:iconSpaceReserved="false">
 
         <SwitchPreferenceCompat
-            app:key="sync"
-            app:title="@string/sync_title" />
+            app:key="useRoomAddresses"
+            app:summary="@string/pref_use_addresses_summary"
+            app:title="@string/pref_use_addresses_title"
+            app:useSimpleSummaryProvider="true"
+            app:defaultValue="true"
+            app:iconSpaceReserved="false"
+            />
 
-        <SwitchPreferenceCompat
-            app:dependency="sync"
-            app:key="attachment"
-            app:summaryOff="@string/attachment_summary_off"
-            app:summaryOn="@string/attachment_summary_on"
-            app:title="@string/attachment_title" />
+        <CheckBoxPreference
+            app:key="doNotShowAddressInRoomCard"
+            app:summary="@string/room_fragment_dont_show_address_summary"
+            app:title="@string/room_fragment_dont_show_address"
+            app:useSimpleSummaryProvider="true"
+            app:dependency="useRoomAddresses"
+            />
 
     </PreferenceCategory>
 

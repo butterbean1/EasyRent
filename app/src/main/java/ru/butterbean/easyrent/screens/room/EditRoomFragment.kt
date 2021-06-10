@@ -6,6 +6,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.preference.PreferenceManager
 import kotlinx.android.synthetic.main.fragment_edit_room.*
 import ru.butterbean.easyrent.R
 import ru.butterbean.easyrent.database.view_models.EditRoomViewModel
@@ -30,7 +31,7 @@ class EditRoomFragment : Fragment() {
 
         _binding = FragmentEditRoomBinding.inflate(layoutInflater, container, false)
         mCurrentRoom = arguments?.getSerializable("room") as RoomData
-        mAddFirstRoom = arguments?.getBoolean("addFirstRoom")?: false
+        mAddFirstRoom = arguments?.getBoolean("addFirstRoom") ?: false
         return mBinding.root
     }
 
@@ -89,7 +90,7 @@ class EditRoomFragment : Fragment() {
 
     private fun goToRoomFragment(room: RoomData) {
         val actionId = if (ONLY_ONE_ROOM) R.id.action_editRoomFragment_to_roomFragment_as_main
-                         else R.id.action_editRoomFragment_to_roomFragment
+        else R.id.action_editRoomFragment_to_roomFragment
         APP_ACTIVITY.navController.navigate(
             actionId,
             createArgsBundle("room", room)
@@ -103,6 +104,8 @@ class EditRoomFragment : Fragment() {
 
     private fun initialize() {
         mIsNew = mCurrentRoom.id == 0.toLong()
+        val prefs = PreferenceManager.getDefaultSharedPreferences(APP_ACTIVITY)
+        val useAddresses = prefs.getBoolean("useRoomAddresses", false)
 
         if (mIsNew) {
             APP_ACTIVITY.title = getString(R.string.new_room)
@@ -114,7 +117,9 @@ class EditRoomFragment : Fragment() {
         mViewModel = ViewModelProvider(APP_ACTIVITY).get(EditRoomViewModel::class.java)
 
         mBinding.roomChangeName.setText(mCurrentRoom.name)
-        mBinding.roomChangeAddress.setText(mCurrentRoom.address)
+        if (useAddresses) mBinding.roomChangeAddress.setText(mCurrentRoom.address)
+        else mBinding.roomChangeAddress.visibility = View.GONE
+
         if (mIsNew) {
             mBinding.roomChangeStatus.visibility = View.INVISIBLE
         } else {
