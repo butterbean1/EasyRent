@@ -2,6 +2,8 @@ package ru.butterbean.easyrent.screens.room
 
 import android.os.Bundle
 import android.view.*
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.fragment_edit_room.*
@@ -10,9 +12,11 @@ import ru.butterbean.easyrent.database.view_models.EditRoomViewModel
 import ru.butterbean.easyrent.databinding.FragmentEditRoomBinding
 import ru.butterbean.easyrent.models.RoomData
 import ru.butterbean.easyrent.utils.*
+import java.lang.Appendable
 
 class EditRoomFragment : Fragment() {
 
+    private var mAddFirstRoom = false
     private var mIsNew = false
     private lateinit var mViewModel: EditRoomViewModel
     private lateinit var mCurrentRoom: RoomData
@@ -26,6 +30,7 @@ class EditRoomFragment : Fragment() {
 
         _binding = FragmentEditRoomBinding.inflate(layoutInflater, container, false)
         mCurrentRoom = arguments?.getSerializable("room") as RoomData
+        mAddFirstRoom = arguments?.getBoolean("addFirstRoom")?: false
         return mBinding.root
     }
 
@@ -66,8 +71,8 @@ class EditRoomFragment : Fragment() {
             if (mIsNew) {
                 // если новое помещение - добавляем в базу и переходим в карточку помещения
                 mViewModel.addRoom(room) { newId ->
-                    mViewModel.getRoomsCount().observe(this){roomsCount->
-                        ONLY_ONE_ROOM = roomsCount==1
+                    mViewModel.getRoomsCount().observe(this) { roomsCount ->
+                        ONLY_ONE_ROOM = roomsCount == 1
                         goToRoomFragment(RoomData(newId, room.name, room.address, room.status))
                     }
                 }
@@ -83,8 +88,10 @@ class EditRoomFragment : Fragment() {
     }
 
     private fun goToRoomFragment(room: RoomData) {
+        val actionId = if (ONLY_ONE_ROOM) R.id.action_editRoomFragment_to_roomFragment_as_main
+                         else R.id.action_editRoomFragment_to_roomFragment
         APP_ACTIVITY.navController.navigate(
-            R.id.action_editRoomFragment_to_roomFragment,
+            actionId,
             createArgsBundle("room", room)
         )
     }
@@ -102,7 +109,7 @@ class EditRoomFragment : Fragment() {
         } else {
             APP_ACTIVITY.title = mCurrentRoom.name
         }
-        APP_ACTIVITY.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        APP_ACTIVITY.supportActionBar?.setDisplayHomeAsUpEnabled(!mAddFirstRoom)
 
         mViewModel = ViewModelProvider(APP_ACTIVITY).get(EditRoomViewModel::class.java)
 
@@ -118,4 +125,5 @@ class EditRoomFragment : Fragment() {
         // add menu
         setHasOptionsMenu(true)
     }
+
 }

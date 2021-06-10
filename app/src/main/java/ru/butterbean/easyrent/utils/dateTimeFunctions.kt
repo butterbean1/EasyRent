@@ -133,11 +133,19 @@ fun getTimeString(hour: Int, minute: Int): String {
 fun showCalendarDialogFromListener(
     context: Context,
     listener: DatePickerDialog.OnDateSetListener,
-    date: String // в формате yyyy-MM-dd
+    date: String, // в формате yyyy-MM-dd
+    minDate: String="" // в формате yyyy-MM-dd
 ) {
 
-    val cal = (if (date.isEmpty()) Calendar.getInstance()
-    else getCalendarFromString(date,"yyyy-MM-dd"))
+    val cal = if (date.isEmpty()) {
+        if (minDate.isEmpty()) Calendar.getInstance()
+        else {
+            val c = getCalendarFromString(minDate, "yyyy-MM-dd")
+            c.add(Calendar.DAY_OF_MONTH,1)
+            c
+        }
+    }
+    else getCalendarFromString(date,"yyyy-MM-dd")
 
     val dialog = DatePickerDialog(
         context,

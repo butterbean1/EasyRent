@@ -13,6 +13,8 @@ import ru.butterbean.easyrent.database.view_models.SplashViewModel
 import ru.butterbean.easyrent.databinding.FragmentSplashBinding
 import ru.butterbean.easyrent.utils.APP_ACTIVITY
 import ru.butterbean.easyrent.utils.ONLY_ONE_ROOM
+import ru.butterbean.easyrent.utils.createArgsBundle
+import ru.butterbean.easyrent.utils.getEmptyRoom
 
 class SplashFragment : Fragment() {
 
@@ -27,6 +29,7 @@ class SplashFragment : Fragment() {
         _binding = FragmentSplashBinding.inflate(layoutInflater, container, false)
         return mBinding.root
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
@@ -39,15 +42,31 @@ class SplashFragment : Fragment() {
 
         val viewModel = ViewModelProvider(APP_ACTIVITY).get(SplashViewModel::class.java)
 
-        viewModel.getRoomsCount().observe(this){roomsCount->
-            ONLY_ONE_ROOM = roomsCount==1
+        viewModel.getAllRooms().observe(this) { roomsList ->
             Handler(Looper.getMainLooper()).postDelayed({
+                when (roomsList.count()) {
+                    0 -> {
+                        val args = createArgsBundle("room", getEmptyRoom())
+                        args.putBoolean("addFirstRoom",true)
+                        APP_ACTIVITY.navController.navigate(
+                            R.id.action_splashFragment_to_editRoomFragment,
+                            args
+                        )
+                    }
+                    1 -> {
+                        ONLY_ONE_ROOM = true
+                        APP_ACTIVITY.navController.navigate(
+                            R.id.action_splashFragment_to_roomFragment,
+                            createArgsBundle("room",roomsList[0]))
+                    }
+                    else -> APP_ACTIVITY.navController.navigate(R.id.action_splashFragment_to_roomsListFragment)
+                }
                 APP_ACTIVITY.supportActionBar?.show()
-                APP_ACTIVITY.navController.navigate(R.id.action_splashFragment_to_roomsListFragment)
+
             }, 2000)
         }
 
 
     }
 
- }
+}

@@ -98,8 +98,8 @@ class EditReserveFragment : Fragment() {
                     mCurrentReserve.roomId,
                     guest,
                     Integer.parseInt(guestsCount),
-                    Integer.parseInt(sum),
-                    Integer.parseInt(payment),
+                    if (sum.isEmpty()) 0 else Integer.parseInt(sum),
+                    if (payment.isEmpty()) 0 else Integer.parseInt(payment),
                     dateCheckInText,
                     dateCheckOutText,
                     wasCheckIn,
@@ -135,15 +135,15 @@ class EditReserveFragment : Fragment() {
         mViewModel = ViewModelProvider(APP_ACTIVITY).get(EditReserveViewModel::class.java)
         mIsNew = mCurrentReserve.id == 0.toLong()
 
-        // получим название помещения из БД таблицы помещений
+        // получим модель помещения и его название из БД
         mViewModel.getRoomById(mCurrentReserve.roomId).observe(viewLifecycleOwner, { room ->
             mCurrentRoom = room
             mBinding.editReserveRoomName.text = room.name
         })
 
         mBinding.editReserveGuest.setText(mCurrentReserve.guestName)
-        mBinding.editReserveSum.setText(mCurrentReserve.sum.toString())
-        mBinding.editReservePayment.setText(mCurrentReserve.payment.toString())
+        mBinding.editReserveSum.setText(if (mCurrentReserve.sum==0) "" else mCurrentReserve.sum.toString())
+        mBinding.editReservePayment.setText(if (mCurrentReserve.payment==0) "" else mCurrentReserve.payment.toString())
         mBinding.editReserveWasCheckIn.isChecked = mCurrentReserve.wasCheckIn
         mBinding.editReserveWasCheckOut.isChecked = mCurrentReserve.wasCheckOut
         if (mCurrentReserve.dateCheckIn.isNotEmpty()){
@@ -189,7 +189,8 @@ class EditReserveFragment : Fragment() {
             showCalendarDialogFromListener(
                 requireContext(),
                 mDateCheckOutSetListener,
-                mCurrentDateCheckOut
+                mCurrentDateCheckOut,
+                mCurrentDateCheckIn
             )
         }
         mDateCheckOutSetListener = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
@@ -266,7 +267,7 @@ class EditReserveFragment : Fragment() {
                     return null
             } catch (e: NumberFormatException) {
             }
-            return ""
+            return "0"
         }
 
         private fun isInRange(c: Int): Boolean {
