@@ -37,9 +37,9 @@
         <EditTextPreference
             app:iconSpaceReserved="false"
             app:key="appVersion"
-            app:title="Версия"
+            app:title="@string/pref_app_version_title"
             android:selectable="false"
-            android:summary="1.0"/>
+            android:summary="@string/pref_app_version_summary"/>
     </PreferenceCategory>
 
 </PreferenceScreen>
