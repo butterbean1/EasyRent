@@ -25,17 +25,18 @@ class RoomViewModel(application: Application) : AndroidViewModel(application) {
 
     fun getReservesCount(roomId: Long): LiveData<Int> = mRepository.getReservesCount(roomId)
 
-    //    fun getReservesByRoomId(roomId:Long): LiveData<List<ReserveData>> = mRepository.getReservesByRoomId(roomId)
-    fun getReservesByRoomId(roomId: Long, onSuccess: (List<ReserveType>) -> Unit) {
+    fun getReservesByRoomId(
+        roomId: Long,
+        dontShowFreeReserves: Boolean,
+        onSuccess: (List<ReserveType>) -> Unit
+    ) {
         viewModelScope.launch(Dispatchers.IO) {
-            val list = mRepository.getReservesByRoomId(roomId)
-            withContext(Dispatchers.Main){onSuccess(list)}
+            val list: List<ReserveType> = if (dontShowFreeReserves) mRepository.getAllReservesByRoomId(roomId)
+                   else mRepository.getReservesByRoomId(roomId)
+            withContext(Dispatchers.Main) { onSuccess(list) }
         }
     }
 
-    fun getStatus(roomId: Long): LiveData<String> = mRepository.getStatus(roomId)
-
     fun getRoomById(id: Long): LiveData<RoomData> = mRepository.getRoomById(id)
-
 
 }

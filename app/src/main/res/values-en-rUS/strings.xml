@@ -52,8 +52,11 @@
     <string name="status_free_on">" on"</string>
     <string name="settings">Settings</string>
     <string name="rooms">Rooms</string>
-    <string name="room_fragment_dont_show_address">Don\'t show address</string>
-    <string name="room_fragment_dont_show_address_summary">at room\'s card</string>
+    <string name="pref_dont_show_address_title">Don\'t show address</string>
+    <string name="pref_dont_show_address_summary">at room\'s card</string>
     <string name="pref_use_addresses_title">Addresses</string>
     <string name="pref_use_addresses_summary">Enter information about room addresses</string>
+    <string name="pref_dont_show_free_reserves_title">Don\'t show empty space</string>
+    <string name="pref_dont_show_free_reserves_summary">between bookings in list</string>
+    <string name="bookings">Bookings</string>
 </resources>

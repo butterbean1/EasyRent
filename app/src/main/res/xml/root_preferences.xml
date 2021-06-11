@@ -1,24 +1,41 @@
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <PreferenceCategory app:title="@string/rooms" app:iconSpaceReserved="false">
+    <PreferenceCategory
+        app:iconSpaceReserved="false"
+        app:title="@string/rooms">
 
         <SwitchPreferenceCompat
-            app:key="useRoomAddresses"
-            app:summary="@string/pref_use_addresses_summary"
-            app:title="@string/pref_use_addresses_title"
-            app:useSimpleSummaryProvider="true"
             app:defaultValue="true"
             app:iconSpaceReserved="false"
-            />
+            app:key="useRoomAddresses"
+            app:summary="@string/pref_use_addresses_summary"
+            app:title="@string/pref_use_addresses_title" />
 
         <CheckBoxPreference
-            app:key="doNotShowAddressInRoomCard"
-            app:summary="@string/room_fragment_dont_show_address_summary"
-            app:title="@string/room_fragment_dont_show_address"
-            app:useSimpleSummaryProvider="true"
             app:dependency="useRoomAddresses"
-            />
+            app:iconSpaceReserved="false"
+            app:key="doNotShowAddressInRoomCard"
+            app:summary="@string/pref_dont_show_address_summary"
+            app:title="@string/pref_dont_show_address_title" />
 
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:iconSpaceReserved="false"
+        app:title="@string/bookings">
+        <CheckBoxPreference
+            app:iconSpaceReserved="false"
+            app:key="doNotShowFreeReserves"
+            app:summary="@string/pref_dont_show_free_reserves_summary"
+            app:title="@string/pref_dont_show_free_reserves_title" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:iconSpaceReserved="false"
+        app:title="Версия ПО">
+        <Preference
+            app:iconSpaceReserved="false"
+            app:title="1.0.0" />
     </PreferenceCategory>
 
 </PreferenceScreen>

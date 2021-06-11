@@ -22,6 +22,7 @@ class RoomFragment : Fragment() {
     private var _binding: FragmentRoomBinding? = null
     private val mBinding get() = _binding!!
     private lateinit var mRecyclerView: RecyclerView
+    private var dontShowFreeReserves = false
 
     companion object {
         fun clickOnListItem(reserveType: ReserveType) {
@@ -144,6 +145,7 @@ class RoomFragment : Fragment() {
 
         APP_ACTIVITY.supportActionBar?.setDisplayHomeAsUpEnabled(!ONLY_ONE_ROOM)
         val prefs = PreferenceManager.getDefaultSharedPreferences(APP_ACTIVITY)
+        val dontShowFreeReserves = prefs.getBoolean("doNotShowFreeReserves", false)
         val useAddresses = prefs.getBoolean("useRoomAddresses", true)
         var dontShowAddress = true
             if (useAddresses) dontShowAddress = useAddresses&&prefs.getBoolean("doNotShowAddressInRoomCard", false)
@@ -162,7 +164,7 @@ class RoomFragment : Fragment() {
         }
 
         viewModel = ViewModelProvider(this).get(RoomViewModel::class.java)
-        viewModel.getReservesByRoomId(mCurrentRoom.id) { reserves ->
+        viewModel.getReservesByRoomId(mCurrentRoom.id,dontShowFreeReserves) { reserves ->
             adapter.setData(reserves)
         }
 

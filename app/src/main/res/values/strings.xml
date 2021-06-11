@@ -57,10 +57,13 @@
 
     <!-- Preference Titles -->
     <string name="rooms">Помещения</string>
-    <string name="room_fragment_dont_show_address">Не отображать адрес</string>
-    <string name="room_fragment_dont_show_address_summary">в карточке помещения</string>
+    <string name="pref_dont_show_address_title">Не отображать адрес</string>
+    <string name="pref_dont_show_address_summary">в карточке помещения</string>
     <string name="pref_use_addresses_title">Адреса</string>
     <string name="pref_use_addresses_summary">Вводить информацию об адресах помещений</string>
+    <string name="pref_dont_show_free_reserves_title">Не отображать окна</string>
+    <string name="pref_dont_show_free_reserves_summary">между бронированиями в списке</string>
+    <string name="bookings">Бронирования</string>
 
 
 </resources>

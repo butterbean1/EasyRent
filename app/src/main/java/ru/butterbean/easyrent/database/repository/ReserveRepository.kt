@@ -1,7 +1,6 @@
 package ru.butterbean.easyrent.database.repository
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import ru.butterbean.easyrent.database.dao.ReserveDao
 import ru.butterbean.easyrent.models.ReserveData
 import ru.butterbean.easyrent.models.RoomData
@@ -56,7 +55,14 @@ class ReserveRepository(private val reserveDao: ReserveDao) {
 
     fun getRoomById(id: Long): LiveData<RoomData> = reserveDao.getRoomById(id)
 
-    fun getStatus(id: Long): LiveData<String> = reserveDao.getStatus(id)
+    fun getAllReservesByRoomId(roomId: Long): List<ReserveType> {
+        val reservesList = reserveDao.getReservesByRoomId(roomId)
+        val resList = mutableListOf<ReserveType>()
+        reservesList.forEach { reserve ->
+            resList.add(createSimpleModel(reserve))
+        }
+        return resList
+    }
 
     fun getReservesByRoomId(roomId: Long): List<ReserveType> {
         val reservesList = reserveDao.getReservesByRoomId(roomId)
@@ -90,8 +96,7 @@ class ReserveRepository(private val reserveDao: ReserveDao) {
                 if (dateCheckOut.get(Calendar.HOUR_OF_DAY)<14) dateCheckOut.set(Calendar.HOUR_OF_DAY,14)
                 currentDate = dateCheckOut
             }
-            val sm = createSimpleModel(reserve)
-            resList.add(sm)
+            resList.add(createSimpleModel(reserve))
         }
         if (!lastFreeShowed && reservesList.isNotEmpty()) {
             val fm = FreeReserveModel(roomId,currentDate.toDateTimeInDatabaseFormat())
