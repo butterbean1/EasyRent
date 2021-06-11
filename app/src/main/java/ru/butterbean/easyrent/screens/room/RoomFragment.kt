@@ -22,9 +22,10 @@ class RoomFragment : Fragment() {
     private var _binding: FragmentRoomBinding? = null
     private val mBinding get() = _binding!!
     private lateinit var mRecyclerView: RecyclerView
-    private var dontShowFreeReserves = false
+    private var mDoNotShowFreeReserves = false
+    private lateinit var mAdapter: ReservesListAdapter
 
-    companion object {
+        companion object {
         fun clickOnListItem(reserveType: ReserveType) {
             when (reserveType.getItemViewType()) {
                 ReserveType.SIMPLE -> {
@@ -57,7 +58,10 @@ class RoomFragment : Fragment() {
             builder.setItems(actions) { _, i ->
                 when (i) {
                     0 -> goToEditReserveFragment(reserve)
-                    1 -> fragment.viewModel.deleteReserve(reserve)
+                    1 -> {
+                        fragment.viewModel.deleteReserve(reserve)
+                        fragment.setDataToAdapter()
+                    }
                 }
             }
                 .show()
@@ -145,15 +149,15 @@ class RoomFragment : Fragment() {
 
         APP_ACTIVITY.supportActionBar?.setDisplayHomeAsUpEnabled(!ONLY_ONE_ROOM)
         val prefs = PreferenceManager.getDefaultSharedPreferences(APP_ACTIVITY)
-        val dontShowFreeReserves = prefs.getBoolean("doNotShowFreeReserves", false)
+        mDoNotShowFreeReserves = prefs.getBoolean("doNotShowFreeReserves", false)
         val useAddresses = prefs.getBoolean("useRoomAddresses", true)
         var dontShowAddress = true
             if (useAddresses) dontShowAddress = useAddresses&&prefs.getBoolean("doNotShowAddressInRoomCard", false)
 
         //Recycler view
-        val adapter = ReservesListAdapter(this)
+        mAdapter = ReservesListAdapter(this)
         mRecyclerView = mBinding.roomReservesRecyclerView
-        mRecyclerView.adapter = adapter
+        mRecyclerView.adapter = mAdapter
 
         // ViewModel
         viewModel = ViewModelProvider(APP_ACTIVITY).get(RoomViewModel::class.java)
@@ -164,9 +168,7 @@ class RoomFragment : Fragment() {
         }
 
         viewModel = ViewModelProvider(this).get(RoomViewModel::class.java)
-        viewModel.getReservesByRoomId(mCurrentRoom.id,dontShowFreeReserves) { reserves ->
-            adapter.setData(reserves)
-        }
+        setDataToAdapter()
 
         if (dontShowAddress) {
             mBinding.roomAddress.visibility = View.GONE
@@ -187,6 +189,12 @@ class RoomFragment : Fragment() {
                 R.id.action_roomFragment_to_editReserveFragment,
                 createArgsBundle("reserve", getEmptyReserve(mCurrentRoom.id))
             )
+        }
+    }
+
+    fun setDataToAdapter() {
+        viewModel.getReservesByRoomId(mCurrentRoom.id, mDoNotShowFreeReserves) { reserves ->
+            mAdapter.setData(reserves)
         }
     }
 

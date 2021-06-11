@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Легкая аренда</string>
+    <string name="app_name">Лёгкая аренда</string>
 
     <string name="def_room_name">ЖК Самый Лучший</string>
     <string name="def_room_address">Жилинская, д.12, кв.159</string>
@@ -64,6 +64,7 @@
     <string name="pref_dont_show_free_reserves_title">Не отображать окна</string>
     <string name="pref_dont_show_free_reserves_summary">между бронированиями в списке</string>
     <string name="bookings">Бронирования</string>
+    <string name="application">Приложение</string>
 
 
 </resources>
