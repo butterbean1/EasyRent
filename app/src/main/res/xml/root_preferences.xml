@@ -34,9 +34,11 @@
     <PreferenceCategory
         app:iconSpaceReserved="false"
         app:title="@string/application">
-        <Preference
+        <EditTextPreference
             app:iconSpaceReserved="false"
-            app:title="Версия ПО"
+            app:key="appVersion"
+            app:title="Версия"
+            android:selectable="false"
             android:summary="1.0"/>
     </PreferenceCategory>
 
