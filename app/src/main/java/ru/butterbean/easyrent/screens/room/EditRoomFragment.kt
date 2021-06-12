@@ -64,11 +64,12 @@ class EditRoomFragment : Fragment() {
     }
 
     private fun change() {
-        val name = room_change_name.text.toString().trim()
+        val name = mBinding.roomChangeName.text.toString().trim()
+        val address = mBinding.roomChangeAddress.text.toString().trim()
         if (name.isEmpty()) {
             showToast(getString(R.string.enter_room_name))
         } else {
-            val room = RoomData(mCurrentRoom.id, name, mCurrentRoom.address, mCurrentRoom.status)
+            val room = RoomData(mCurrentRoom.id, name, address, mCurrentRoom.status)
             if (mIsNew) {
                 // если новое помещение - добавляем в базу и переходим в карточку помещения
                 mViewModel.addRoom(room) { newId ->
