@@ -16,7 +16,6 @@ import ru.butterbean.easyrent.databinding.FragmentEditReserveBinding
 import ru.butterbean.easyrent.models.ReserveData
 import ru.butterbean.easyrent.models.RoomData
 import ru.butterbean.easyrent.utils.*
-import java.util.*
 
 class EditReserveFragment : Fragment() {
 
@@ -273,8 +272,6 @@ class EditReserveFragment : Fragment() {
         private fun isInRange(c: Int): Boolean {
             return c in mMinValue..mMaxValue
         }
-
-
     }
 
 }
