@@ -248,7 +248,7 @@ class EditReserveFragment : Fragment() {
 
     private class GuestsCountInputFilter : InputFilter {
         private val mMinValue: Int = 1 // минимум гостей для размещения
-        private val mMaxValue: Int = 20 // максимум гостей для размещения
+        private val mMaxValue: Int = 99 // максимум гостей для размещения
 
         override fun filter(
             source: CharSequence?,
@@ -267,7 +267,7 @@ class EditReserveFragment : Fragment() {
                     return null
             } catch (e: NumberFormatException) {
             }
-            return "0"
+            return ""
         }
 
         private fun isInRange(c: Int): Boolean {
