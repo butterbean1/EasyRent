@@ -30,10 +30,13 @@ class EditReserveViewModel(application: Application) : AndroidViewModel(applicat
         }
     }
 
-    fun deleteReserve(reserve: ReserveData) {
+    fun deleteReserve(reserve: ReserveData, onSuccess: () -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             mRepository.deleteReserve(reserve)
             mRepository.updateRoomStatus(reserve.roomId)
+            withContext(Dispatchers.Main) {
+                onSuccess()
+            }
         }
     }
 

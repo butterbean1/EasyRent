@@ -50,9 +50,11 @@ class RoomsListFragment : Fragment() {
         }
 
         private fun goToRoomFragment(room: RoomData) {
+            val args = createArgsBundle("room", room)
+            args.putBoolean("fromRoomsList",true)
             APP_ACTIVITY.navController.navigate(
                 R.id.action_roomsListFragment_to_roomFragment,
-                createArgsBundle("room", room)
+                args
             )
         }
     }

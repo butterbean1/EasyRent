@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.text.InputFilter
 import android.text.Spanned
 import android.view.*
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -16,6 +18,7 @@ import ru.butterbean.easyrent.databinding.FragmentEditReserveBinding
 import ru.butterbean.easyrent.models.ReserveData
 import ru.butterbean.easyrent.models.RoomData
 import ru.butterbean.easyrent.utils.*
+import java.util.*
 
 class EditReserveFragment : Fragment() {
 
@@ -60,7 +63,7 @@ class EditReserveFragment : Fragment() {
                 true
             }
             R.id.delete -> {
-                mViewModel.deleteReserve(mCurrentReserve)
+                mViewModel.deleteReserve(mCurrentReserve){goToRoomFragment()}
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -88,7 +91,9 @@ class EditReserveFragment : Fragment() {
             timeCheckIn.isEmpty() -> showToast(getString(R.string.enter_checkin_time))
             dateCheckOut.isEmpty() -> showToast(getString(R.string.enter_checkout_date))
             timeCheckOut.isEmpty() -> showToast(getString(R.string.enter_checkout_time))
-            getCalendarFromString(dateCheckInText).after(getCalendarFromString(dateCheckOutText)) -> showToast(getString(R.string.checkin_after_checkout))
+            getCalendarFromString(dateCheckInText).after(getCalendarFromString(dateCheckOutText)) -> showToast(
+                getString(R.string.checkin_after_checkout)
+            )
             guest.isEmpty() -> showToast(getString(R.string.enter_guest_name))
             guestsCount.isEmpty() -> showToast(getString(R.string.enter_guests_count))
             else -> {
@@ -101,7 +106,7 @@ class EditReserveFragment : Fragment() {
                     if (payment.isEmpty()) 0 else Integer.parseInt(payment),
                     dateCheckInText,
                     dateCheckOutText,
-                    wasCheckIn,
+                    wasCheckIn || wasCheckOut,
                     wasCheckOut
                 )
                 if (mIsNew) {
@@ -141,21 +146,25 @@ class EditReserveFragment : Fragment() {
         })
 
         mBinding.editReserveGuest.setText(mCurrentReserve.guestName)
-        mBinding.editReserveSum.setText(if (mCurrentReserve.sum==0) "" else mCurrentReserve.sum.toString())
-        mBinding.editReservePayment.setText(if (mCurrentReserve.payment==0) "" else mCurrentReserve.payment.toString())
+        mBinding.editReserveSum.setText(if (mCurrentReserve.sum == 0) "" else mCurrentReserve.sum.toString())
+        mBinding.editReservePayment.setText(if (mCurrentReserve.payment == 0) "" else mCurrentReserve.payment.toString())
         mBinding.editReserveWasCheckIn.isChecked = mCurrentReserve.wasCheckIn
         mBinding.editReserveWasCheckOut.isChecked = mCurrentReserve.wasCheckOut
-        if (mCurrentReserve.dateCheckIn.isNotEmpty()){
+        if (mCurrentReserve.dateCheckIn.isNotEmpty()) {
             mCurrentDateCheckIn = mCurrentReserve.dateCheckIn.substring(0, 10)
             mBinding.editReserveDateCheckIn.text = mCurrentReserve.dateCheckIn.toDateFormat(false)
             mBinding.editReserveTimeCheckIn.text = mCurrentReserve.dateCheckIn.toTimeFormat()
+            changeCheckInGroupColor(mBinding.editReserveWasCheckIn.isChecked)
         }
         if (mCurrentReserve.dateCheckOut.isNotEmpty()) {
             mCurrentDateCheckOut = mCurrentReserve.dateCheckOut.substring(0, 10)
             mBinding.editReserveDateCheckOut.text = mCurrentReserve.dateCheckOut.toDateFormat(false)
             mBinding.editReserveTimeCheckOut.text = mCurrentReserve.dateCheckOut.toTimeFormat()
+            changeCheckOutGroupColor(mBinding.editReserveWasCheckOut.isChecked)
         }
         changePaymentBtnVisibility()
+        changeWasCheckInEnabled()
+        changeWasCheckOutEnabled()
 
         // date check-in диалог
         mBinding.editReserveDateCheckIn.setOnClickListener {
@@ -169,6 +178,8 @@ class EditReserveFragment : Fragment() {
         mDateCheckInSetListener = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
             mCurrentDateCheckIn = getDateFormatISO(year, month, dayOfMonth)
             mBinding.editReserveDateCheckIn.text = mCurrentDateCheckIn.toDateFormat(true)
+            changeCheckInGroupColor(mBinding.editReserveWasCheckIn.isChecked)
+            changeWasCheckInEnabled()
         }
 
         // time check-in диалог
@@ -192,9 +203,12 @@ class EditReserveFragment : Fragment() {
                 mCurrentDateCheckIn
             )
         }
-        mDateCheckOutSetListener = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+        mDateCheckOutSetListener =
+            DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
                 mCurrentDateCheckOut = getDateFormatISO(year, month, dayOfMonth)
                 mBinding.editReserveDateCheckOut.text = mCurrentDateCheckOut.toDateFormat(true)
+                changeCheckOutGroupColor(mBinding.editReserveWasCheckOut.isChecked)
+                changeWasCheckOutEnabled()
             }
 
         // time check-out диалог
@@ -218,6 +232,16 @@ class EditReserveFragment : Fragment() {
 
         mBinding.editReserveGuestsCount.filters = arrayOf<InputFilter>(GuestsCountInputFilter())
 
+        mBinding.editReserveWasCheckIn.setOnCheckedChangeListener { _, isChecked ->
+            changeCheckInGroupColor(isChecked)
+            changeWasCheckOutEnabled()
+        }
+        
+        mBinding.editReserveWasCheckOut.setOnCheckedChangeListener { _, isChecked ->
+            changeCheckOutGroupColor(isChecked)
+            changeWasCheckInEnabled()
+        }
+
         // суммы
         mBinding.editReserveSum.addTextChangedListener {
             changePaymentBtnVisibility()
@@ -230,10 +254,42 @@ class EditReserveFragment : Fragment() {
         mBinding.editReserveBtnPaymentFull.setOnClickListener {
             mBinding.editReservePayment.setText(edit_reserve_sum.text.toString())
             changePaymentBtnVisibility()
+            hideKeyboard()
         }
 
         // добавляем меню
         setHasOptionsMenu(true)
+    }
+
+    private fun changeWasCheckInEnabled(){
+        mBinding.editReserveWasCheckIn.isEnabled = mCurrentDateCheckIn.isNotEmpty() && !mBinding.editReserveWasCheckOut.isChecked
+    }
+
+    private fun changeWasCheckOutEnabled(){
+        mBinding.editReserveWasCheckOut.isEnabled = mCurrentDateCheckOut.isNotEmpty() && mBinding.editReserveWasCheckIn.isChecked
+    }
+
+    private fun changeCheckOutGroupColor(isChecked: Boolean) {
+        changeCheckGroupColor(
+            mCurrentDateCheckOut,
+            isChecked,
+            mBinding.editReserveGroupChekOut
+        )
+    }
+
+    private fun changeCheckInGroupColor(isChecked: Boolean) {
+        changeCheckGroupColor(
+            mCurrentDateCheckIn,
+            isChecked,
+            mBinding.editReserveGroupChekIn
+        )
+    }
+
+    private fun changeCheckGroupColor(date: String, isCheked: Boolean, groupView: View) {
+        val dateCal = getCalendarFromString(getDateTimeInDatabaseFormat(date, "00:00"))
+        val today = getStartOfDay(Calendar.getInstance())
+        if (today.after(dateCal) && !isCheked) groupView.setBackgroundColor(APP_ACTIVITY.getColor(R.color.pink))
+        else groupView.setBackgroundColor(APP_ACTIVITY.getColor(R.color.white))
     }
 
     private fun changePaymentBtnVisibility() {

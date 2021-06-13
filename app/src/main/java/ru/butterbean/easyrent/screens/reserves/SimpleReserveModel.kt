@@ -6,7 +6,10 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.butterbean.easyrent.R
 import ru.butterbean.easyrent.models.ReserveData
 import ru.butterbean.easyrent.utils.APP_ACTIVITY
+import ru.butterbean.easyrent.utils.getCalendarFromString
+import ru.butterbean.easyrent.utils.getStartOfDay
 import ru.butterbean.easyrent.utils.toDateTimeFormat
+import java.util.*
 
 class SimpleReserveModel(
     val id: Long,
@@ -36,7 +39,15 @@ class SimpleReserveModel(
             holder.wasCheckOut.visibility = View.VISIBLE
             holder.itemView.background =
                 AppCompatResources.getDrawable(APP_ACTIVITY, R.drawable.ripple_effect_grey)
-        } else holder.wasCheckOut.visibility = View.GONE
+        } else {
+            holder.wasCheckOut.visibility = View.GONE
+            val today = getStartOfDay(Calendar.getInstance())
+            if ((today.after(getStartOfDay(getCalendarFromString(dateCheckIn))) && !wasCheckIn)
+                || (today.after(getStartOfDay(getCalendarFromString(dateCheckOut))) && !wasCheckOut)){
+                holder.itemView.background =
+                    AppCompatResources.getDrawable(APP_ACTIVITY, R.drawable.ripple_effect_pink)
+            }
+        }
     }
 
     override fun toReserveData():ReserveData{

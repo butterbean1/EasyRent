@@ -24,8 +24,9 @@ class RoomFragment : Fragment() {
     private lateinit var mRecyclerView: RecyclerView
     private var mDoNotShowFreeReserves = false
     private lateinit var mAdapter: ReservesListAdapter
+    private var mNavFromRoomsList = false
 
-        companion object {
+    companion object {
         fun clickOnListItem(reserveType: ReserveType) {
             when (reserveType.getItemViewType()) {
                 ReserveType.SIMPLE -> {
@@ -60,7 +61,7 @@ class RoomFragment : Fragment() {
                     0 -> goToEditReserveFragment(reserve)
                     1 -> {
                         fragment.viewModel.deleteReserve(reserve)
-                        fragment.setDataToAdapter()
+                        { fragment.setDataToAdapter() }
                     }
                 }
             }
@@ -83,11 +84,7 @@ class RoomFragment : Fragment() {
 
         _binding = FragmentRoomBinding.inflate(layoutInflater, container, false)
         mCurrentRoom = arguments?.getSerializable("room") as RoomData
-        APP_ACTIVITY.onBackPressedDispatcher.addCallback {
-            if (ONLY_ONE_ROOM) APP_ACTIVITY.finish()
-            else APP_ACTIVITY.navController.navigate(R.id.action_roomFragment_to_roomsListFragment)
-
-        }
+        mNavFromRoomsList = arguments?.getBoolean("fromRoomsList", false) ?: false
         return mBinding.root
     }
 
@@ -95,7 +92,6 @@ class RoomFragment : Fragment() {
         super.onDestroyView()
         _binding = null
         mRecyclerView.adapter = null
-        APP_ACTIVITY.onBackPressedDispatcher.addCallback { APP_ACTIVITY.navController.popBackStack() }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -106,7 +102,7 @@ class RoomFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
-                APP_ACTIVITY.navController.navigate(R.id.action_roomFragment_to_roomsListFragment)
+                goToRoomsList()
                 true
             }
             R.id.settings -> {
@@ -131,13 +127,19 @@ class RoomFragment : Fragment() {
             }
             R.id.delete -> {
                 deleteRoomWithDialog(mCurrentRoom, viewLifecycleOwner) { wasDeleted ->
-                    if (wasDeleted) APP_ACTIVITY.navController.navigate(R.id.action_roomFragment_to_roomsListFragment)
+                    if (wasDeleted) goToRoomsList()
                 }
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
     }
+
+    private fun goToRoomsList() {
+        if (mNavFromRoomsList) APP_ACTIVITY.navController.popBackStack()
+        else APP_ACTIVITY.navController.navigate(R.id.action_roomFragment_to_roomsListFragment)
+    }
+
 
     override fun onStart() {
         super.onStart()
@@ -152,7 +154,8 @@ class RoomFragment : Fragment() {
         mDoNotShowFreeReserves = prefs.getBoolean("doNotShowFreeReserves", false)
         val useAddresses = prefs.getBoolean("useRoomAddresses", true)
         var dontShowAddress = true
-            if (useAddresses) dontShowAddress = useAddresses&&prefs.getBoolean("doNotShowAddressInRoomCard", false)
+        if (useAddresses) dontShowAddress =
+            useAddresses && prefs.getBoolean("doNotShowAddressInRoomCard", false)
 
         //Recycler view
         mAdapter = ReservesListAdapter(this)

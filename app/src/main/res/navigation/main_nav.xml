@@ -89,7 +89,7 @@
             app:destination="@id/editRoomFragment" />
         <action
             android:id="@+id/action_roomsListFragment_to_settingsFragment"
-            app:destination="@id/settingsFragment"/>
+            app:destination="@id/settingsFragment" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
