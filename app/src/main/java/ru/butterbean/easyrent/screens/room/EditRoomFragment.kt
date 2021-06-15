@@ -2,18 +2,14 @@ package ru.butterbean.easyrent.screens.room
 
 import android.os.Bundle
 import android.view.*
-import androidx.activity.OnBackPressedCallback
-import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
-import kotlinx.android.synthetic.main.fragment_edit_room.*
 import ru.butterbean.easyrent.R
 import ru.butterbean.easyrent.database.view_models.EditRoomViewModel
 import ru.butterbean.easyrent.databinding.FragmentEditRoomBinding
 import ru.butterbean.easyrent.models.RoomData
 import ru.butterbean.easyrent.utils.*
-import java.lang.Appendable
 
 class EditRoomFragment : Fragment() {
 

@@ -15,7 +15,7 @@ interface ReserveArchiveDao {
     suspend fun addArchiveReserve(reserve:ReserveArchiveData):Long
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun addArchiveReserves(reserves:List<ReserveArchiveData>):Long
+    suspend fun addArchiveReserves(reserves:List<ReserveArchiveData>)
 
     @Update
     suspend fun updateArchiveReserve(reserve:ReserveArchiveData)
@@ -32,7 +32,7 @@ interface ReserveArchiveDao {
     @Query("SELECT COUNT(*) FROM $TABLE_RESERVES_ARCHIVE_NAME WHERE roomId = :roomId")
     fun getArchiveReservesCount(roomId:Long): LiveData<Int>
 
-    @Query("SELECT *,CASE WHEN (wasCheckOut=0) THEN (strftime('%s','now') + strftime('%s',dateCheckIn)) ELSE (strftime('%s','now') - strftime('%s',dateCheckOut)) END orderField FROM  $TABLE_RESERVES_ARCHIVE_NAME WHERE roomId= :roomId ORDER BY wasCheckOut,orderField")
+    @Query("SELECT * FROM  $TABLE_RESERVES_ARCHIVE_NAME WHERE roomId= :roomId ORDER BY wasCheckOut,CASE WHEN (wasCheckOut=0) THEN (strftime('%s','now') + strftime('%s',dateCheckIn)) ELSE (strftime('%s','now') - strftime('%s',dateCheckOut)) END")
     fun getReservesByRoomId(roomId: Long): LiveData<List<ReserveArchiveData>>
 
     @Query("SELECT * FROM  $TABLE_RESERVES_NAME WHERE (date('now','start of day')>date(dateCheckOut,'start of day','+'+:analyseDepth+' days'))&(wasCheckOut=1) ORDER BY dateCheckOut DESC")

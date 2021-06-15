@@ -1,20 +1,21 @@
 package ru.butterbean.easyrent.screens.room
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import android.widget.TextView
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.room_item.view.*
-import ru.butterbean.easyrent.R
+import ru.butterbean.easyrent.databinding.RoomItemBinding
 import ru.butterbean.easyrent.models.RoomData
 
 class RoomsListAdapter(private val lo: LifecycleOwner) :RecyclerView.Adapter<RoomsListAdapter.RoomsListHolder>() {
 
     private var listRooms = emptyList<RoomData>()
 
-    class RoomsListHolder(view: View):RecyclerView.ViewHolder(view)
+    class RoomsListHolder(itemBinding: RoomItemBinding):RecyclerView.ViewHolder(itemBinding.root){
+        val roomName:TextView = itemBinding.roomsListRoomName
+        val roomStatus:TextView = itemBinding.roomsListRoomStatus
+    }
 
     override fun onViewAttachedToWindow(holder: RoomsListHolder) {
         holder.itemView.setOnClickListener {
@@ -36,14 +37,14 @@ class RoomsListAdapter(private val lo: LifecycleOwner) :RecyclerView.Adapter<Roo
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RoomsListHolder {
 
         return RoomsListHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.room_item, parent, false)
+            RoomItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         )
     }
 
     override fun onBindViewHolder(holder: RoomsListHolder, position: Int) {
         val currentItem = listRooms[position]
-        holder.itemView.rooms_list_room_name.text = currentItem.name
-        holder.itemView.rooms_list_room_status.text = currentItem.status
+        holder.roomName.text = currentItem.name
+        holder.roomStatus.text = currentItem.status
     }
 
     override fun getItemCount(): Int = listRooms.size

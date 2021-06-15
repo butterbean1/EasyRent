@@ -6,12 +6,9 @@ import android.os.Bundle
 import android.text.InputFilter
 import android.text.Spanned
 import android.view.*
-import androidx.appcompat.content.res.AppCompatResources
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import kotlinx.android.synthetic.main.fragment_edit_reserve.*
 import ru.butterbean.easyrent.R
 import ru.butterbean.easyrent.database.view_models.EditReserveViewModel
 import ru.butterbean.easyrent.databinding.FragmentEditReserveBinding
@@ -252,7 +249,7 @@ class EditReserveFragment : Fragment() {
         }
 
         mBinding.editReserveBtnPaymentFull.setOnClickListener {
-            mBinding.editReservePayment.setText(edit_reserve_sum.text.toString())
+            mBinding.editReservePayment.setText(mBinding.editReserveSum.text.toString())
             changePaymentBtnVisibility()
             hideKeyboard()
         }
