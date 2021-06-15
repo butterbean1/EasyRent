@@ -33,6 +33,17 @@
 
     <PreferenceCategory
         app:iconSpaceReserved="false"
+        app:title="@string/archive">
+        <EditTextPreference
+            app:iconSpaceReserved="false"
+            app:key="oldReservesAnalyseDepth"
+            app:dialogMessage="@string/old_reserves_analyse_depth_summary"
+            app:useSimpleSummaryProvider="true"
+            app:title="@string/old_reserves_analyse_depth_title" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:iconSpaceReserved="false"
         app:title="@string/application">
         <EditTextPreference
             app:iconSpaceReserved="false"

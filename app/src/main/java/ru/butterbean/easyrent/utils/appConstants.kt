@@ -15,3 +15,5 @@ lateinit var STATUS_FREE_ON : String
 lateinit var STATUS_BUSY : String
 lateinit var STATUS_REPAIRS : String
 lateinit var STATUS_UNTIL : String
+
+const val DAYS_TO_REPLACE_TO_ARCHIVE = 30

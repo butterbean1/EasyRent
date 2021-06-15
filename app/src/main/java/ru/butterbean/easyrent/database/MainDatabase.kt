@@ -26,7 +26,7 @@ abstract class MainDatabase : RoomDatabase() {
     abstract fun roomDao(): RoomDao
     abstract fun guestDao(): GuestDao
     abstract fun reserveDao(): ReserveDao
-    abstract fun ReserveArchiveDao(): ReserveArchiveDao
+    abstract fun reserveArchiveDao(): ReserveArchiveDao
 
     companion object {
         @Volatile

@@ -8,13 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.preference.PreferenceManager
 import ru.butterbean.easyrent.R
 import ru.butterbean.easyrent.database.view_models.SplashViewModel
 import ru.butterbean.easyrent.databinding.FragmentSplashBinding
-import ru.butterbean.easyrent.utils.APP_ACTIVITY
-import ru.butterbean.easyrent.utils.ONLY_ONE_ROOM
-import ru.butterbean.easyrent.utils.createArgsBundle
-import ru.butterbean.easyrent.utils.getEmptyRoom
+import ru.butterbean.easyrent.utils.*
 
 class SplashFragment : Fragment() {
 
@@ -40,7 +38,19 @@ class SplashFragment : Fragment() {
 
         APP_ACTIVITY.supportActionBar?.hide()
 
+
         val viewModel = ViewModelProvider(APP_ACTIVITY).get(SplashViewModel::class.java)
+
+        val prefs = PreferenceManager.getDefaultSharedPreferences(APP_ACTIVITY)
+        val prefAnalyseDepth = prefs.getString("oldReservesAnalyseDepth", DAYS_TO_REPLACE_TO_ARCHIVE.toString())!!
+        val analyseDepth = if (prefAnalyseDepth.isEmpty()) DAYS_TO_REPLACE_TO_ARCHIVE else {
+            try {
+                Integer.parseInt(prefAnalyseDepth)
+            }catch(e: NumberFormatException){
+                DAYS_TO_REPLACE_TO_ARCHIVE
+            }
+        }
+        viewModel.replaceReservesToArchive(analyseDepth)
 
         viewModel.getAllRooms().observe(this) { roomsList ->
             Handler(Looper.getMainLooper()).postDelayed({

@@ -1,12 +1,15 @@
 package ru.butterbean.easyrent.screens
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
+import android.text.InputFilter
+import android.text.InputType
+import android.view.*
+import androidx.preference.EditTextPreference
 import androidx.preference.PreferenceFragmentCompat
 import ru.butterbean.easyrent.R
 import ru.butterbean.easyrent.utils.APP_ACTIVITY
+import ru.butterbean.easyrent.utils.DAYS_TO_REPLACE_TO_ARCHIVE
+import ru.butterbean.easyrent.utils.NumberEditTextInputFilter
 
 class SettingsFragment : PreferenceFragmentCompat() {
 
@@ -28,7 +31,33 @@ class SettingsFragment : PreferenceFragmentCompat() {
         setHasOptionsMenu(true)
     }
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+
+       // addPreferencesFromResource(R.xml.root_preferences)
+        val e = findPreference<EditTextPreference>("oldReservesAnalyseDepth")
+
+        if (e?.text.isNullOrEmpty()) e?.text = DAYS_TO_REPLACE_TO_ARCHIVE.toString()
+
+        e?.setOnBindEditTextListener {editText->
+            editText.inputType = InputType.TYPE_CLASS_NUMBER
+            editText.filters = arrayOf<InputFilter>(NumberEditTextInputFilter(0,999))
+        }
+        e?.setOnPreferenceChangeListener { _, newValue ->
+            if (newValue.toString().isNotEmpty()) e.text = newValue.toString().toInt().toString()
+            else e.text = DAYS_TO_REPLACE_TO_ARCHIVE.toString()
+
+            false
+        }
+
+        return super.onCreateView(inflater, container, savedInstanceState)
+    }
+
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey)
+        val e = findPreference<EditTextPreference>("oldReservesAnalyseDepth")
     }
 }

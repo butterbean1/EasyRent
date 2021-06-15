@@ -4,7 +4,6 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
 import android.text.InputFilter
-import android.text.Spanned
 import android.view.*
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
@@ -227,7 +226,7 @@ class EditReserveFragment : Fragment() {
             mBinding.editReserveGuestsCount.setText(mCurrentReserve.guestsCount.toString())
         }
 
-        mBinding.editReserveGuestsCount.filters = arrayOf<InputFilter>(GuestsCountInputFilter())
+        mBinding.editReserveGuestsCount.filters = arrayOf<InputFilter>(NumberEditTextInputFilter())
 
         mBinding.editReserveWasCheckIn.setOnCheckedChangeListener { _, isChecked ->
             changeCheckInGroupColor(isChecked)
@@ -298,33 +297,5 @@ class EditReserveFragment : Fragment() {
 
     }
 
-    private class GuestsCountInputFilter : InputFilter {
-        private val mMinValue: Int = 1 // минимум гостей для размещения
-        private val mMaxValue: Int = 99 // максимум гостей для размещения
-
-        override fun filter(
-            source: CharSequence?,
-            start: Int,
-            end: Int,
-            dest: Spanned?,
-            dstart: Int,
-            dend: Int
-        ): CharSequence? {
-            try {
-                val input = (dest?.subSequence(0, dstart).toString() + source + dest?.subSequence(
-                    dend,
-                    dest.length
-                )).toInt()
-                if (isInRange(input))
-                    return null
-            } catch (e: NumberFormatException) {
-            }
-            return ""
-        }
-
-        private fun isInRange(c: Int): Boolean {
-            return c in mMinValue..mMaxValue
-        }
-    }
 
 }

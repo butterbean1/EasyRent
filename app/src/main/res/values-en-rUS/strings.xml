@@ -61,4 +61,7 @@
     <string name="bookings">Bookings</string>
     <string name="application">Application</string>
     <string name="pref_app_version_title">Version</string>
+    <string name="archive">Archive</string>
+    <string name="old_reserves_analyse_depth_title">Days to moving to the archive</string>
+    <string name="old_reserves_analyse_depth_summary">Move check-outed bookings to the archive after the selected number of days. The default is 30 days. If 0, then immediately after completion the booking will be archived.</string>
 </resources>
