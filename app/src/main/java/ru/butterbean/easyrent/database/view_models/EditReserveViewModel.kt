@@ -8,6 +8,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.butterbean.easyrent.database.repository.ReserveRepository
+import ru.butterbean.easyrent.models.CommonReserveData
+import ru.butterbean.easyrent.models.ReserveArchiveData
 import ru.butterbean.easyrent.models.ReserveData
 import ru.butterbean.easyrent.models.RoomData
 import ru.butterbean.easyrent.utils.APP_DATABASE
@@ -34,6 +36,15 @@ class EditReserveViewModel(application: Application) : AndroidViewModel(applicat
         viewModelScope.launch(Dispatchers.IO) {
             mRepository.deleteReserve(reserve)
             mRepository.updateRoomStatus(reserve.roomId)
+            withContext(Dispatchers.Main) {
+                onSuccess()
+            }
+        }
+    }
+
+    fun deleteReserveArchive(reserve: ReserveArchiveData, onSuccess: () -> Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            mRepository.deleteReserveArchive(reserve as ReserveArchiveData)
             withContext(Dispatchers.Main) {
                 onSuccess()
             }

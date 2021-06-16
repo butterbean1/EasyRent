@@ -23,6 +23,9 @@ interface ReserveArchiveDao {
     @Delete
     suspend fun deleteArchiveReserve(reserve:ReserveArchiveData)
 
+    @Query("SELECT * FROM $TABLE_ROOMS_NAME WHERE id = :id")
+    fun getRoomById(id:Long): LiveData<RoomData>
+
     @Delete
     suspend fun deleteReserves(reserves : List<ReserveData>)
 
@@ -35,7 +38,7 @@ interface ReserveArchiveDao {
     @Query("SELECT * FROM  $TABLE_RESERVES_ARCHIVE_NAME WHERE roomId= :roomId ORDER BY wasCheckOut,CASE WHEN (wasCheckOut=0) THEN (strftime('%s','now') + strftime('%s',dateCheckIn)) ELSE (strftime('%s','now') - strftime('%s',dateCheckOut)) END")
     fun getReservesByRoomId(roomId: Long): LiveData<List<ReserveArchiveData>>
 
-    @Query("SELECT * FROM  $TABLE_RESERVES_NAME WHERE (date('now','start of day')>date(dateCheckOut,'start of day','+'+:analyseDepth+' days'))&(wasCheckOut=1) ORDER BY dateCheckOut DESC")
+    @Query("SELECT * FROM  $TABLE_RESERVES_NAME WHERE (date('now','start of day')>date(dateCheckOut,'start of day','+'||:analyseDepth||' days'))&(wasCheckOut=1) ORDER BY dateCheckOut DESC")
     fun getAllClosedReserves(analyseDepth:Int): List<ReserveData>
 
     @Query("SELECT * FROM $TABLE_ROOMS_NAME ORDER BY name ASC")

@@ -2,8 +2,10 @@ package ru.butterbean.easyrent.database.repository
 
 import androidx.lifecycle.LiveData
 import ru.butterbean.easyrent.database.dao.ReserveDao
+import ru.butterbean.easyrent.models.ReserveArchiveData
 import ru.butterbean.easyrent.models.ReserveData
 import ru.butterbean.easyrent.models.RoomData
+import ru.butterbean.easyrent.screens.reserves.ArchiveReserveModel
 import ru.butterbean.easyrent.screens.reserves.FreeReserveModel
 import ru.butterbean.easyrent.screens.reserves.ReserveType
 import ru.butterbean.easyrent.screens.reserves.SimpleReserveModel
@@ -18,6 +20,10 @@ class ReserveRepository(private val reserveDao: ReserveDao) {
 
     suspend fun deleteReserve(reserve: ReserveData) {
         reserveDao.deleteReserve(reserve)
+    }
+
+    suspend fun deleteReserveArchive(reserve: ReserveArchiveData) {
+        reserveDao.deleteReserveArchive(reserve)
     }
 
     suspend fun updateReserve(reserve: ReserveData) {
@@ -61,6 +67,9 @@ class ReserveRepository(private val reserveDao: ReserveDao) {
         reservesList.forEach { reserve ->
             resList.add(createSimpleModel(reserve))
         }
+
+        val archivedCount = reserveDao.getReservesArchiveCount(roomId)
+        if (archivedCount > 0) resList.add(ArchiveReserveModel(roomId))
         return resList
     }
 
@@ -102,6 +111,8 @@ class ReserveRepository(private val reserveDao: ReserveDao) {
             val fm = FreeReserveModel(roomId,currentDate.toDateTimeInDatabaseFormat())
             resList.add(fm)
         }
+        val archivedCount = reserveDao.getReservesArchiveCount(roomId)
+        if (archivedCount > 0) resList.add(ArchiveReserveModel(roomId))
         return resList
     }
 
@@ -120,6 +131,5 @@ class ReserveRepository(private val reserveDao: ReserveDao) {
         )
 
     fun getReservesCount(roomId: Long): LiveData<Int> = reserveDao.getReservesCount(roomId)
-
 
 }

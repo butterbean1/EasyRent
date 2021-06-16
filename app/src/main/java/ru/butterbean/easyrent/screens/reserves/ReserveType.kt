@@ -7,9 +7,10 @@ interface ReserveType {
     companion object{
         const val SIMPLE = 0
         const val FREE = 1
+        const val ARCHIVE = 2
     }
 
-    fun toReserveData():ReserveData
+    fun toReserveData(): ReserveData?
 
     fun getItemViewType():Int
 

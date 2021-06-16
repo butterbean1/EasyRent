@@ -10,15 +10,16 @@ import java.io.Serializable
 @Entity(tableName = TABLE_RESERVES_ARCHIVE_NAME,foreignKeys = [ForeignKey(entity = RoomData::class,parentColumns = ["id"],childColumns = ["roomId"],onDelete = ForeignKey.CASCADE)])
 data class ReserveArchiveData(
     @PrimaryKey(autoGenerate = true)
-    val id:Long,
+    override val id:Long,
     @ColumnInfo(index = true)
-    val roomId:Long,
-    val guestName:String = "",
-    val guestsCount:Int = 0,
-    val sum:Int = 0,
-    val payment:Int = 0,
-    val dateCheckIn:String = "",
-    val dateCheckOut:String = "",
-    val wasCheckIn:Boolean = false,
-    val wasCheckOut:Boolean = false
-):Serializable
+    override val roomId:Long,
+    override val guestName:String = "",
+    override val guestsCount:Int = 0,
+    override val sum:Int = 0,
+    override val payment:Int = 0,
+    override val dateCheckIn:String = "",
+    override val dateCheckOut:String = "",
+    override val wasCheckIn:Boolean = false,
+    override val wasCheckOut:Boolean = false
+): CommonReserveData(id, roomId, guestName, guestsCount, sum, payment, dateCheckIn, dateCheckOut, wasCheckIn, wasCheckOut)
+    ,Serializable

@@ -6,6 +6,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import ru.butterbean.easyrent.databinding.FreeReserveItemBinding
+import ru.butterbean.easyrent.databinding.LinkArchiveItemBinding
 import ru.butterbean.easyrent.databinding.ReserveItemBinding
 
 class ReservesViewHolderFactory {
@@ -26,11 +27,16 @@ class ReservesViewHolderFactory {
         val text: TextView = itemBinding.reservesListFreeReserve
     }
 
+    class ArchiveReserveHolder(itemBinding: LinkArchiveItemBinding) : RecyclerView.ViewHolder(itemBinding.root)
+
     companion object {
         fun create(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
             return when (viewType) {
                 ReserveType.SIMPLE -> SimpleReserveHolder(
                     ReserveItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                )
+                ReserveType.ARCHIVE-> ArchiveReserveHolder(
+                    LinkArchiveItemBinding.inflate(LayoutInflater.from(parent.context),parent,false)
                 )
                 else -> FreeReserveHolder(
                     FreeReserveItemBinding.inflate(

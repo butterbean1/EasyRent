@@ -54,6 +54,9 @@
         <action
             android:id="@+id/action_roomFragment_to_settingsFragment"
             app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_roomFragment_to_archiveReservesFragment"
+            app:destination="@id/archiveReservesFragment" />
     </fragment>
     <fragment
         android:id="@+id/splashFragment"
@@ -95,4 +98,13 @@
         android:id="@+id/settingsFragment"
         android:name="ru.butterbean.easyrent.screens.SettingsFragment"
         android:label="SettingsFragment" />
+    <fragment
+        android:id="@+id/archiveReservesFragment"
+        android:name="ru.butterbean.easyrent.ArchiveReservesFragment"
+        android:label="fragment_archive_reserves"
+        tools:layout="@layout/fragment_archive_reserves" >
+        <action
+            android:id="@+id/action_archiveReservesFragment_to_editReserveFragment"
+            app:destination="@id/editReserveFragment" />
+    </fragment>
 </navigation>

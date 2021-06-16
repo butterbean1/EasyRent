@@ -11,6 +11,8 @@ import androidx.lifecycle.ViewModelProvider
 import ru.butterbean.easyrent.R
 import ru.butterbean.easyrent.database.view_models.EditReserveViewModel
 import ru.butterbean.easyrent.databinding.FragmentEditReserveBinding
+import ru.butterbean.easyrent.models.CommonReserveData
+import ru.butterbean.easyrent.models.ReserveArchiveData
 import ru.butterbean.easyrent.models.ReserveData
 import ru.butterbean.easyrent.models.RoomData
 import ru.butterbean.easyrent.utils.*
@@ -19,10 +21,11 @@ import java.util.*
 class EditReserveFragment : Fragment() {
 
     private var mIsNew = false
+    private var mIsArchive = false
     private var _binding: FragmentEditReserveBinding? = null
     private val mBinding get() = _binding!!
     private lateinit var mViewModel: EditReserveViewModel
-    private lateinit var mCurrentReserve: ReserveData
+    private lateinit var mCurrentReserve: CommonReserveData
     private lateinit var mCurrentRoom: RoomData
     private lateinit var mDateCheckInSetListener: DatePickerDialog.OnDateSetListener
     private lateinit var mDateCheckOutSetListener: DatePickerDialog.OnDateSetListener
@@ -37,7 +40,7 @@ class EditReserveFragment : Fragment() {
     ): View {
 
         _binding = FragmentEditReserveBinding.inflate(layoutInflater, container, false)
-        mCurrentReserve = arguments?.getSerializable("reserve") as ReserveData
+        mCurrentReserve = arguments?.getSerializable("reserve") as CommonReserveData
         return mBinding.root
     }
 
@@ -47,8 +50,11 @@ class EditReserveFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        if (mIsNew) inflater.inflate(R.menu.confirm_menu, menu)
-        else inflater.inflate(R.menu.confirm_delete_menu, menu)
+        if (mIsArchive) inflater.inflate(R.menu.delete_menu, menu)
+        else {
+            if (mIsNew) inflater.inflate(R.menu.confirm_menu, menu)
+            else inflater.inflate(R.menu.confirm_delete_menu, menu)
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -59,7 +65,8 @@ class EditReserveFragment : Fragment() {
                 true
             }
             R.id.delete -> {
-                mViewModel.deleteReserve(mCurrentReserve){goToRoomFragment()}
+                if (mIsArchive) mViewModel.deleteReserveArchive(mCurrentReserve as ReserveArchiveData){goToArchiveReservesFragment()}
+                else mViewModel.deleteReserve(mCurrentReserve as ReserveData) { goToRoomFragment() }
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -123,6 +130,10 @@ class EditReserveFragment : Fragment() {
         )
     }
 
+    private fun goToArchiveReservesFragment() {
+        APP_ACTIVITY.navController.popBackStack()
+    }
+
     override fun onStart() {
         super.onStart()
         initialize()
@@ -134,6 +145,7 @@ class EditReserveFragment : Fragment() {
 
         mViewModel = ViewModelProvider(APP_ACTIVITY).get(EditReserveViewModel::class.java)
         mIsNew = mCurrentReserve.id == 0.toLong()
+        mIsArchive = mCurrentReserve is ReserveArchiveData
 
         // получим модель помещения и его название из БД
         mViewModel.getRoomById(mCurrentReserve.roomId).observe(viewLifecycleOwner, { room ->
@@ -232,7 +244,7 @@ class EditReserveFragment : Fragment() {
             changeCheckInGroupColor(isChecked)
             changeWasCheckOutEnabled()
         }
-        
+
         mBinding.editReserveWasCheckOut.setOnCheckedChangeListener { _, isChecked ->
             changeCheckOutGroupColor(isChecked)
             changeWasCheckInEnabled()
@@ -257,12 +269,14 @@ class EditReserveFragment : Fragment() {
         setHasOptionsMenu(true)
     }
 
-    private fun changeWasCheckInEnabled(){
-        mBinding.editReserveWasCheckIn.isEnabled = mCurrentDateCheckIn.isNotEmpty() && !mBinding.editReserveWasCheckOut.isChecked
+    private fun changeWasCheckInEnabled() {
+        mBinding.editReserveWasCheckIn.isEnabled =
+            mCurrentDateCheckIn.isNotEmpty() && !mBinding.editReserveWasCheckOut.isChecked
     }
 
-    private fun changeWasCheckOutEnabled(){
-        mBinding.editReserveWasCheckOut.isEnabled = mCurrentDateCheckOut.isNotEmpty() && mBinding.editReserveWasCheckIn.isChecked
+    private fun changeWasCheckOutEnabled() {
+        mBinding.editReserveWasCheckOut.isEnabled =
+            mCurrentDateCheckOut.isNotEmpty() && mBinding.editReserveWasCheckIn.isChecked
     }
 
     private fun changeCheckOutGroupColor(isChecked: Boolean) {

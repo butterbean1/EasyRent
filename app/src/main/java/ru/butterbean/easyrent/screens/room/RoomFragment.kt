@@ -3,7 +3,6 @@ package ru.butterbean.easyrent.screens.room
 import android.app.AlertDialog
 import android.os.Bundle
 import android.view.*
-import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
@@ -17,7 +16,7 @@ import ru.butterbean.easyrent.screens.reserves.*
 import ru.butterbean.easyrent.utils.*
 
 class RoomFragment : Fragment() {
-    lateinit var viewModel: RoomViewModel
+    lateinit var mViewModel: RoomViewModel
     private lateinit var mCurrentRoom: RoomData
     private var _binding: FragmentRoomBinding? = null
     private val mBinding get() = _binding!!
@@ -36,6 +35,15 @@ class RoomFragment : Fragment() {
                 ReserveType.FREE -> {
                     val reserveModel = reserveType as FreeReserveModel
                     goToEditReserveFragment(reserveModel.toReserveData())
+                }
+                ReserveType.ARCHIVE -> {
+                    val reserveModel = reserveType as ArchiveReserveModel
+                    val args = Bundle()
+                    args.putLong("roomId", reserveModel.roomId)
+                    APP_ACTIVITY.navController.navigate(
+                        R.id.action_roomFragment_to_archiveReservesFragment,
+                        args
+                    )
                 }
             }
 
@@ -60,7 +68,7 @@ class RoomFragment : Fragment() {
                 when (i) {
                     0 -> goToEditReserveFragment(reserve)
                     1 -> {
-                        fragment.viewModel.deleteReserve(reserve)
+                        fragment.mViewModel.deleteReserve(reserve)
                         { fragment.setDataToAdapter() }
                     }
                 }
@@ -117,7 +125,7 @@ class RoomFragment : Fragment() {
                 true
             }
             R.id.confirm_edit -> {
-                viewModel.getRoomById(mCurrentRoom.id).observe(viewLifecycleOwner) {
+                mViewModel.getRoomById(mCurrentRoom.id).observe(viewLifecycleOwner) {
                     APP_ACTIVITY.navController.navigate(
                         R.id.action_roomFragment_to_editRoomFragment,
                         createArgsBundle("room", it)
@@ -163,14 +171,13 @@ class RoomFragment : Fragment() {
         mRecyclerView.adapter = mAdapter
 
         // ViewModel
-        viewModel = ViewModelProvider(APP_ACTIVITY).get(RoomViewModel::class.java)
+        mViewModel = ViewModelProvider(APP_ACTIVITY).get(RoomViewModel::class.java)
 
-        viewModel.getReservesCount(mCurrentRoom.id).observe(viewLifecycleOwner) { reservesCount ->
+        mViewModel.getReservesCount(mCurrentRoom.id).observe(viewLifecycleOwner) { reservesCount ->
             if (reservesCount == 0) mBinding.roomTextEmptyReservesList.visibility = View.VISIBLE
             else mBinding.roomTextEmptyReservesList.visibility = View.GONE
         }
 
-        viewModel = ViewModelProvider(this).get(RoomViewModel::class.java)
         setDataToAdapter()
 
         if (dontShowAddress) {
@@ -196,7 +203,7 @@ class RoomFragment : Fragment() {
     }
 
     fun setDataToAdapter() {
-        viewModel.getReservesByRoomId(mCurrentRoom.id, mDoNotShowFreeReserves) { reserves ->
+        mViewModel.getReservesByRoomId(mCurrentRoom.id, mDoNotShowFreeReserves) { reserves ->
             mAdapter.setData(reserves)
         }
     }

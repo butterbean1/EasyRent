@@ -14,9 +14,7 @@ class ReserveArchiveRepository(private val reserveArchiveDao: ReserveArchiveDao)
         reserveArchiveDao.deleteArchiveReserve(reserve)
     }
 
-    suspend fun updateReserve(reserve: ReserveArchiveData) {
-        reserveArchiveDao.updateArchiveReserve(reserve)
-    }
+    fun getRoomById(id: Long): LiveData<RoomData> = reserveArchiveDao.getRoomById(id)
 
     fun readAllRooms():LiveData<List<RoomData>> = reserveArchiveDao.readAllRooms()
 
