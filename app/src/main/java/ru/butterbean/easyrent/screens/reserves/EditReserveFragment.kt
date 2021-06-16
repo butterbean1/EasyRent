@@ -140,12 +140,16 @@ class EditReserveFragment : Fragment() {
     }
 
     private fun initialize() {
-        APP_ACTIVITY.title = getString(R.string.reserve)
+        APP_ACTIVITY.title = "${getString(R.string.archive)}. ${getString(R.string.reserve)}"
         APP_ACTIVITY.supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         mViewModel = ViewModelProvider(APP_ACTIVITY).get(EditReserveViewModel::class.java)
         mIsNew = mCurrentReserve.id == 0.toLong()
         mIsArchive = mCurrentReserve is ReserveArchiveData
+
+        if (mIsArchive) APP_ACTIVITY.title = "${getString(R.string.archive)}. ${getString(R.string.reserve)}"
+        else APP_ACTIVITY.title = getString(R.string.reserve)
+
 
         // получим модель помещения и его название из БД
         mViewModel.getRoomById(mCurrentReserve.roomId).observe(viewLifecycleOwner, { room ->
@@ -170,6 +174,31 @@ class EditReserveFragment : Fragment() {
             mBinding.editReserveTimeCheckOut.text = mCurrentReserve.dateCheckOut.toTimeFormat()
             changeCheckOutGroupColor(mBinding.editReserveWasCheckOut.isChecked)
         }
+        // guest count
+        if (mIsNew) {
+            mBinding.editReserveGuestsCount.setText("1")
+        } else {
+            mBinding.editReserveGuestsCount.setText(mCurrentReserve.guestsCount.toString())
+        }
+
+        if (mIsArchive) setNotEnabledViews()
+        else setViewsSettings()
+
+        // добавляем меню
+        setHasOptionsMenu(true)
+    }
+
+    private fun setNotEnabledViews() {
+        mBinding.editReserveGuest.isEnabled = false
+        mBinding.editReserveGuestsCount.isEnabled = false
+        mBinding.editReserveSum.isEnabled = false
+        mBinding.editReservePayment.isEnabled = false
+        mBinding.editReserveWasCheckIn.isEnabled = false
+        mBinding.editReserveWasCheckOut.isEnabled = false
+        mBinding.editReserveBtnPaymentFull.visibility = View.INVISIBLE
+    }
+
+    private fun setViewsSettings() {
         changePaymentBtnVisibility()
         changeWasCheckInEnabled()
         changeWasCheckOutEnabled()
@@ -231,13 +260,6 @@ class EditReserveFragment : Fragment() {
             mBinding.editReserveTimeCheckOut.text = getTimeString(hourOfDay, minute)
         }
 
-        // guest count
-        if (mIsNew) {
-            mBinding.editReserveGuestsCount.setText("1")
-        } else {
-            mBinding.editReserveGuestsCount.setText(mCurrentReserve.guestsCount.toString())
-        }
-
         mBinding.editReserveGuestsCount.filters = arrayOf<InputFilter>(NumberEditTextInputFilter())
 
         mBinding.editReserveWasCheckIn.setOnCheckedChangeListener { _, isChecked ->
@@ -264,9 +286,6 @@ class EditReserveFragment : Fragment() {
             changePaymentBtnVisibility()
             hideKeyboard()
         }
-
-        // добавляем меню
-        setHasOptionsMenu(true)
     }
 
     private fun changeWasCheckInEnabled() {

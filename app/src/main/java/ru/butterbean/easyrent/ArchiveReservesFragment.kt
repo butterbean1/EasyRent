@@ -80,7 +80,7 @@ class ArchiveReservesFragment : Fragment() {
         val roomId = arguments?.getLong("roomId")!!
         mViewModel.getRoomById(roomId).observe(this) {
             mCurrentRoom = it
-            APP_ACTIVITY.title = "${APP_ACTIVITY.getString(R.string.archive)}: ${mCurrentRoom.name}"
+            APP_ACTIVITY.title = "${getString(R.string.archive)}. ${mCurrentRoom.name}"
             setDataToAdapter()
         }
     }
