@@ -1,4 +1,4 @@
-package ru.butterbean.easyrent.screens.room
+package ru.butterbean.easyrent.screens.reserves_archive
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,7 +7,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.RecyclerView
-import ru.butterbean.easyrent.screens.reserves_archive.ArchiveReservesFragment
 import ru.butterbean.easyrent.R
 import ru.butterbean.easyrent.databinding.ReserveItemBinding
 import ru.butterbean.easyrent.models.ReserveArchiveData
@@ -17,11 +16,13 @@ import ru.butterbean.easyrent.utils.getStartOfDay
 import ru.butterbean.easyrent.utils.toDateTimeFormat
 import java.util.*
 
-class ArchiveReservesListAdapter() :RecyclerView.Adapter<ArchiveReservesListAdapter.ArchiveReservesListHolder>() {
+class ArchiveReservesListAdapter(private val f: ArchiveReservesFragment) :
+    RecyclerView.Adapter<ArchiveReservesListAdapter.ArchiveReservesListHolder>() {
 
     private var mList = emptyList<ReserveArchiveData>()
 
-    class ArchiveReservesListHolder(itemBinding: ReserveItemBinding):RecyclerView.ViewHolder(itemBinding.root){
+    class ArchiveReservesListHolder(itemBinding: ReserveItemBinding) :
+        RecyclerView.ViewHolder(itemBinding.root) {
         val guestName: TextView = itemBinding.reservesListGuestName
         val guestsCount: TextView = itemBinding.reservesListGuestsCount
         val sum: TextView = itemBinding.reservesListSum
@@ -30,17 +31,21 @@ class ArchiveReservesListAdapter() :RecyclerView.Adapter<ArchiveReservesListAdap
         val dateCheckOut: TextView = itemBinding.reservesListDateCheckOut
         val wasCheckIn: ImageView = itemBinding.reservesListWasCheckIn
         val wasCheckOut: ImageView = itemBinding.reservesListWasCheckOut
+        val markItem: ImageView = itemBinding.reservesListMarkItem
     }
 
     override fun onViewAttachedToWindow(holder: ArchiveReservesListHolder) {
         holder.itemView.setOnClickListener {
-            ArchiveReservesFragment.clickOnListItem(mList[holder.adapterPosition])
-             }
+            if (f.listMarkedReserves.count() == 0) {
+                f.goToEditReserveFragment(mList[holder.adapterPosition])
+            } else setMarkItem(mList[holder.adapterPosition], holder)
+        }
         holder.itemView.setOnLongClickListener {
-            ArchiveReservesFragment.longClickOnListItem(mList[holder.adapterPosition])
+            setMarkItem(mList[holder.adapterPosition], holder)
             true
         }
         super.onViewAttachedToWindow(holder)
+
     }
 
     override fun onViewDetachedFromWindow(holder: ArchiveReservesListHolder) {
@@ -61,7 +66,8 @@ class ArchiveReservesListAdapter() :RecyclerView.Adapter<ArchiveReservesListAdap
         holder.guestName.text = currentItem.guestName
         holder.guestsCount.text = currentItem.guestsCount.toString()
         holder.sum.text = currentItem.sum.toString()
-        holder.sumCheck.visibility = if (currentItem.sum > 0 && currentItem.sum <= currentItem.payment) View.VISIBLE else View.INVISIBLE
+        holder.sumCheck.visibility =
+            if (currentItem.sum > 0 && currentItem.sum <= currentItem.payment) View.VISIBLE else View.INVISIBLE
         holder.dateCheckIn.text = currentItem.dateCheckIn.toDateTimeFormat()
         holder.dateCheckOut.text = currentItem.dateCheckOut.toDateTimeFormat()
         holder.wasCheckIn.visibility = if (currentItem.wasCheckIn) View.VISIBLE else View.GONE
@@ -73,18 +79,33 @@ class ArchiveReservesListAdapter() :RecyclerView.Adapter<ArchiveReservesListAdap
             holder.wasCheckOut.visibility = View.GONE
             val today = getStartOfDay(Calendar.getInstance())
             if ((today.after(getStartOfDay(getCalendarFromString(currentItem.dateCheckIn))) && !currentItem.wasCheckIn)
-                || (today.after(getStartOfDay(getCalendarFromString(currentItem.dateCheckOut))) && !currentItem.wasCheckOut)){
+                || (today.after(getStartOfDay(getCalendarFromString(currentItem.dateCheckOut))) && !currentItem.wasCheckOut)
+            ) {
                 holder.itemView.background =
                     AppCompatResources.getDrawable(APP_ACTIVITY, R.drawable.ripple_effect_pink)
             }
         }
     }
 
+    private fun setMarkItem(
+        reserve: ReserveArchiveData,
+        holder: ArchiveReservesListHolder
+    ) {
+        if (f.listMarkedReserves.contains(reserve)) {
+            f.listMarkedReserves.remove(reserve)
+            holder.markItem.visibility = View.GONE
+        } else {
+            f.listMarkedReserves.add(reserve)
+            holder.markItem.visibility = View.VISIBLE
+        }
+        f.setVisibleOptionsMenuItems()
+
+    }
+
     override fun getItemCount(): Int = mList.size
 
-    fun setData(l:List<ReserveArchiveData>){
+    fun setData(l: List<ReserveArchiveData>) {
         mList = l
         notifyDataSetChanged()
-
     }
 }

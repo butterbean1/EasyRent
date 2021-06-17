@@ -10,7 +10,6 @@ import ru.butterbean.easyrent.database.view_models.ArchiveReservesViewModel
 import ru.butterbean.easyrent.databinding.FragmentArchiveReservesBinding
 import ru.butterbean.easyrent.models.ReserveArchiveData
 import ru.butterbean.easyrent.models.RoomData
-import ru.butterbean.easyrent.screens.room.ArchiveReservesListAdapter
 import ru.butterbean.easyrent.utils.APP_ACTIVITY
 import ru.butterbean.easyrent.utils.createArgsBundle
 
@@ -23,16 +22,14 @@ class ArchiveReservesFragment : Fragment() {
     private var _binding: FragmentArchiveReservesBinding? = null
     private val mBinding get() = _binding!!
 
-    companion object {
-        fun clickOnListItem(reserve: ReserveArchiveData) {
-            APP_ACTIVITY.navController.navigate(
-                R.id.action_archiveReservesFragment_to_editReserveFragment,
-                createArgsBundle("reserve", reserve)
-            )
-        }
+    lateinit var optionsMenu: Menu
+    val listMarkedReserves = mutableListOf<ReserveArchiveData>()
 
-        fun longClickOnListItem(reserve: ReserveArchiveData) {
-        }
+    fun goToEditReserveFragment(reserve: ReserveArchiveData) {
+        APP_ACTIVITY.navController.navigate(
+            R.id.action_archiveReservesFragment_to_editReserveFragment,
+            createArgsBundle("reserve", reserve)
+        )
     }
 
     override fun onCreateView(
@@ -49,10 +46,26 @@ class ArchiveReservesFragment : Fragment() {
         mRecyclerView.adapter = null
     }
 
+    fun setVisibleOptionsMenuItems() {
+        optionsMenu.findItem(R.id.delete).isVisible = listMarkedReserves.count() != 0
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        optionsMenu = menu
+        inflater.inflate(R.menu.delete_menu, menu)
+        setVisibleOptionsMenuItems()
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
                 APP_ACTIVITY.navController.popBackStack()
+                true
+            }
+            R.id.delete -> {
+                mViewModel.deleteReserves(listMarkedReserves) {
+                    setDataToAdapter()
+                }
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -72,7 +85,7 @@ class ArchiveReservesFragment : Fragment() {
         setHasOptionsMenu(true)
 
         //Recycler view
-        mAdapter = ArchiveReservesListAdapter()
+        mAdapter = ArchiveReservesListAdapter(this)
         mRecyclerView = mBinding.archiveReservesRecyclerView
         mRecyclerView.adapter = mAdapter
 
@@ -84,6 +97,7 @@ class ArchiveReservesFragment : Fragment() {
             APP_ACTIVITY.title = "${getString(R.string.archive)}. ${mCurrentRoom.name}"
             setDataToAdapter()
         }
+
     }
 
     fun setDataToAdapter() {

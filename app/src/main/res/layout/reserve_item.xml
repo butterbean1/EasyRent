@@ -243,5 +243,14 @@
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
+<ImageView
+    android:id="@+id/reserves_list_mark_item"
+    android:layout_width="30dp"
+    android:layout_height="30dp"
+    android:visibility="gone"
+    android:src="@drawable/ic_check_circle"
+    android:layout_marginEnd="@dimen/app_margin"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintBottom_toBottomOf="parent"
+    />
 </androidx.constraintlayout.widget.ConstraintLayout>

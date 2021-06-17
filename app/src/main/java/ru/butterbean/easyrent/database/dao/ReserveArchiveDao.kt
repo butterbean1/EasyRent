@@ -23,6 +23,9 @@ interface ReserveArchiveDao {
     @Delete
     suspend fun deleteArchiveReserve(reserve:ReserveArchiveData)
 
+    @Delete
+    suspend fun deleteArchiveReserves(reserves:List<ReserveArchiveData>)
+
     @Query("SELECT * FROM $TABLE_ROOMS_NAME WHERE id = :id")
     fun getRoomById(id:Long): LiveData<RoomData>
 

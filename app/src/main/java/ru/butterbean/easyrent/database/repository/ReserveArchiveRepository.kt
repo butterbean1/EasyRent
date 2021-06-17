@@ -10,9 +10,9 @@ class ReserveArchiveRepository(private val reserveArchiveDao: ReserveArchiveDao)
         return reserveArchiveDao.addArchiveReserve(reserve)
     }
 
-    suspend fun deleteReserve(reserve: ReserveArchiveData) {
-        reserveArchiveDao.deleteArchiveReserve(reserve)
-    }
+    suspend fun deleteReserve(reserve: ReserveArchiveData) = reserveArchiveDao.deleteArchiveReserve(reserve)
+
+    suspend fun deleteReserves(reserves:List<ReserveArchiveData>) = reserveArchiveDao.deleteArchiveReserves(reserves)
 
     fun getRoomById(id: Long): LiveData<RoomData> = reserveArchiveDao.getRoomById(id)
 
