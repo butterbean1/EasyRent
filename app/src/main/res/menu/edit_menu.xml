@@ -1,12 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:title="@string/this_room">
+        <menu>
+            <item
+                android:id="@+id/confirm_edit"
+                android:icon="@drawable/ic_edit"
+                android:title="@string/edit" />
+            <item
+                android:id="@+id/delete"
+                android:icon="@drawable/ic_delete"
+                android:title="@string/delete" />
+        </menu>
+    </item>
     <item
-        android:id="@+id/confirm_edit"
-        android:icon="@drawable/ic_edit"
-        android:title="@string/edit" />
-    <item
-        android:id="@+id/delete"
-        android:icon="@drawable/ic_delete"
-        android:title="@string/delete" />
+        android:id="@+id/go_to_archive"
+        android:title="@string/go_to_archive" />
 </menu>

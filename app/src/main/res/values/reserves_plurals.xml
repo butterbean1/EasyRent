@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="reserves_count">
+        <item quantity="one">%d бронирование</item>
+        <item quantity="two">%d бронирования</item>
+        <item quantity="few">%d бронирования</item>
+        <item quantity="many">%d бронирований</item>
+        <item quantity="other">%d бронирований</item>
+    </plurals>
+</resources>

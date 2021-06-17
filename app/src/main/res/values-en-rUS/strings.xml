@@ -63,5 +63,9 @@
     <string name="pref_app_version_title">Version</string>
     <string name="archive">Archive</string>
     <string name="old_reserves_analyse_depth_title">Days to moving to the archive</string>
-    <string name="old_reserves_analyse_depth_summary">Move check-outed bookings to the archive after the selected number of days. The default is 30 days. If 0, then immediately after completion the booking will be archived.</string>
+    <string name="old_reserves_analyse_depth_summary">Move check-outed bookings to the archive after the selected number of days. The default is 30 days. If 0, then immediately after chek-out the booking will be archived.</string>
+    <string name="go_to_archive">Archive</string>
+    <string name="replace_to_archive">Replace to the archive</string>
+    <string name="this_room">This room</string>
+    <string name="in_the_archive">in the archive</string>
 </resources>

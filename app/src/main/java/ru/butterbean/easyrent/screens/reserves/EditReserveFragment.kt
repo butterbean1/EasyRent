@@ -8,6 +8,7 @@ import android.view.*
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.preference.PreferenceManager
 import ru.butterbean.easyrent.R
 import ru.butterbean.easyrent.database.view_models.EditReserveViewModel
 import ru.butterbean.easyrent.databinding.FragmentEditReserveBinding
@@ -22,6 +23,7 @@ class EditReserveFragment : Fragment() {
 
     private var mIsNew = false
     private var mIsArchive = false
+    private var mImmediatelyReplaceToArchive = false
     private var _binding: FragmentEditReserveBinding? = null
     private val mBinding get() = _binding!!
     private lateinit var mViewModel: EditReserveViewModel
@@ -65,7 +67,7 @@ class EditReserveFragment : Fragment() {
                 true
             }
             R.id.delete -> {
-                if (mIsArchive) mViewModel.deleteReserveArchive(mCurrentReserve as ReserveArchiveData){goToArchiveReservesFragment()}
+                if (mIsArchive) mViewModel.deleteReserveArchive(mCurrentReserve as ReserveArchiveData) { goToArchiveReservesFragment() }
                 else mViewModel.deleteReserve(mCurrentReserve as ReserveData) { goToRoomFragment() }
                 true
             }
@@ -100,24 +102,48 @@ class EditReserveFragment : Fragment() {
             guest.isEmpty() -> showToast(getString(R.string.enter_guest_name))
             guestsCount.isEmpty() -> showToast(getString(R.string.enter_guests_count))
             else -> {
-                val reserve = ReserveData(
-                    mCurrentReserve.id,
-                    mCurrentReserve.roomId,
-                    guest,
-                    Integer.parseInt(guestsCount),
-                    if (sum.isEmpty()) 0 else Integer.parseInt(sum),
-                    if (payment.isEmpty()) 0 else Integer.parseInt(payment),
-                    dateCheckInText,
-                    dateCheckOutText,
-                    wasCheckIn || wasCheckOut,
-                    wasCheckOut
-                )
-                if (mIsNew) {
-                    // если новое бронирование - добавляем в базу
-                    mViewModel.addReserve(reserve) { goToRoomFragment() }
+
+                if (mImmediatelyReplaceToArchive) {
+                    val reserve = ReserveArchiveData(
+                        mCurrentReserve.id,
+                        mCurrentReserve.roomId,
+                        guest,
+                        Integer.parseInt(guestsCount),
+                        if (sum.isEmpty()) 0 else Integer.parseInt(sum),
+                        if (payment.isEmpty()) 0 else Integer.parseInt(payment),
+                        dateCheckInText,
+                        dateCheckOutText,
+                        wasCheckIn || wasCheckOut,
+                        wasCheckOut
+                    )
+
+                    if (mIsNew) {
+                        // если новое бронирование - добавляем сразу в архив
+                        mViewModel.addReserveArchive(reserve) { goToRoomFragment() }
+                    } else {
+                        // если редактируем - записываем с изменениями сразу в архив
+                        mViewModel.replaceReserveToArchive(reserve,mCurrentReserve as ReserveData) { goToRoomFragment() }
+                    }
                 } else {
-                    // если редактируем - записываем изменения
-                    mViewModel.updateReserve(reserve) { goToRoomFragment() }
+                    val reserve = ReserveData(
+                        mCurrentReserve.id,
+                        mCurrentReserve.roomId,
+                        guest,
+                        Integer.parseInt(guestsCount),
+                        if (sum.isEmpty()) 0 else Integer.parseInt(sum),
+                        if (payment.isEmpty()) 0 else Integer.parseInt(payment),
+                        dateCheckInText,
+                        dateCheckOutText,
+                        wasCheckIn || wasCheckOut,
+                        wasCheckOut
+                    )
+                    if (mIsNew) {
+                        // если новое бронирование - добавляем в базу
+                        mViewModel.addReserve(reserve) { goToRoomFragment() }
+                    } else {
+                        // если редактируем - записываем изменения
+                        mViewModel.updateReserve(reserve) { goToRoomFragment() }
+                    }
                 }
             }
         }
@@ -143,11 +169,18 @@ class EditReserveFragment : Fragment() {
         APP_ACTIVITY.title = "${getString(R.string.archive)}. ${getString(R.string.reserve)}"
         APP_ACTIVITY.supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+        val prefs = PreferenceManager.getDefaultSharedPreferences(APP_ACTIVITY)
+        val prefAnalyseDepth =
+            prefs.getString("oldReservesAnalyseDepth", DAYS_TO_REPLACE_TO_ARCHIVE.toString())!!
+        mImmediatelyReplaceToArchive =
+            prefAnalyseDepth == "0" // если в настройках выбрано 0 дней до перемещения в резерв, то будем перемещать сразу же при сохранении изменений
+
         mViewModel = ViewModelProvider(APP_ACTIVITY).get(EditReserveViewModel::class.java)
         mIsNew = mCurrentReserve.id == 0.toLong()
         mIsArchive = mCurrentReserve is ReserveArchiveData
 
-        if (mIsArchive) APP_ACTIVITY.title = "${getString(R.string.archive)}. ${getString(R.string.reserve)}"
+        if (mIsArchive) APP_ACTIVITY.title =
+            "${getString(R.string.archive)}. ${getString(R.string.reserve)}"
         else APP_ACTIVITY.title = getString(R.string.reserve)
 
 

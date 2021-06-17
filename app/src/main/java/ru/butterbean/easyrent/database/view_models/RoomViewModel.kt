@@ -28,18 +28,38 @@ class RoomViewModel(application: Application) : AndroidViewModel(application) {
 
     fun getReservesCount(roomId: Long): LiveData<Int> = mRepository.getReservesCount(roomId)
 
+    fun getReservesArchiveCount(roomId: Long, onSuccess: (Int) -> Unit) {
+
+        viewModelScope.launch(Dispatchers.IO) {
+            val count = mRepository.getReservesArchiveCount(roomId)
+            withContext(Dispatchers.Main) {
+                onSuccess(count)
+            }
+        }
+    }
+
     fun getReservesByRoomId(
         roomId: Long,
         dontShowFreeReserves: Boolean,
         onSuccess: (List<ReserveType>) -> Unit
     ) {
         viewModelScope.launch(Dispatchers.IO) {
-            val list: List<ReserveType> = if (dontShowFreeReserves) mRepository.getAllReservesByRoomId(roomId)
-                   else mRepository.getReservesByRoomId(roomId)
+            val list: List<ReserveType> =
+                if (dontShowFreeReserves) mRepository.getAllReservesByRoomId(roomId)
+                else mRepository.getReservesByRoomId(roomId)
             withContext(Dispatchers.Main) { onSuccess(list) }
         }
     }
 
     fun getRoomById(id: Long): LiveData<RoomData> = mRepository.getRoomById(id)
+
+    fun replaceReserveToArchive(reserve: ReserveData, onSuccess: () -> Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            mRepository.replaceReserveToArchive(reserve)
+            withContext(Dispatchers.Main) {
+                onSuccess()
+            }
+        }
+    }
 
 }

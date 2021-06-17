@@ -7,7 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.RecyclerView
-import ru.butterbean.easyrent.ArchiveReservesFragment
+import ru.butterbean.easyrent.screens.reserves_archive.ArchiveReservesFragment
 import ru.butterbean.easyrent.R
 import ru.butterbean.easyrent.databinding.ReserveItemBinding
 import ru.butterbean.easyrent.models.ReserveArchiveData

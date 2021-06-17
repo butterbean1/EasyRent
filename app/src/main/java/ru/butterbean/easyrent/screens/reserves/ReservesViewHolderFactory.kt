@@ -27,7 +27,9 @@ class ReservesViewHolderFactory {
         val text: TextView = itemBinding.reservesListFreeReserve
     }
 
-    class ArchiveReserveHolder(itemBinding: LinkArchiveItemBinding) : RecyclerView.ViewHolder(itemBinding.root)
+    class ArchiveReserveHolder(itemBinding: LinkArchiveItemBinding) : RecyclerView.ViewHolder(itemBinding.root){
+        val text:TextView = itemBinding.reservesListLinkToArchive
+    }
 
     companion object {
         fun create(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {

@@ -13,6 +13,7 @@ import ru.butterbean.easyrent.databinding.FragmentRoomBinding
 import ru.butterbean.easyrent.models.ReserveData
 import ru.butterbean.easyrent.models.RoomData
 import ru.butterbean.easyrent.screens.reserves.*
+import ru.butterbean.easyrent.screens.reserves_archive.ArchiveReserveModel
 import ru.butterbean.easyrent.utils.*
 
 class RoomFragment : Fragment() {
@@ -24,6 +25,7 @@ class RoomFragment : Fragment() {
     private var mDoNotShowFreeReserves = false
     private lateinit var mAdapter: ReservesListAdapter
     private var mNavFromRoomsList = false
+    private var mHasArchive = false
 
     companion object {
         fun clickOnListItem(reserveType: ReserveType) {
@@ -59,16 +61,21 @@ class RoomFragment : Fragment() {
         }
 
         private fun showEditDeleteReserveDialog(reserve: ReserveData, fragment: RoomFragment) {
-            val actions = arrayOf(
-                APP_ACTIVITY.getString(R.string.open), // 0
-                APP_ACTIVITY.getString(R.string.delete) // 1
-            )
+            var actions = emptyArray<String>()
+            actions += APP_ACTIVITY.getString(R.string.open)// 0
+            actions += APP_ACTIVITY.getString(R.string.delete)// 1
+            if (reserve.wasCheckOut) actions += APP_ACTIVITY.getString(R.string.replace_to_archive)// 2
+
             val builder = AlertDialog.Builder(APP_ACTIVITY)
             builder.setItems(actions) { _, i ->
                 when (i) {
                     0 -> goToEditReserveFragment(reserve)
                     1 -> {
                         fragment.mViewModel.deleteReserve(reserve)
+                        { fragment.setDataToAdapter() }
+                    }
+                    2 -> {
+                        fragment.mViewModel.replaceReserveToArchive(reserve)
                         { fragment.setDataToAdapter() }
                     }
                 }
@@ -105,12 +112,22 @@ class RoomFragment : Fragment() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         if (ONLY_ONE_ROOM) inflater.inflate(R.menu.edit_room_menu, menu)
         else inflater.inflate(R.menu.edit_menu, menu)
+        menu.findItem(R.id.go_to_archive).isVisible = mHasArchive
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
                 goToRoomsList()
+                true
+            }
+            R.id.go_to_archive -> {
+                val args = Bundle()
+                args.putLong("roomId", mCurrentRoom.id)
+                APP_ACTIVITY.navController.navigate(
+                    R.id.action_roomFragment_to_archiveReservesFragment,
+                    args
+                )
                 true
             }
             R.id.settings -> {
@@ -173,6 +190,11 @@ class RoomFragment : Fragment() {
         // ViewModel
         mViewModel = ViewModelProvider(APP_ACTIVITY).get(RoomViewModel::class.java)
 
+        mViewModel.getReservesArchiveCount(mCurrentRoom.id) { count ->
+            mHasArchive = count > 0
+            // add menu
+            setHasOptionsMenu(true)
+        }
         mViewModel.getReservesCount(mCurrentRoom.id).observe(viewLifecycleOwner) { reservesCount ->
             if (reservesCount == 0) mBinding.roomTextEmptyReservesList.visibility = View.VISIBLE
             else mBinding.roomTextEmptyReservesList.visibility = View.GONE
@@ -190,9 +212,6 @@ class RoomFragment : Fragment() {
                 mBinding.roomAddress.text = mCurrentRoom.address
             }
         }
-
-        // add menu
-        setHasOptionsMenu(true)
 
         mBinding.roomBtnAddReserve.setOnClickListener {
             APP_ACTIVITY.navController.navigate(

@@ -71,8 +71,9 @@
     <string name="old_reserves_analyse_depth_title">Дней до отправки в архив</string>
     <string name="old_reserves_analyse_depth_summary">Помещать бронирование в архив через выбранное число дней после завершения. По умолчанию - 30 дней. Если 0, то сразу после завершения бронирование будет помещено в архив.</string>
     <string name="go_to_archive">Перейти в архив</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="replace_to_archive">Переместить в архив</string>
+    <string name="this_room">Это помещение</string>
+    <string name="in_the_archive">в архиве</string>
 
 
 </resources>

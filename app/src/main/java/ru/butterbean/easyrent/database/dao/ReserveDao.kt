@@ -14,6 +14,9 @@ interface ReserveDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun addReserve(reserve:ReserveData):Long
 
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun addReserveArchive(reserve:ReserveArchiveData):Long
+
     @Update
     suspend fun updateReserve(reserve:ReserveData)
 

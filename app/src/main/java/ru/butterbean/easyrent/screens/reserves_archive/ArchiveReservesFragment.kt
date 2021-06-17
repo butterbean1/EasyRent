@@ -1,10 +1,11 @@
-package ru.butterbean.easyrent
+package ru.butterbean.easyrent.screens.reserves_archive
 
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
+import ru.butterbean.easyrent.R
 import ru.butterbean.easyrent.database.view_models.ArchiveReservesViewModel
 import ru.butterbean.easyrent.databinding.FragmentArchiveReservesBinding
 import ru.butterbean.easyrent.models.ReserveArchiveData
