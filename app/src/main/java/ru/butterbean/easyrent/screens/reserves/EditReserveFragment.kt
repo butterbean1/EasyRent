@@ -103,7 +103,7 @@ class EditReserveFragment : Fragment() {
             guestsCount.isEmpty() -> showToast(getString(R.string.enter_guests_count))
             else -> {
 
-                if (mImmediatelyReplaceToArchive) {
+                if (wasCheckOut && mImmediatelyReplaceToArchive) {
                     val reserve = ReserveArchiveData(
                         mCurrentReserve.id,
                         mCurrentReserve.roomId,

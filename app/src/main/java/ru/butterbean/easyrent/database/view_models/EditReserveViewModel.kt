@@ -44,6 +44,7 @@ class EditReserveViewModel(application: Application) : AndroidViewModel(applicat
         viewModelScope.launch(Dispatchers.IO) {
             mRepository.deleteReserve(oldReserve)
             mRepository.addReserveArchive(newReserve)
+            mRepository.updateRoomStatus(newReserve.roomId)
             withContext(Dispatchers.Main) {
                 onSuccess()
             }
