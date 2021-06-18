@@ -2,6 +2,7 @@ package ru.butterbean.easyrent.screens.reserves_archive
 
 import android.os.Bundle
 import android.view.*
+import androidx.core.view.forEach
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
@@ -47,12 +48,15 @@ class ArchiveReservesFragment : Fragment() {
     }
 
     fun setVisibleOptionsMenuItems() {
-        optionsMenu.findItem(R.id.delete).isVisible = listMarkedReserves.count() != 0
+        val isItemVisible = listMarkedReserves.count() > 0
+        optionsMenu.forEach {
+            it.isVisible = isItemVisible
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         optionsMenu = menu
-        inflater.inflate(R.menu.delete_menu, menu)
+        inflater.inflate(R.menu.select_delete_menu, menu)
         setVisibleOptionsMenuItems()
     }
 
@@ -64,6 +68,7 @@ class ArchiveReservesFragment : Fragment() {
             }
             R.id.delete -> {
                 mViewModel.deleteReserves(listMarkedReserves) {
+                    listMarkedReserves.clear()
                     setDataToAdapter()
                 }
                 true
@@ -79,6 +84,8 @@ class ArchiveReservesFragment : Fragment() {
     }
 
     private fun initialize() {
+
+        listMarkedReserves.clear()
 
         APP_ACTIVITY.supportActionBar?.setDisplayHomeAsUpEnabled(true)
         // add menu

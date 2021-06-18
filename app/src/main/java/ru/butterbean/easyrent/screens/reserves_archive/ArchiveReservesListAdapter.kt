@@ -11,10 +11,7 @@ import ru.butterbean.easyrent.R
 import ru.butterbean.easyrent.databinding.ReserveItemBinding
 import ru.butterbean.easyrent.models.ReserveArchiveData
 import ru.butterbean.easyrent.utils.APP_ACTIVITY
-import ru.butterbean.easyrent.utils.getCalendarFromString
-import ru.butterbean.easyrent.utils.getStartOfDay
 import ru.butterbean.easyrent.utils.toDateTimeFormat
-import java.util.*
 
 class ArchiveReservesListAdapter(private val f: ArchiveReservesFragment) :
     RecyclerView.Adapter<ArchiveReservesListAdapter.ArchiveReservesListHolder>() {
@@ -38,10 +35,10 @@ class ArchiveReservesListAdapter(private val f: ArchiveReservesFragment) :
         holder.itemView.setOnClickListener {
             if (f.listMarkedReserves.count() == 0) {
                 f.goToEditReserveFragment(mList[holder.adapterPosition])
-            } else setMarkItem(mList[holder.adapterPosition], holder)
+            } else changeMarkItem(mList[holder.adapterPosition], holder)
         }
         holder.itemView.setOnLongClickListener {
-            setMarkItem(mList[holder.adapterPosition], holder)
+            changeMarkItem(mList[holder.adapterPosition], holder)
             true
         }
         super.onViewAttachedToWindow(holder)
@@ -71,23 +68,13 @@ class ArchiveReservesListAdapter(private val f: ArchiveReservesFragment) :
         holder.dateCheckIn.text = currentItem.dateCheckIn.toDateTimeFormat()
         holder.dateCheckOut.text = currentItem.dateCheckOut.toDateTimeFormat()
         holder.wasCheckIn.visibility = if (currentItem.wasCheckIn) View.VISIBLE else View.GONE
-        if (currentItem.wasCheckOut) {
-            holder.wasCheckOut.visibility = View.VISIBLE
-            holder.itemView.background =
-                AppCompatResources.getDrawable(APP_ACTIVITY, R.drawable.ripple_effect_grey)
-        } else {
-            holder.wasCheckOut.visibility = View.GONE
-            val today = getStartOfDay(Calendar.getInstance())
-            if ((today.after(getStartOfDay(getCalendarFromString(currentItem.dateCheckIn))) && !currentItem.wasCheckIn)
-                || (today.after(getStartOfDay(getCalendarFromString(currentItem.dateCheckOut))) && !currentItem.wasCheckOut)
-            ) {
-                holder.itemView.background =
-                    AppCompatResources.getDrawable(APP_ACTIVITY, R.drawable.ripple_effect_pink)
-            }
-        }
+        holder.itemView.background =
+            AppCompatResources.getDrawable(APP_ACTIVITY, R.drawable.ripple_effect_grey)
+        if (f.listMarkedReserves.contains(currentItem)) holder.markItem.visibility = View.VISIBLE
+        else holder.markItem.visibility = View.GONE
     }
 
-    private fun setMarkItem(
+    private fun changeMarkItem(
         reserve: ReserveArchiveData,
         holder: ArchiveReservesListHolder
     ) {
