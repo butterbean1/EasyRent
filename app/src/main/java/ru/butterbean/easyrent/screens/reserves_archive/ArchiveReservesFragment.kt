@@ -22,6 +22,8 @@ class ArchiveReservesFragment : Fragment() {
     private var _binding: FragmentArchiveReservesBinding? = null
     private val mBinding get() = _binding!!
 
+    private var mCurrentList = emptyList<ReserveArchiveData>()
+
     private lateinit var optionsMenu: Menu
 
     val listMarkedReserves = mutableListOf<ReserveArchiveData>()
@@ -66,6 +68,18 @@ class ArchiveReservesFragment : Fragment() {
                 APP_ACTIVITY.navController.popBackStack()
                 true
             }
+            R.id.select_all->{
+                listMarkedReserves.clear()
+                listMarkedReserves.addAll(mCurrentList)
+                setVisibleOptionsMenuItems()
+                mAdapter.notifyDataSetChanged()
+                true
+            }
+            R.id.cancel_selection->{
+                listMarkedReserves.clear()
+                setVisibleOptionsMenuItems()
+                mAdapter.notifyDataSetChanged()
+                true}
             R.id.delete -> {
                 mViewModel.deleteReserves(listMarkedReserves) {
                     listMarkedReserves.clear()
@@ -109,6 +123,7 @@ class ArchiveReservesFragment : Fragment() {
 
     fun setDataToAdapter() {
         mViewModel.getReservesByRoomId(mCurrentRoom.id).observe(this) { reserves ->
+            mCurrentList = reserves
             mAdapter.setData(reserves)
         }
     }

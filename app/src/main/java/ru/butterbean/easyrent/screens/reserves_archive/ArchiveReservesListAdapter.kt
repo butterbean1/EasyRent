@@ -71,9 +71,10 @@ class ArchiveReservesListAdapter(private val f: ArchiveReservesFragment) :
         holder.wasCheckIn.visibility = if (currentItem.wasCheckIn) View.VISIBLE else View.GONE
         holder.itemView.background =
             AppCompatResources.getDrawable(APP_ACTIVITY, R.drawable.ripple_effect_grey)
-        if (f.listMarkedReserves.contains(currentItem)) holder.markItem.visibility = View.VISIBLE
-        else holder.markItem.visibility = View.GONE
+        setMarkItem(currentItem, holder)
     }
+
+
 
     private fun changeMarkItem(
         reserve: ReserveArchiveData,
@@ -82,13 +83,32 @@ class ArchiveReservesListAdapter(private val f: ArchiveReservesFragment) :
 
         if (f.listMarkedReserves.contains(reserve)) {
             f.listMarkedReserves.remove(reserve)
-            holder.markItem.visibility = View.GONE
+            setMarkItem(reserve, holder)
+            if (f.listMarkedReserves.count() == 0) notifyDataSetChanged()
         } else {
             f.listMarkedReserves.add(reserve)
             holder.markItem.visibility = View.VISIBLE
+            holder.nonMarkItem.visibility = View.GONE
+            if (f.listMarkedReserves.count() == 1) notifyDataSetChanged()
         }
+
         f.setVisibleOptionsMenuItems()
 
+    }
+
+    private fun setMarkItem(
+        reserve: ReserveArchiveData,
+        holder: ArchiveReservesListHolder
+    ) {
+        if (f.listMarkedReserves.contains(reserve)) {
+            holder.markItem.visibility = View.VISIBLE
+            holder.nonMarkItem.visibility = View.GONE
+        } else {
+            holder.markItem.visibility = View.GONE
+            if (f.listMarkedReserves.count() == 0) holder.nonMarkItem.visibility = View.GONE
+            else holder.nonMarkItem.visibility = View.VISIBLE
+
+        }
     }
 
     override fun getItemCount(): Int = mList.size
