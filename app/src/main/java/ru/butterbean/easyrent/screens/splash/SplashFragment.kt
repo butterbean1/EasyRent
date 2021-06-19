@@ -1,4 +1,4 @@
-package ru.butterbean.easyrent.screens
+package ru.butterbean.easyrent.screens.splash
 
 import android.os.Bundle
 import android.os.Handler
@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
 import ru.butterbean.easyrent.R
-import ru.butterbean.easyrent.database.view_models.SplashViewModel
 import ru.butterbean.easyrent.databinding.FragmentSplashBinding
 import ru.butterbean.easyrent.utils.*
 

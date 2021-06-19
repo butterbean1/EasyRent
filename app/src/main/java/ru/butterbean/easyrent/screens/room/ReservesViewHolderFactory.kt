@@ -1,4 +1,4 @@
-package ru.butterbean.easyrent.screens.reserves
+package ru.butterbean.easyrent.screens.room
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.butterbean.easyrent.databinding.FreeReserveItemBinding
 import ru.butterbean.easyrent.databinding.LinkArchiveItemBinding
 import ru.butterbean.easyrent.databinding.ReserveItemBinding
+import ru.butterbean.easyrent.screens.room.item_models.CommonReserveModel
 
 class ReservesViewHolderFactory {
     class SimpleReserveHolder(itemBinding: ReserveItemBinding) :
@@ -34,10 +35,10 @@ class ReservesViewHolderFactory {
     companion object {
         fun create(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
             return when (viewType) {
-                ReserveType.SIMPLE -> SimpleReserveHolder(
+                CommonReserveModel.SIMPLE -> SimpleReserveHolder(
                     ReserveItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
                 )
-                ReserveType.ARCHIVE-> ArchiveReserveHolder(
+                CommonReserveModel.ARCHIVE -> ArchiveReserveHolder(
                     LinkArchiveItemBinding.inflate(LayoutInflater.from(parent.context),parent,false)
                 )
                 else -> FreeReserveHolder(

@@ -1,4 +1,4 @@
-package ru.butterbean.easyrent.screens.room
+package ru.butterbean.easyrent.screens.rooms_list
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -22,7 +22,7 @@ class RoomsListAdapter(private val lo: LifecycleOwner) :RecyclerView.Adapter<Roo
             RoomsListFragment.clickOnListItem(listRooms[holder.adapterPosition])
              }
         holder.itemView.setOnLongClickListener {
-            RoomsListFragment.longClickOnListItem(listRooms[holder.adapterPosition],lo)
+            RoomsListFragment.longClickOnListItem(listRooms[holder.adapterPosition], lo)
             true
         }
         super.onViewAttachedToWindow(holder)

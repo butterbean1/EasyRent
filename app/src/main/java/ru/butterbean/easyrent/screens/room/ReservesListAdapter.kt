@@ -1,12 +1,12 @@
-package ru.butterbean.easyrent.screens.reserves
+package ru.butterbean.easyrent.screens.room
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import ru.butterbean.easyrent.screens.room.RoomFragment
+import ru.butterbean.easyrent.screens.room.item_models.CommonReserveModel
 
 class ReservesListAdapter(val fragment: RoomFragment) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var listReserves = emptyList<ReserveType>()
+    private var listReserves = emptyList<CommonReserveModel>()
 
     override fun onViewAttachedToWindow(holder: RecyclerView.ViewHolder) {
         holder.itemView.setOnClickListener {
@@ -29,7 +29,7 @@ class ReservesListAdapter(val fragment: RoomFragment) : RecyclerView.Adapter<Rec
         parent: ViewGroup,
         viewType: Int
     ): RecyclerView.ViewHolder {
-        return ReservesViewHolderFactory.create(parent,viewType)
+        return ReservesViewHolderFactory.create(parent, viewType)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -38,7 +38,7 @@ class ReservesListAdapter(val fragment: RoomFragment) : RecyclerView.Adapter<Rec
 
     override fun getItemCount(): Int = listReserves.size
 
-    fun setData(reserves:List<ReserveType>){
+    fun setData(reserves:List<CommonReserveModel>){
         listReserves = reserves
         notifyDataSetChanged()
     }

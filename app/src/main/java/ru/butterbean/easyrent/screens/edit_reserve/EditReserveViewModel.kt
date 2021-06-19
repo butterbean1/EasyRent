@@ -1,4 +1,4 @@
-package ru.butterbean.easyrent.database.view_models
+package ru.butterbean.easyrent.screens.edit_reserve
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
@@ -40,10 +40,14 @@ class EditReserveViewModel(application: Application) : AndroidViewModel(applicat
         }
     }
 
-    fun replaceReserveToArchive(newReserve: ReserveArchiveData,oldReserve: ReserveData, onSuccess: () -> Unit) {
+    fun replaceReserveToArchive(
+        newReserve: ReserveArchiveData,
+        oldReserve: ReserveData,
+        onSuccess: () -> Unit
+    ) {
         viewModelScope.launch(Dispatchers.IO) {
-            mRepository.deleteReserve(oldReserve)
             mRepository.addReserveArchive(newReserve)
+            mRepository.deleteReserve(oldReserve)
             mRepository.updateRoomStatus(newReserve.roomId)
             withContext(Dispatchers.Main) {
                 onSuccess()

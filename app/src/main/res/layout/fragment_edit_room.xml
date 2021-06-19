@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/layout_edit"
-    tools:context=".screens.room.EditRoomFragment">
+    tools:context=".screens.edit_room.EditRoomFragment">
 
     <EditText
         android:id="@+id/room_change_name"

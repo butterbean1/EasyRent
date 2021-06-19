@@ -5,10 +5,10 @@ import ru.butterbean.easyrent.database.dao.ReserveDao
 import ru.butterbean.easyrent.models.ReserveArchiveData
 import ru.butterbean.easyrent.models.ReserveData
 import ru.butterbean.easyrent.models.RoomData
-import ru.butterbean.easyrent.screens.reserves_archive.ArchiveReserveModel
-import ru.butterbean.easyrent.screens.reserves.FreeReserveModel
-import ru.butterbean.easyrent.screens.reserves.ReserveType
-import ru.butterbean.easyrent.screens.reserves.SimpleReserveModel
+import ru.butterbean.easyrent.screens.room.item_models.ArchiveReserveModel
+import ru.butterbean.easyrent.screens.room.item_models.FreeReserveModel
+import ru.butterbean.easyrent.screens.room.item_models.CommonReserveModel
+import ru.butterbean.easyrent.screens.room.item_models.SimpleReserveModel
 import ru.butterbean.easyrent.utils.*
 import java.util.*
 
@@ -82,9 +82,9 @@ class ReserveRepository(private val reserveDao: ReserveDao) {
 
     fun getRoomById(id: Long): LiveData<RoomData> = reserveDao.getRoomById(id)
 
-    fun getAllReservesByRoomId(roomId: Long): List<ReserveType> {
+    fun getAllReservesByRoomId(roomId: Long): List<CommonReserveModel> {
         val reservesList = reserveDao.getReservesByRoomId(roomId)
-        val resList = mutableListOf<ReserveType>()
+        val resList = mutableListOf<CommonReserveModel>()
         reservesList.forEach { reserve ->
             resList.add(createSimpleModel(reserve))
         }
@@ -94,7 +94,7 @@ class ReserveRepository(private val reserveDao: ReserveDao) {
         return resList
     }
 
-    fun getReservesByRoomId(roomId: Long): List<ReserveType> {
+    fun getReservesByRoomId(roomId: Long): List<CommonReserveModel> {
         val reservesList = reserveDao.getReservesByRoomId(roomId)
         // обработаем список резервов и создадим новый список из различных ххххReserveModel (free, simple и т.д.)
         // для вывода в RecyclerView
@@ -102,7 +102,7 @@ class ReserveRepository(private val reserveDao: ReserveDao) {
         currentDate.set(Calendar.MINUTE, 0)
         currentDate.set(Calendar.MILLISECOND, 0)
         var lastFreeShowed = false
-        val resList = mutableListOf<ReserveType>()
+        val resList = mutableListOf<CommonReserveModel>()
         reservesList.forEach { reserve ->
             if (reserve.wasCheckOut) {
                 if (!lastFreeShowed) {

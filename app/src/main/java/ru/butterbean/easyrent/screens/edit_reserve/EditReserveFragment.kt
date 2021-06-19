@@ -1,4 +1,4 @@
-package ru.butterbean.easyrent.screens.reserves
+package ru.butterbean.easyrent.screens.edit_reserve
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
 import ru.butterbean.easyrent.R
-import ru.butterbean.easyrent.database.view_models.EditReserveViewModel
 import ru.butterbean.easyrent.databinding.FragmentEditReserveBinding
 import ru.butterbean.easyrent.models.CommonReserveData
 import ru.butterbean.easyrent.models.ReserveArchiveData
@@ -105,7 +104,7 @@ class EditReserveFragment : Fragment() {
 
                 if (wasCheckOut && mImmediatelyReplaceToArchive) {
                     val reserve = ReserveArchiveData(
-                        mCurrentReserve.id,
+                        0,
                         mCurrentReserve.roomId,
                         guest,
                         Integer.parseInt(guestsCount),
@@ -121,8 +120,11 @@ class EditReserveFragment : Fragment() {
                         // если новое бронирование - добавляем сразу в архив
                         mViewModel.addReserveArchive(reserve) { goToRoomFragment() }
                     } else {
-                        // если редактируем - записываем с изменениями сразу в архив
-                        mViewModel.replaceReserveToArchive(reserve,mCurrentReserve as ReserveData) { goToRoomFragment() }
+                        // если редактируем - удаляем из основной таблицы и записываем с изменениями сразу в архив
+                        mViewModel.replaceReserveToArchive(
+                            reserve,
+                            mCurrentReserve as ReserveData
+                        ) { goToRoomFragment() }
                     }
                 } else {
                     val reserve = ReserveData(
@@ -150,8 +152,10 @@ class EditReserveFragment : Fragment() {
     }
 
     private fun goToRoomFragment() {
+        val action = if (ONLY_ONE_ROOM) R.id.action_editReserveFragment_to_roomFragment_as_main
+        else R.id.action_editReserveFragment_to_roomFragment
         APP_ACTIVITY.navController.navigate(
-            R.id.action_editReserveFragment_to_roomFragment,
+            action,
             createArgsBundle("room", mCurrentRoom)
         )
     }

@@ -1,15 +1,16 @@
-package ru.butterbean.easyrent.screens.reserves
+package ru.butterbean.easyrent.screens.room.item_models
 
 import androidx.recyclerview.widget.RecyclerView
 import ru.butterbean.easyrent.models.ReserveData
+import ru.butterbean.easyrent.screens.room.ReservesViewHolderFactory
 import ru.butterbean.easyrent.utils.*
 
 class FreeReserveModel(
     val roomId: Long,
     val dateCheckIn: String,
     val dateCheckOut: String = ""
-) : ReserveType {
-    override fun getItemViewType(): Int = ReserveType.FREE
+) : CommonReserveModel {
+    override fun getItemViewType(): Int = CommonReserveModel.FREE
 
     override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder) {
         val holder = viewHolder as ReservesViewHolderFactory.FreeReserveHolder

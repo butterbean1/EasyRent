@@ -8,12 +8,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
 import ru.butterbean.easyrent.R
-import ru.butterbean.easyrent.database.view_models.RoomViewModel
 import ru.butterbean.easyrent.databinding.FragmentRoomBinding
 import ru.butterbean.easyrent.models.ReserveData
 import ru.butterbean.easyrent.models.RoomData
-import ru.butterbean.easyrent.screens.reserves.*
-import ru.butterbean.easyrent.screens.reserves_archive.ArchiveReserveModel
+import ru.butterbean.easyrent.screens.room.item_models.ArchiveReserveModel
+import ru.butterbean.easyrent.screens.room.item_models.FreeReserveModel
+import ru.butterbean.easyrent.screens.room.item_models.CommonReserveModel
+import ru.butterbean.easyrent.screens.room.item_models.SimpleReserveModel
 import ru.butterbean.easyrent.utils.*
 
 class RoomFragment : Fragment() {
@@ -28,18 +29,18 @@ class RoomFragment : Fragment() {
     private var mHasArchive = false
 
     companion object {
-        fun clickOnListItem(reserveType: ReserveType) {
-            when (reserveType.getItemViewType()) {
-                ReserveType.SIMPLE -> {
-                    val reserveModel = reserveType as SimpleReserveModel
+        fun clickOnListItem(commonReserveModel: CommonReserveModel) {
+            when (commonReserveModel.getItemViewType()) {
+                CommonReserveModel.SIMPLE -> {
+                    val reserveModel = commonReserveModel as SimpleReserveModel
                     goToEditReserveFragment(reserveModel.toReserveData())
                 }
-                ReserveType.FREE -> {
-                    val reserveModel = reserveType as FreeReserveModel
+                CommonReserveModel.FREE -> {
+                    val reserveModel = commonReserveModel as FreeReserveModel
                     goToEditReserveFragment(reserveModel.toReserveData())
                 }
-                ReserveType.ARCHIVE -> {
-                    val reserveModel = reserveType as ArchiveReserveModel
+                CommonReserveModel.ARCHIVE -> {
+                    val reserveModel = commonReserveModel as ArchiveReserveModel
                     val args = Bundle()
                     args.putLong("roomId", reserveModel.roomId)
                     APP_ACTIVITY.navController.navigate(
@@ -51,10 +52,10 @@ class RoomFragment : Fragment() {
 
         }
 
-        fun longClickOnListItem(reserveType: ReserveType, fragment: RoomFragment) {
-            when (reserveType.getItemViewType()) {
-                ReserveType.SIMPLE -> {
-                    val reserveModel = reserveType as SimpleReserveModel
+        fun longClickOnListItem(commonReserveModel: CommonReserveModel, fragment: RoomFragment) {
+            when (commonReserveModel.getItemViewType()) {
+                CommonReserveModel.SIMPLE -> {
+                    val reserveModel = commonReserveModel as SimpleReserveModel
                     showEditDeleteReserveDialog(reserveModel.toReserveData(), fragment)
                 }
             }

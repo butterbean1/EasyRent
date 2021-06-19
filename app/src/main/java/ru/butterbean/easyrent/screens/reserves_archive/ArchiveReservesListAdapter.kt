@@ -29,6 +29,7 @@ class ArchiveReservesListAdapter(private val f: ArchiveReservesFragment) :
         val wasCheckIn: ImageView = itemBinding.reservesListWasCheckIn
         val wasCheckOut: ImageView = itemBinding.reservesListWasCheckOut
         val markItem: ImageView = itemBinding.reservesListMarkItem
+        val nonMarkItem: ImageView = itemBinding.reservesListNonMarkItem
     }
 
     override fun onViewAttachedToWindow(holder: ArchiveReservesListHolder) {
@@ -78,6 +79,7 @@ class ArchiveReservesListAdapter(private val f: ArchiveReservesFragment) :
         reserve: ReserveArchiveData,
         holder: ArchiveReservesListHolder
     ) {
+
         if (f.listMarkedReserves.contains(reserve)) {
             f.listMarkedReserves.remove(reserve)
             holder.markItem.visibility = View.GONE

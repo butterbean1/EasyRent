@@ -4,7 +4,7 @@ import android.app.AlertDialog
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
 import ru.butterbean.easyrent.R
-import ru.butterbean.easyrent.database.view_models.RoomDialogViewModel
+import ru.butterbean.easyrent.screens.RoomDialogViewModel
 import ru.butterbean.easyrent.models.GuestData
 import ru.butterbean.easyrent.models.ReserveData
 import ru.butterbean.easyrent.models.RoomData

@@ -1,4 +1,4 @@
-package ru.butterbean.easyrent.database.view_models
+package ru.butterbean.easyrent.screens.guest
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel

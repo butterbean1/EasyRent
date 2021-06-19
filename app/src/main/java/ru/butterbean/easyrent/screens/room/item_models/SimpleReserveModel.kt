@@ -1,10 +1,11 @@
-package ru.butterbean.easyrent.screens.reserves
+package ru.butterbean.easyrent.screens.room.item_models
 
 import android.view.View
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.RecyclerView
 import ru.butterbean.easyrent.R
 import ru.butterbean.easyrent.models.ReserveData
+import ru.butterbean.easyrent.screens.room.ReservesViewHolderFactory
 import ru.butterbean.easyrent.utils.APP_ACTIVITY
 import ru.butterbean.easyrent.utils.getCalendarFromString
 import ru.butterbean.easyrent.utils.getStartOfDay
@@ -22,9 +23,9 @@ class SimpleReserveModel(
     val dateCheckOut: String = "",
     val wasCheckIn: Boolean = false,
     val wasCheckOut: Boolean = false
-) : ReserveType {
+) : CommonReserveModel {
 
-    override fun getItemViewType(): Int = ReserveType.SIMPLE
+    override fun getItemViewType(): Int = CommonReserveModel.SIMPLE
 
     override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder) {
         val holder = viewHolder as ReservesViewHolderFactory.SimpleReserveHolder

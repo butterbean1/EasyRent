@@ -16,9 +16,9 @@
             android:id="@+id/reserves_list_group_guests"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent">
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
                 android:id="@+id/reserves_list_guest_name"
@@ -69,20 +69,20 @@
             android:id="@+id/reserves_list_group_sums"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent">
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
                 android:id="@+id/reserves_list_currency_symbol"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/def_currency_symbol"
                 android:layout_marginEnd="@dimen/app_small_margin"
+                android:text="@string/def_currency_symbol"
                 android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/reserves_list_sum"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/reserves_list_sum"
@@ -91,19 +91,19 @@
                 android:layout_marginEnd="@dimen/chek_margin"
                 android:text="@string/def_sum"
                 android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/reserves_list_sum_check"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/reserves_list_sum_check"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_check_green"
-                android:layout_marginBottom="@dimen/app_small_margin"
                 android:layout_marginEnd="@dimen/app_small_margin"
+                android:layout_marginBottom="@dimen/app_small_margin"
+                android:src="@drawable/ic_check_green"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -123,12 +123,12 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/app_small_margin"
             android:minWidth="65dp"
-            android:textSize="@dimen/small_text_size"
             android:text="@string/check_in"
             android:textColor="@color/grey"
+            android:textSize="@dimen/small_text_size"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/reserves_list_text_separator"
@@ -137,9 +137,9 @@
             android:layout_margin="@dimen/app_small_margin"
             android:text=":"
             android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/reserves_list_check_in_text"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/reserves_list_date_check_in"
@@ -148,9 +148,9 @@
             android:layout_margin="@dimen/app_small_margin"
             android:text="@string/def_date_representation"
             android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/reserves_list_text_separator"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/reserves_list_time_check_in"
@@ -171,8 +171,7 @@
             android:src="@drawable/ic_check_green"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/reserves_list_time_check_in"
-            app:layout_constraintTop_toTopOf="parent"
-            />
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -192,12 +191,12 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/app_small_margin"
             android:minWidth="65dp"
-            android:textSize="@dimen/small_text_size"
             android:text="@string/check_out"
             android:textColor="@color/grey"
+            android:textSize="@dimen/small_text_size"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/reserves_list_check_out_text_separator"
@@ -206,9 +205,9 @@
             android:layout_margin="@dimen/app_small_margin"
             android:text=":"
             android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/reserves_list_check_out_text"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/reserves_list_date_check_out"
@@ -217,9 +216,9 @@
             android:layout_margin="@dimen/app_small_margin"
             android:text="@string/def_date_representation"
             android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/reserves_list_check_out_text_separator"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/reserves_list_time_check_out"
@@ -243,14 +242,24 @@
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-<ImageView
-    android:id="@+id/reserves_list_mark_item"
-    android:layout_width="30dp"
-    android:layout_height="30dp"
-    android:visibility="gone"
-    android:src="@drawable/ic_check_circle"
-    android:layout_marginEnd="@dimen/app_margin"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintBottom_toBottomOf="parent"
-    />
+    <ImageView
+        android:id="@+id/reserves_list_mark_item"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginEnd="@dimen/app_margin"
+        android:src="@drawable/ic_check_circle"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <ImageView
+        android:id="@+id/reserves_list_non_mark_item"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginEnd="@dimen/app_margin"
+        android:src="@drawable/ic_non_check_circle"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

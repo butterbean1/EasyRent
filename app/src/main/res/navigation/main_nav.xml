@@ -6,17 +6,22 @@
     app:startDestination="@id/splashFragment">
     <fragment
         android:id="@+id/editReserveFragment"
-        android:name="ru.butterbean.easyrent.screens.reserves.EditReserveFragment"
+        android:name="ru.butterbean.easyrent.screens.edit_reserve.EditReserveFragment"
         android:label="EditReserveFragment" >
         <action
             android:id="@+id/action_editReserveFragment_to_roomFragment"
             app:destination="@id/roomFragment"
             app:launchSingleTop="true"
             app:popUpTo="@id/roomsListFragment" />
+        <action
+            android:id="@+id/action_editReserveFragment_to_roomFragment_as_main"
+            app:destination="@id/roomFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/main_nav" />
     </fragment>
     <fragment
         android:id="@+id/editRoomFragment"
-        android:name="ru.butterbean.easyrent.screens.room.EditRoomFragment"
+        android:name="ru.butterbean.easyrent.screens.edit_room.EditRoomFragment"
         android:label="fragment_edit_room"
         tools:layout="@layout/fragment_edit_room" >
         <action
@@ -60,7 +65,7 @@
     </fragment>
     <fragment
         android:id="@+id/splashFragment"
-        android:name="ru.butterbean.easyrent.screens.SplashFragment"
+        android:name="ru.butterbean.easyrent.screens.splash.SplashFragment"
         android:label="fragment_splash"
         tools:layout="@layout/fragment_splash" >
         <action
@@ -81,7 +86,7 @@
     </fragment>
     <fragment
         android:id="@+id/roomsListFragment"
-        android:name="ru.butterbean.easyrent.screens.room.RoomsListFragment"
+        android:name="ru.butterbean.easyrent.screens.rooms_list.RoomsListFragment"
         android:label="fragment_rooms_list"
         tools:layout="@layout/fragment_rooms_list" >
         <action

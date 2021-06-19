@@ -1,4 +1,4 @@
-package ru.butterbean.easyrent.screens.room
+package ru.butterbean.easyrent.screens.rooms_list
 
 import android.app.AlertDialog
 import android.os.Bundle
@@ -9,7 +9,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import ru.butterbean.easyrent.R
-import ru.butterbean.easyrent.database.view_models.RoomsListViewModel
 import ru.butterbean.easyrent.databinding.FragmentRoomsListBinding
 import ru.butterbean.easyrent.models.RoomData
 import ru.butterbean.easyrent.utils.APP_ACTIVITY

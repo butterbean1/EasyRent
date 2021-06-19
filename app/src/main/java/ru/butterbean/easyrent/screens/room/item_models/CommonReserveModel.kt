@@ -1,9 +1,9 @@
-package ru.butterbean.easyrent.screens.reserves
+package ru.butterbean.easyrent.screens.room.item_models
 
 import androidx.recyclerview.widget.RecyclerView
 import ru.butterbean.easyrent.models.ReserveData
 
-interface ReserveType {
+interface CommonReserveModel {
     companion object{
         const val SIMPLE = 0
         const val FREE = 1

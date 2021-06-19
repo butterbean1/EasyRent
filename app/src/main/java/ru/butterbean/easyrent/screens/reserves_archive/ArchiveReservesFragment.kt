@@ -7,7 +7,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import ru.butterbean.easyrent.R
-import ru.butterbean.easyrent.database.view_models.ArchiveReservesViewModel
 import ru.butterbean.easyrent.databinding.FragmentArchiveReservesBinding
 import ru.butterbean.easyrent.models.ReserveArchiveData
 import ru.butterbean.easyrent.models.RoomData
@@ -23,7 +22,8 @@ class ArchiveReservesFragment : Fragment() {
     private var _binding: FragmentArchiveReservesBinding? = null
     private val mBinding get() = _binding!!
 
-    lateinit var optionsMenu: Menu
+    private lateinit var optionsMenu: Menu
+
     val listMarkedReserves = mutableListOf<ReserveArchiveData>()
 
     fun goToEditReserveFragment(reserve: ReserveArchiveData) {

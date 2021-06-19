@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/select_all"
-        android:icon="@drawable/select_all"
+        android:icon="@drawable/ic_select_all"
         android:title="Отметить все"
         app:showAsAction="ifRoom"/>
     <item
