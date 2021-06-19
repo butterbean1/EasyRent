@@ -65,7 +65,12 @@ class ArchiveReservesFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
-                APP_ACTIVITY.navController.popBackStack()
+                if (listMarkedReserves.count()==0) APP_ACTIVITY.navController.popBackStack()
+                else {
+                    listMarkedReserves.clear()
+                    setVisibleOptionsMenuItems()
+                    mAdapter.notifyDataSetChanged()
+                }
                 true
             }
             R.id.select_all->{
@@ -75,14 +80,10 @@ class ArchiveReservesFragment : Fragment() {
                 mAdapter.notifyDataSetChanged()
                 true
             }
-            R.id.cancel_selection->{
-                listMarkedReserves.clear()
-                setVisibleOptionsMenuItems()
-                mAdapter.notifyDataSetChanged()
-                true}
             R.id.delete -> {
                 mViewModel.deleteReserves(listMarkedReserves) {
                     listMarkedReserves.clear()
+                    setVisibleOptionsMenuItems()
                     setDataToAdapter()
                 }
                 true

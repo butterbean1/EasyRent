@@ -5,16 +5,12 @@
         android:id="@+id/select_all"
         android:icon="@drawable/ic_select_all"
         android:title="Отметить все"
-        app:showAsAction="ifRoom"/>
-    <item
-        android:id="@+id/cancel_selection"
-        android:icon="@drawable/ic_clear"
-        android:title="Отмена"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="ifRoom" />
+
     <item
         android:id="@+id/delete"
         android:icon="@drawable/ic_delete"
         android:title="@string/delete"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="ifRoom" />
 
 </menu>

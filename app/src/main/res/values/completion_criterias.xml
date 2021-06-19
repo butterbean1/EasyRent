@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="completion_entries">
+        <item>
+            Выселение произошло
+        </item>
+        <item>
+            Полностью оплачено
+        </item>
+    </array>
+    <array name="completion_entry_values">
+        <item>
+            wasCheckOut
+        </item>
+        <item>
+            wasPaid
+        </item>
+    </array>
+</resources>

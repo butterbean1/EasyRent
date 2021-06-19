@@ -1,5 +1,5 @@
-<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory
         app:iconSpaceReserved="false"
@@ -23,34 +23,50 @@
 
     <PreferenceCategory
         app:iconSpaceReserved="false"
-        app:title="@string/bookings">
+        app:title="@string/reserve">
         <CheckBoxPreference
             app:iconSpaceReserved="false"
             app:key="doNotShowFreeReserves"
             app:summary="@string/pref_dont_show_free_reserves_summary"
             app:title="@string/pref_dont_show_free_reserves_title" />
+
+        <Preference
+            app:iconSpaceReserved="false"
+            app:layout="@layout/simple_pref"
+            app:title="Считать завершенным когда:" />
+
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            app:key="reserveCompleteCriteriaWasCheckOut"
+            app:title="произошло выселение" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            app:key="reserveCompleteCriteriaWasPaid"
+            app:title="полностью оплачено" />
+
     </PreferenceCategory>
 
     <PreferenceCategory
         app:iconSpaceReserved="false"
         app:title="@string/archive">
         <EditTextPreference
+            app:dialogMessage="@string/old_reserves_analyse_depth_summary"
             app:iconSpaceReserved="false"
             app:key="oldReservesAnalyseDepth"
-            app:dialogMessage="@string/old_reserves_analyse_depth_summary"
-            app:useSimpleSummaryProvider="true"
-            app:title="@string/old_reserves_analyse_depth_title" />
+            app:title="@string/old_reserves_analyse_depth_title"
+            app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>
 
     <PreferenceCategory
         app:iconSpaceReserved="false"
         app:title="@string/application">
         <EditTextPreference
+            android:selectable="false"
+            android:summary="@string/pref_app_version_summary"
             app:iconSpaceReserved="false"
             app:key="appVersion"
-            app:title="@string/pref_app_version_title"
-            android:selectable="false"
-            android:summary="@string/pref_app_version_summary"/>
+            app:title="@string/pref_app_version_title" />
     </PreferenceCategory>
 
 </PreferenceScreen>
