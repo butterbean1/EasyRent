@@ -68,4 +68,9 @@
     <string name="replace_to_archive">Replace to the archive</string>
     <string name="this_room">This room</string>
     <string name="in_the_archive">in the archive</string>
+    <string name="replace_from_archive">Restore from the archive</string>
+    <string name="complete_criteria_was_check_out">was check-outed</string>
+    <string name="complete_criteria_was_paid">full payment</string>
+    <string name="complete_criteria_title">Is completed when:</string>
+    <string name="select_all">Select all</string>
 </resources>

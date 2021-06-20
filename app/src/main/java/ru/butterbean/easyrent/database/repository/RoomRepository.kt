@@ -17,9 +17,6 @@ class RoomRepository(private val roomDao: RoomDao) {
     suspend fun updateRoom(room:RoomData){
         roomDao.updateRoom(room)
     }
-    suspend fun deleteAllRooms(){
-        roomDao.deleteAllRooms()
-    }
 
     fun getReservesCount(roomId:Long):LiveData<Int> = roomDao.getReservesCount(roomId)
 

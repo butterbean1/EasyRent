@@ -4,9 +4,7 @@ import android.os.Bundle
 import android.text.InputFilter
 import android.text.InputType
 import android.view.*
-import androidx.preference.CheckBoxPreference
 import androidx.preference.EditTextPreference
-import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import ru.butterbean.easyrent.R
 import ru.butterbean.easyrent.utils.APP_ACTIVITY

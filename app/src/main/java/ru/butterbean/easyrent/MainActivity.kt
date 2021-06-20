@@ -2,10 +2,8 @@ package ru.butterbean.easyrent
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import androidx.preference.PreferenceManager
 import ru.butterbean.easyrent.database.MainDatabase
 import ru.butterbean.easyrent.databinding.ActivityMainBinding
 import ru.butterbean.easyrent.utils.*

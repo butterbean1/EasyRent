@@ -9,9 +9,6 @@ import ru.butterbean.easyrent.utils.reserveCompleted
 
 class ReserveArchiveRepository(private val reserveArchiveDao: ReserveArchiveDao) {
 
-    suspend fun deleteArchiveReserve(reserve: ReserveArchiveData) =
-        reserveArchiveDao.deleteArchiveReserve(reserve)
-
     suspend fun deleteArchiveReserves(reserves: List<ReserveArchiveData>) =
         reserveArchiveDao.deleteArchiveReserves(reserves)
 

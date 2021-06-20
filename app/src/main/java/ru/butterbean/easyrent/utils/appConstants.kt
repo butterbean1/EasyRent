@@ -1,6 +1,5 @@
 package ru.butterbean.easyrent.utils
 
-import androidx.preference.PreferenceManager
 import ru.butterbean.easyrent.MainActivity
 import ru.butterbean.easyrent.database.MainDatabase
 

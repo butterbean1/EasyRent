@@ -17,9 +17,6 @@ fun getEmptyReserve(roomId: Long): ReserveData {
     return ReserveData(0, roomId)
 }
 
-fun getEmptyGuest(): GuestData {
-    return GuestData(0)
-}
 
 /* Пока что решил удалять без лишних вопросов
 fun deleteReserveWithDialog(reserve: ReserveData) {
