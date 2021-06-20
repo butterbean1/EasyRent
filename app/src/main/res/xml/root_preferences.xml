@@ -33,17 +33,18 @@
         <Preference
             app:iconSpaceReserved="false"
             app:layout="@layout/simple_pref"
-            app:title="Считать завершенным когда:" />
+            app:title="@string/complete_criteria_title" />
 
 
         <CheckBoxPreference
             android:defaultValue="true"
+            app:enabled="false"
             app:key="reserveCompleteCriteriaWasCheckOut"
-            app:title="произошло выселение" />
+            app:title="@string/complete_criteria_was_check_out" />
         <CheckBoxPreference
             android:defaultValue="true"
             app:key="reserveCompleteCriteriaWasPaid"
-            app:title="полностью оплачено" />
+            app:title="@string/complete_criteria_was_paid" />
 
     </PreferenceCategory>
 

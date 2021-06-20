@@ -42,13 +42,4 @@ data class ReserveData(
     dateCheckOut,
     wasCheckIn,
     wasCheckOut
-), Serializable {
-    override fun isComplete(): Boolean {
-        val prefs = PreferenceManager.getDefaultSharedPreferences(APP_ACTIVITY)
-        val reserveCompleteCriteriaWasCheckOut = prefs.getBoolean("reserveCompleteCriteriaWasCheckOut", true)
-        val reserveCompleteCriteriaWasPaid = prefs.getBoolean("reserveCompleteCriteriaWasPaid", true)
-
-        return (!reserveCompleteCriteriaWasCheckOut || wasCheckOut)
-                && (!reserveCompleteCriteriaWasPaid || (sum<=payment))
-    }
-}
+), Serializable

@@ -32,6 +32,9 @@ interface ReserveDao {
     @Query("SELECT * FROM $TABLE_ROOMS_NAME WHERE id = :id")
     fun getRoomById(id:Long): LiveData<RoomData>
 
+    @Query("SELECT * FROM $TABLE_RESERVES_NAME WHERE id = :id")
+    fun getReserveById(id:Long): LiveData<ReserveData>
+
     @Query("SELECT * FROM $TABLE_RESERVES_NAME ORDER BY dateCheckIn ASC")
     fun readAllReserves(): LiveData<List<ReserveData>>
 

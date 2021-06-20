@@ -51,3 +51,7 @@ class NumberEditTextInputFilter(private val minValue: Int = 1, private val maxVa
     }
 }
 
+fun reserveCompleted(wasCheckOut:Boolean, sum:Int, payment:Int): Boolean {
+    return (!PREF_RESERVE_COMPLETE_WAS_CHECK_OUT || wasCheckOut)
+            && (!PREF_RESERVE_COMPLETE_WAS_PAID || (sum in 1..payment))
+}

@@ -65,7 +65,12 @@ class RoomFragment : Fragment() {
             var actions = emptyArray<String>()
             actions += APP_ACTIVITY.getString(R.string.open)// 0
             actions += APP_ACTIVITY.getString(R.string.delete)// 1
-            if (reserve.wasCheckOut) actions += APP_ACTIVITY.getString(R.string.replace_to_archive)// 2
+            if (reserveCompleted(
+                    reserve.wasCheckOut,
+                    reserve.sum,
+                    reserve.payment
+                )
+            ) actions += APP_ACTIVITY.getString(R.string.replace_to_archive)// 2
 
             val builder = AlertDialog.Builder(APP_ACTIVITY)
             builder.setItems(actions) { _, i ->
@@ -177,6 +182,10 @@ class RoomFragment : Fragment() {
 
         APP_ACTIVITY.supportActionBar?.setDisplayHomeAsUpEnabled(!ONLY_ONE_ROOM)
         val prefs = PreferenceManager.getDefaultSharedPreferences(APP_ACTIVITY)
+        PREF_RESERVE_COMPLETE_WAS_CHECK_OUT =
+            prefs.getBoolean("reserveCompleteCriteriaWasCheckOut", true)
+        PREF_RESERVE_COMPLETE_WAS_PAID = prefs.getBoolean("reserveCompleteCriteriaWasPaid", true)
+
         mDoNotShowFreeReserves = prefs.getBoolean("doNotShowFreeReserves", false)
         val useAddresses = prefs.getBoolean("useRoomAddresses", true)
         var dontShowAddress = true

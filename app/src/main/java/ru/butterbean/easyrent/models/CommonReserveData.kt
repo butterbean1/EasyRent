@@ -11,6 +11,4 @@ abstract class CommonReserveData(
     open val dateCheckOut: String = "",
     open val wasCheckIn: Boolean = false,
     open val wasCheckOut: Boolean = false
-){
-    open fun isComplete():Boolean{return false}
-}
+)

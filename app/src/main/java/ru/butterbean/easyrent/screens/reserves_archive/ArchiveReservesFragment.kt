@@ -1,5 +1,6 @@
 package ru.butterbean.easyrent.screens.reserves_archive
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.*
 import androidx.core.view.forEach
@@ -81,15 +82,28 @@ class ArchiveReservesFragment : Fragment() {
                 true
             }
             R.id.delete -> {
+                showDeleteDialog()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun showDeleteDialog(){
+        val builder = AlertDialog.Builder(this.context)
+        builder.setMessage("Выбранные бронирования будут безвозвратно удалены! Продолжить?")
+            .setPositiveButton(APP_ACTIVITY.getString(R.string.yes)) { dialog, _ ->
+                dialog.cancel()
                 mViewModel.deleteReserves(listMarkedReserves) {
                     listMarkedReserves.clear()
                     setVisibleOptionsMenuItems()
                     setDataToAdapter()
                 }
-                true
             }
-            else -> super.onOptionsItemSelected(item)
-        }
+            .setNegativeButton(APP_ACTIVITY.getString(R.string.no)) { dialog, _ ->
+                dialog.cancel()
+            }
+            .show()
     }
 
     override fun onStart() {

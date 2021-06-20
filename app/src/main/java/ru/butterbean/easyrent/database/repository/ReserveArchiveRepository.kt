@@ -3,12 +3,11 @@ package ru.butterbean.easyrent.database.repository
 import androidx.lifecycle.LiveData
 import ru.butterbean.easyrent.database.dao.ReserveArchiveDao
 import ru.butterbean.easyrent.models.ReserveArchiveData
+import ru.butterbean.easyrent.models.ReserveData
 import ru.butterbean.easyrent.models.RoomData
+import ru.butterbean.easyrent.utils.reserveCompleted
 
 class ReserveArchiveRepository(private val reserveArchiveDao: ReserveArchiveDao) {
-    suspend fun addReserve(reserve: ReserveArchiveData): Long {
-        return reserveArchiveDao.addArchiveReserve(reserve)
-    }
 
     suspend fun deleteReserve(reserve: ReserveArchiveData) = reserveArchiveDao.deleteArchiveReserve(reserve)
 
@@ -21,24 +20,28 @@ class ReserveArchiveRepository(private val reserveArchiveDao: ReserveArchiveDao)
     fun getArchiveReservesByRoomId(roomId: Long): LiveData<List<ReserveArchiveData>> = reserveArchiveDao.getReservesByRoomId(roomId)
 
     suspend fun replaceReservesToArchive(analyseDepth:Int){
-        val reservesList =  reserveArchiveDao.getAllClosedReserves(analyseDepth)
-        reserveArchiveDao.deleteReserves(reservesList)
+        val reservesList =  reserveArchiveDao.getAllCheckOutedReserves(analyseDepth)
+        val reservesToDelete = mutableListOf<ReserveData>()
         val archiveReserves = mutableListOf<ReserveArchiveData>()
         reservesList.forEach{reserve->
-            val newArchiveReserves = ReserveArchiveData(
-                0,
-                reserve.roomId,
-                reserve.guestName,
-                reserve.guestsCount,
-                reserve.sum,
-                reserve.payment,
-                reserve.dateCheckIn,
-                reserve.dateCheckOut,
-                reserve.wasCheckIn,
-                reserve.wasCheckOut
-            )
-            archiveReserves.add(newArchiveReserves)
+            if (reserveCompleted(reserve.wasCheckOut,reserve.sum,reserve.payment)) {
+                val newArchiveReserves = ReserveArchiveData(
+                    0,
+                    reserve.roomId,
+                    reserve.guestName,
+                    reserve.guestsCount,
+                    reserve.sum,
+                    reserve.payment,
+                    reserve.dateCheckIn,
+                    reserve.dateCheckOut,
+                    reserve.wasCheckIn,
+                    reserve.wasCheckOut
+                )
+                archiveReserves.add(newArchiveReserves)
+                reservesToDelete.add(reserve)
+            }
         }
+        reserveArchiveDao.deleteReserves(reservesToDelete)
         reserveArchiveDao.addArchiveReserves(archiveReserves)
     }
 

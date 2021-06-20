@@ -41,6 +41,9 @@ class SplashFragment : Fragment() {
         val viewModel = ViewModelProvider(APP_ACTIVITY).get(SplashViewModel::class.java)
 
         val prefs = PreferenceManager.getDefaultSharedPreferences(APP_ACTIVITY)
+        PREF_RESERVE_COMPLETE_WAS_CHECK_OUT = prefs.getBoolean("reserveCompleteCriteriaWasCheckOut", true)
+        PREF_RESERVE_COMPLETE_WAS_PAID = prefs.getBoolean("reserveCompleteCriteriaWasPaid", true)
+
         val prefAnalyseDepth = prefs.getString("oldReservesAnalyseDepth", DAYS_TO_REPLACE_TO_ARCHIVE.toString())!!
         val analyseDepth = if (prefAnalyseDepth.isEmpty()) DAYS_TO_REPLACE_TO_ARCHIVE else {
             try {

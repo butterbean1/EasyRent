@@ -5,6 +5,6 @@
         android:id="@+id/confirm_change"
         android:icon="@drawable/ic_confirm"
         android:title="@string/save"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
 
 </menu>

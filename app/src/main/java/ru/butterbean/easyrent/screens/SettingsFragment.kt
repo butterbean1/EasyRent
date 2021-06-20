@@ -55,23 +55,6 @@ class SettingsFragment : PreferenceFragmentCompat() {
             false
         }
 
-        val checkGroup = findPreference<Preference>("groupReserveCompleteCriteria")
-        val ch1 = findPreference<CheckBoxPreference>("reserveCompleteCriteriaWasCheckOut")
-        val ch2 = findPreference<CheckBoxPreference>("reserveCompleteCriteriaWasPaid")
-        ch1?.setOnPreferenceChangeListener { _, newValue ->
-            val ch1NewIsChecked = newValue as Boolean
-            ch2?.isEnabled = ch1NewIsChecked
-            ch2?.isChecked = !ch1NewIsChecked || ch2?.isChecked!!
-            true
-        }
-
-        ch2?.setOnPreferenceChangeListener { _, newValue ->
-            val ch2NewIsChecked = newValue as Boolean
-            ch1?.isEnabled = ch2NewIsChecked
-            ch1?.isChecked = !ch2NewIsChecked || ch1?.isChecked!!
-            true
-        }
-
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 

@@ -42,7 +42,7 @@ interface ReserveArchiveDao {
     fun getReservesByRoomId(roomId: Long): LiveData<List<ReserveArchiveData>>
 
     @Query("SELECT * FROM  $TABLE_RESERVES_NAME WHERE (date('now','start of day')>date(dateCheckOut,'start of day','+'||:analyseDepth||' days'))&(wasCheckOut=1) ORDER BY dateCheckOut DESC")
-    fun getAllClosedReserves(analyseDepth:Int): List<ReserveData>
+    fun getAllCheckOutedReserves(analyseDepth:Int): List<ReserveData>
 
     @Query("SELECT * FROM $TABLE_ROOMS_NAME ORDER BY name ASC")
     fun readAllRooms(): LiveData<List<RoomData>>

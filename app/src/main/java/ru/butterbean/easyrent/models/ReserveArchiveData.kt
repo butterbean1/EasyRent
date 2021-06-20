@@ -40,8 +40,4 @@ data class ReserveArchiveData(
     dateCheckOut,
     wasCheckIn,
     wasCheckOut
-), Serializable {
-    override fun isComplete(): Boolean {
-        return true
-    }
-}
+), Serializable

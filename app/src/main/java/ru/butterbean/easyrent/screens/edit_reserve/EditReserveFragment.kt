@@ -1,5 +1,6 @@
 package ru.butterbean.easyrent.screens.edit_reserve
 
+import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
@@ -25,6 +26,7 @@ class EditReserveFragment : Fragment() {
     private var mImmediatelyReplaceToArchive = false
     private var _binding: FragmentEditReserveBinding? = null
     private val mBinding get() = _binding!!
+    private lateinit var mOptionsMenu: Menu
     private lateinit var mViewModel: EditReserveViewModel
     private lateinit var mCurrentReserve: CommonReserveData
     private lateinit var mCurrentRoom: RoomData
@@ -51,10 +53,17 @@ class EditReserveFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        if (mIsArchive) inflater.inflate(R.menu.delete_menu, menu)
+        mOptionsMenu = menu
+        inflateOptionsMenu()
+    }
+
+    private fun inflateOptionsMenu() {
+        mOptionsMenu.clear()
+        val inflater = MenuInflater(this.context)
+        if (mIsArchive) inflater.inflate(R.menu.restore_delete_menu, mOptionsMenu)
         else {
-            if (mIsNew) inflater.inflate(R.menu.confirm_menu, menu)
-            else inflater.inflate(R.menu.confirm_delete_menu, menu)
+            if (mIsNew) inflater.inflate(R.menu.confirm_menu, mOptionsMenu)
+            else inflater.inflate(R.menu.confirm_delete_menu, mOptionsMenu)
         }
     }
 
@@ -65,13 +74,41 @@ class EditReserveFragment : Fragment() {
                 change()
                 true
             }
+            R.id.restore -> {
+                mViewModel.replaceReserveFromArchive(mCurrentReserve as ReserveArchiveData) {
+                    afterRestore(it)
+                }
+                true
+            }
             R.id.delete -> {
-                if (mIsArchive) mViewModel.deleteReserveArchive(mCurrentReserve as ReserveArchiveData) { goToArchiveReservesFragment() }
-                else mViewModel.deleteReserve(mCurrentReserve as ReserveData) { goToRoomFragment() }
+                showDeleteDialog()
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun afterRestore(newId: Long) {
+        mViewModel.getReserveById(newId).observe(viewLifecycleOwner) { newReserve ->
+            mCurrentReserve = newReserve
+            APP_ACTIVITY.title = getString(R.string.reserve)
+            mIsArchive = false
+            inflateOptionsMenu()
+        }
+    }
+
+    private fun showDeleteDialog() {
+        val builder = AlertDialog.Builder(this.context)
+        builder.setMessage("Бронирование будет безвозвратно удалено! Продолжить?")
+            .setPositiveButton(APP_ACTIVITY.getString(R.string.yes)) { dialog, _ ->
+                dialog.cancel()
+                if (mIsArchive) mViewModel.deleteReserveArchive(mCurrentReserve as ReserveArchiveData) { goToArchiveReservesFragment() }
+                else mViewModel.deleteReserve(mCurrentReserve as ReserveData) { goToRoomFragment() }
+            }
+            .setNegativeButton(APP_ACTIVITY.getString(R.string.no)) { dialog, _ ->
+                dialog.cancel()
+            }
+            .show()
     }
 
     private fun change() {
@@ -101,15 +138,21 @@ class EditReserveFragment : Fragment() {
             guest.isEmpty() -> showToast(getString(R.string.enter_guest_name))
             guestsCount.isEmpty() -> showToast(getString(R.string.enter_guests_count))
             else -> {
-
-                if (wasCheckOut && mImmediatelyReplaceToArchive) {
+                val sumInt = if (sum.isEmpty()) 0 else Integer.parseInt(sum)
+                val paymentInt = if (payment.isEmpty()) 0 else Integer.parseInt(payment)
+                if (mImmediatelyReplaceToArchive && reserveCompleted(
+                        wasCheckOut,
+                        sumInt,
+                        paymentInt
+                    )
+                ) {
                     val reserve = ReserveArchiveData(
                         0,
                         mCurrentReserve.roomId,
                         guest,
                         Integer.parseInt(guestsCount),
-                        if (sum.isEmpty()) 0 else Integer.parseInt(sum),
-                        if (payment.isEmpty()) 0 else Integer.parseInt(payment),
+                        sumInt,
+                        paymentInt,
                         dateCheckInText,
                         dateCheckOutText,
                         wasCheckIn || wasCheckOut,

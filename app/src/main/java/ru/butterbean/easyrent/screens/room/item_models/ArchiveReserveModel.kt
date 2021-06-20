@@ -14,7 +14,8 @@ class ArchiveReserveModel(
 
     override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder){
         val holder = viewHolder as ReservesViewHolderFactory.ArchiveReserveHolder
-        val stringReserves = APP_ACTIVITY.resources.getQuantityString(R.plurals.reserves_count,archivedCount,archivedCount)
+//        val stringReserves = APP_ACTIVITY.resources.getQuantityString(R.plurals.reserves_count,archivedCount,archivedCount)
+        val stringReserves = archivedCount.toString()
         val t = "$stringReserves ${APP_ACTIVITY.getString(R.string.in_the_archive)}"
         holder.text.text = t
     }
