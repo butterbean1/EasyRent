@@ -59,7 +59,7 @@ class EditReserveFragment : Fragment() {
 
     private fun inflateOptionsMenu() {
         mOptionsMenu.clear()
-        val inflater = MenuInflater(this.context)
+        val inflater = APP_ACTIVITY.menuInflater
         if (mIsArchive) inflater.inflate(R.menu.restore_delete_menu, mOptionsMenu)
         else {
             if (mIsNew) inflater.inflate(R.menu.confirm_menu, mOptionsMenu)
@@ -94,6 +94,7 @@ class EditReserveFragment : Fragment() {
             APP_ACTIVITY.title = getString(R.string.reserve)
             mIsArchive = false
             inflateOptionsMenu()
+            setViewsSettings()
         }
     }
 
@@ -283,6 +284,11 @@ class EditReserveFragment : Fragment() {
         changeWasCheckInEnabled()
         changeWasCheckOutEnabled()
 
+        mBinding.editReserveGuest.isEnabled = true
+        mBinding.editReserveGuestsCount.isEnabled = true
+        mBinding.editReserveSum.isEnabled = true
+        mBinding.editReservePayment.isEnabled = true
+
         // date check-in диалог
         mBinding.editReserveDateCheckIn.setOnClickListener {
             hideKeyboard()
@@ -402,7 +408,7 @@ class EditReserveFragment : Fragment() {
     }
 
     private fun changePaymentBtnVisibility() {
-        if (mBinding.editReservePayment.text.toString() == mBinding.editReserveSum.text.toString()) {
+        if (mBinding.editReserveSum.text.isEmpty() || mBinding.editReservePayment.text.toString() == mBinding.editReserveSum.text.toString()) {
             mBinding.editReserveBtnPaymentFull.visibility = View.INVISIBLE
         } else {
             mBinding.editReserveBtnPaymentFull.visibility = View.VISIBLE
