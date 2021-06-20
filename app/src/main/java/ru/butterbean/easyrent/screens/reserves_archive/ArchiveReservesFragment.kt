@@ -66,7 +66,7 @@ class ArchiveReservesFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
-                if (listMarkedReserves.count()==0) APP_ACTIVITY.navController.popBackStack()
+                if (listMarkedReserves.count() == 0) APP_ACTIVITY.navController.popBackStack()
                 else {
                     listMarkedReserves.clear()
                     setVisibleOptionsMenuItems()
@@ -74,11 +74,19 @@ class ArchiveReservesFragment : Fragment() {
                 }
                 true
             }
-            R.id.select_all->{
+            R.id.select_all -> {
                 listMarkedReserves.clear()
                 listMarkedReserves.addAll(mCurrentList)
                 setVisibleOptionsMenuItems()
                 mAdapter.notifyDataSetChanged()
+                true
+            }
+            R.id.restore -> {
+                mViewModel.replaceReservesFromArchive(listMarkedReserves) {
+                    listMarkedReserves.clear()
+                    setVisibleOptionsMenuItems()
+                    setDataToAdapter()
+                }
                 true
             }
             R.id.delete -> {
@@ -89,7 +97,7 @@ class ArchiveReservesFragment : Fragment() {
         }
     }
 
-    private fun showDeleteDialog(){
+    private fun showDeleteDialog() {
         val builder = AlertDialog.Builder(this.context)
         builder.setMessage("Выбранные бронирования будут безвозвратно удалены! Продолжить?")
             .setPositiveButton(APP_ACTIVITY.getString(R.string.yes)) { dialog, _ ->

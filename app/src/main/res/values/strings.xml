@@ -78,6 +78,7 @@
     <string name="complete_criteria_was_check_out">произошло выселение</string>
     <string name="complete_criteria_was_paid">полностью оплачено</string>
     <string name="complete_criteria_title">Считать завершенным когда:</string>
+    <string name="select_all">Отметить все</string>
 
 
 </resources>

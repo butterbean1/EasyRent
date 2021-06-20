@@ -17,7 +17,7 @@ class ArchiveReservesViewModel(application: Application):AndroidViewModel(applic
 
     fun deleteReserves(reserves:List<ReserveArchiveData>,onSuccess:()->Unit) {
         viewModelScope.launch {
-            mRepository.deleteReserves(reserves)
+            mRepository.deleteArchiveReserves(reserves)
             withContext(Dispatchers.Main){
                 onSuccess()
             }
@@ -27,6 +27,15 @@ class ArchiveReservesViewModel(application: Application):AndroidViewModel(applic
     fun getReservesByRoomId(roomId: Long):LiveData<List<ReserveArchiveData>>  = mRepository.getArchiveReservesByRoomId(roomId)
 
     fun getRoomById(id: Long): LiveData<RoomData> = mRepository.getRoomById(id)
+
+    fun replaceReservesFromArchive(reserves: List<ReserveArchiveData>, onSuccess: () -> Unit) {
+        viewModelScope.launch {
+            mRepository.replaceReservesFromArchive(reserves)
+            withContext(Dispatchers.Main){
+                onSuccess()
+            }
+        }
+    }
 
 
 }

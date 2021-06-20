@@ -4,7 +4,13 @@
     <item
         android:id="@+id/select_all"
         android:icon="@drawable/ic_select_all"
-        android:title="Отметить все"
+        android:title="@string/select_all"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/restore"
+        android:icon="@drawable/ic_restore"
+        android:title="@string/replace_from_archive"
         app:showAsAction="ifRoom" />
 
     <item
