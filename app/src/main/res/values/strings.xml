@@ -66,7 +66,7 @@
     <string name="bookings">Бронирования</string>
     <string name="application">Приложение</string>
     <string name="pref_app_version_title">Версия</string>
-    <string name="pref_app_version_summary" translatable="false">1.0</string>
+    <string name="pref_app_version_summary" translatable="false">1.1</string>
     <string name="archive">Архив</string>
     <string name="old_reserves_analyse_depth_title">Дней до отправки в архив</string>
     <string name="old_reserves_analyse_depth_summary">Помещать бронирование в архив через выбранное число дней после завершения. По умолчанию - 30 дней. Если 0, то сразу после завершения бронирование будет помещено в архив.</string>
