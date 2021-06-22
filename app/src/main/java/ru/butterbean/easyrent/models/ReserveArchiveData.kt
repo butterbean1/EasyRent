@@ -28,7 +28,8 @@ data class ReserveArchiveData(
     override val dateCheckIn: String = "",
     override val dateCheckOut: String = "",
     override val wasCheckIn: Boolean = false,
-    override val wasCheckOut: Boolean = false
+    override val wasCheckOut: Boolean = false,
+    override val phoneNumber: String = ""
 ) : CommonReserveData(
     id,
     roomId,
@@ -39,5 +40,6 @@ data class ReserveArchiveData(
     dateCheckIn,
     dateCheckOut,
     wasCheckIn,
-    wasCheckOut
+    wasCheckOut,
+    phoneNumber
 ), Serializable

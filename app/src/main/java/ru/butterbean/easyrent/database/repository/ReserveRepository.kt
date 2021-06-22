@@ -43,7 +43,8 @@ class ReserveRepository(private val reserveDao: ReserveDao) {
             reserve.dateCheckIn,
             reserve.dateCheckOut,
             reserve.wasCheckIn,
-            reserve.wasCheckOut
+            reserve.wasCheckOut,
+            reserve.phoneNumber
         )
         reserveDao.deleteReserve(reserve)
         reserveDao.addReserveArchive(newArchiveReserve)
@@ -60,7 +61,8 @@ class ReserveRepository(private val reserveDao: ReserveDao) {
             reserve.dateCheckIn,
             reserve.dateCheckOut,
             reserve.wasCheckIn,
-            reserve.wasCheckOut
+            reserve.wasCheckOut,
+            reserve.phoneNumber
         )
         reserveDao.deleteReserveArchive(reserve)
         return reserveDao.addReserve(newReserve)
@@ -105,7 +107,7 @@ class ReserveRepository(private val reserveDao: ReserveDao) {
 
     fun getRoomById(id: Long): LiveData<RoomData> = reserveDao.getRoomById(id)
 
-    fun getReserveById(id: Long): LiveData<ReserveData> = reserveDao.getReserveById(id)
+    fun getReserveById(id: Long): ReserveData = reserveDao.getReserveById(id)
 
     fun getAllReservesByRoomId(roomId: Long): List<CommonReserveModel> {
         val reservesList = reserveDao.getReservesByRoomId(roomId)
@@ -180,6 +182,7 @@ class ReserveRepository(private val reserveDao: ReserveDao) {
             reserve.dateCheckOut,
             reserve.wasCheckIn,
             reserve.wasCheckOut,
+            reserve.phoneNumber,
         )
 
     fun getReservesCount(roomId: Long): LiveData<Int> = reserveDao.getReservesCount(roomId)

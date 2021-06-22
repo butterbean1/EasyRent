@@ -6,9 +6,7 @@ import ru.butterbean.easyrent.models.ReserveArchiveData
 import ru.butterbean.easyrent.models.ReserveData
 import ru.butterbean.easyrent.models.RoomData
 import ru.butterbean.easyrent.utils.getAutoUpdatedReserves
-import ru.butterbean.easyrent.utils.getCalendarFromString
 import ru.butterbean.easyrent.utils.reserveCompleted
-import java.util.*
 
 class ReserveArchiveRepository(private val reserveArchiveDao: ReserveArchiveDao) {
 
@@ -44,7 +42,8 @@ class ReserveArchiveRepository(private val reserveArchiveDao: ReserveArchiveDao)
                     reserve.dateCheckIn,
                     reserve.dateCheckOut,
                     reserve.wasCheckIn,
-                    reserve.wasCheckOut
+                    reserve.wasCheckOut,
+                    reserve.phoneNumber
                 )
                 archiveReserves.add(newArchiveReserves)
                 reservesToDelete.add(reserve)
@@ -67,7 +66,8 @@ class ReserveArchiveRepository(private val reserveArchiveDao: ReserveArchiveDao)
                 reserve.dateCheckIn,
                 reserve.dateCheckOut,
                 reserve.wasCheckIn,
-                reserve.wasCheckOut
+                reserve.wasCheckOut,
+                reserve.phoneNumber
             )
             newReserves.add(newReserve)
         }

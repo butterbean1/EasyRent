@@ -10,5 +10,6 @@ abstract class CommonReserveData(
     open val dateCheckIn: String = "",
     open val dateCheckOut: String = "",
     open val wasCheckIn: Boolean = false,
-    open val wasCheckOut: Boolean = false
+    open val wasCheckOut: Boolean = false,
+    open val phoneNumber: String = ""
 )

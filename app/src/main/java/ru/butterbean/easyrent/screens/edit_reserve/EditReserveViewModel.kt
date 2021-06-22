@@ -99,6 +99,13 @@ class EditReserveViewModel(application: Application) : AndroidViewModel(applicat
 
     fun getRoomById(id: Long): LiveData<RoomData> = mRepository.getRoomById(id)
 
-    fun getReserveById(id: Long): LiveData<ReserveData> = mRepository.getReserveById(id)
+    fun getReserveById(id: Long, onSuccess: (ReserveData) -> Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val reserve = mRepository.getReserveById(id)
+            withContext(Dispatchers.Main) {
+                onSuccess(reserve)
+            }
+        }
+    }
 
 }

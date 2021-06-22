@@ -2,11 +2,14 @@ package ru.butterbean.easyrent.utils
 
 import android.content.Context
 import android.os.Bundle
+import android.telephony.TelephonyManager
 import android.text.InputFilter
 import android.text.Spanned
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import ru.butterbean.easyrent.R
 import java.io.Serializable
+
 
 fun showToast(message: String) {
     Toast.makeText(APP_ACTIVITY, message, Toast.LENGTH_SHORT).show()
@@ -54,4 +57,21 @@ class NumberEditTextInputFilter(private val minValue: Int = 1, private val maxVa
 fun reserveCompleted(wasCheckOut:Boolean, sum:Int, payment:Int): Boolean {
     return (!PREF_RESERVE_COMPLETE_WAS_CHECK_OUT || wasCheckOut)
             && (!PREF_RESERVE_COMPLETE_WAS_PAID || (sum in 1..payment))
+}
+
+fun getCountryZipCode(): String? {
+    var countryID = ""
+    var countryZipCode = ""
+    val manager = APP_ACTIVITY.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+    //getNetworkCountryIso
+    countryID = manager.simCountryIso.uppercase()
+    val rl: Array<String> = APP_ACTIVITY.resources.getStringArray(R.array.country_codes)
+    for (i in rl.indices) {
+        val g = rl[i].split(",").toTypedArray()
+        if (g[1].trim { it <= ' ' } == countryID.trim { it <= ' ' }) {
+            countryZipCode = g[0]
+            break
+        }
+    }
+    return countryZipCode
 }

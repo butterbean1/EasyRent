@@ -19,7 +19,8 @@ class SimpleReserveModel(
     val dateCheckIn: String = "",
     val dateCheckOut: String = "",
     val wasCheckIn: Boolean = false,
-    val wasCheckOut: Boolean = false
+    val wasCheckOut: Boolean = false,
+    val phoneNumber: String = ""
 ) : CommonReserveModel {
 
     override fun getItemViewType(): Int = CommonReserveModel.SIMPLE
@@ -50,16 +51,17 @@ class SimpleReserveModel(
 
     override fun toReserveData(): ReserveData {
         return ReserveData(
-            this.id,
-            this.roomId,
-            this.guestName,
-            this.guestsCount,
-            this.sum,
-            this.payment,
-            this.dateCheckIn,
-            this.dateCheckOut,
-            this.wasCheckIn,
-            this.wasCheckOut,
+            id,
+            roomId,
+            guestName,
+            guestsCount,
+            sum,
+            payment,
+            dateCheckIn,
+            dateCheckOut,
+            wasCheckIn,
+            wasCheckOut,
+            phoneNumber
         )
     }
 

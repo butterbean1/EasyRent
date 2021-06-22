@@ -16,10 +16,11 @@ import ru.butterbean.easyrent.models.RoomData
 /*
 ver. 1 : beginning
 ver. 2 : reserves_archive_table added
+ver. 3 : phone_number added
  */
 @Database(
     entities = [RoomData::class, GuestData::class, ReserveData::class, ReserveArchiveData::class],
-    version = 2,
+    version = 3,
     exportSchema = false
 )
 abstract class MainDatabase : RoomDatabase() {
@@ -44,7 +45,7 @@ abstract class MainDatabase : RoomDatabase() {
                     MainDatabase::class.java,
                     DATABASE_NAME
                 )
-                    .addMigrations(MIGRATION_1_2)
+                    .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
                     .build()
                 INSTANCE = instance
                 return instance

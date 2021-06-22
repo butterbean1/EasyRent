@@ -3,7 +3,11 @@ package ru.butterbean.easyrent.screens.edit_reserve
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.telephony.PhoneNumberFormattingTextWatcher
 import android.text.InputFilter
 import android.view.*
 import androidx.core.widget.addTextChangedListener
@@ -18,6 +22,7 @@ import ru.butterbean.easyrent.models.ReserveData
 import ru.butterbean.easyrent.models.RoomData
 import ru.butterbean.easyrent.utils.*
 import java.util.*
+
 
 class EditReserveFragment : Fragment() {
 
@@ -89,7 +94,7 @@ class EditReserveFragment : Fragment() {
     }
 
     private fun afterRestore(newId: Long) {
-        mViewModel.getReserveById(newId).observe(viewLifecycleOwner) { newReserve ->
+        mViewModel.getReserveById(newId) { newReserve ->
             mCurrentReserve = newReserve
             APP_ACTIVITY.title = getString(R.string.reserve)
             mIsArchive = false
@@ -116,6 +121,8 @@ class EditReserveFragment : Fragment() {
         hideKeyboard()
         val guest = mBinding.editReserveGuest.text.toString().trim()
         val guestsCount = mBinding.editReserveGuestsCount.text.toString().trim()
+        var phoneNumber = mBinding.editReservePhoneNumber.text.toString().trim()
+        phoneNumber = if (phoneNumber.length > 3) phoneNumber else ""
         val sum = mBinding.editReserveSum.text.toString().trim()
         val payment = mBinding.editReservePayment.text.toString().trim()
         val wasCheckIn = mBinding.editReserveWasCheckIn.isChecked
@@ -157,7 +164,8 @@ class EditReserveFragment : Fragment() {
                         dateCheckInText,
                         dateCheckOutText,
                         wasCheckIn || wasCheckOut,
-                        wasCheckOut
+                        wasCheckOut,
+                        phoneNumber
                     )
 
                     if (mIsNew) {
@@ -181,7 +189,8 @@ class EditReserveFragment : Fragment() {
                         dateCheckInText,
                         dateCheckOutText,
                         wasCheckIn || wasCheckOut,
-                        wasCheckOut
+                        wasCheckOut,
+                        phoneNumber
                     )
                     if (mIsNew) {
                         // если новое бронирование - добавляем в базу
@@ -239,6 +248,8 @@ class EditReserveFragment : Fragment() {
         })
 
         mBinding.editReserveGuest.setText(mCurrentReserve.guestName)
+        if (mCurrentReserve.phoneNumber.isEmpty()) mBinding.editReservePhoneNumber.setText("+${getCountryZipCode()}")
+        else mBinding.editReservePhoneNumber.setText(mCurrentReserve.phoneNumber)
         mBinding.editReserveSum.setText(if (mCurrentReserve.sum == 0) "" else mCurrentReserve.sum.toString())
         mBinding.editReservePayment.setText(if (mCurrentReserve.payment == 0) "" else mCurrentReserve.payment.toString())
         mBinding.editReserveWasCheckIn.isChecked = mCurrentReserve.wasCheckIn
@@ -262,6 +273,33 @@ class EditReserveFragment : Fragment() {
             mBinding.editReserveGuestsCount.setText(mCurrentReserve.guestsCount.toString())
         }
 
+        mBinding.editReserveBtnPhoneCall.setOnClickListener {
+            val intent =
+                Intent(
+                    Intent.ACTION_DIAL,
+                    Uri.parse("tel:" + mBinding.editReservePhoneNumber.text.toString())
+                )
+            startActivity(intent)
+        }
+
+        mBinding.editReserveBtnPhoneWhatsapp.setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data =
+                Uri.parse("https://api.whatsapp.com/send?phone=" + mBinding.editReservePhoneNumber.text.toString())
+            startActivity(intent)
+        }
+
+        mBinding.editReserveBtnPhoneTelegram.setOnClickListener {
+            val intent = Intent(Intent.ACTION_SEND)
+            intent.type = "text/plain"
+            intent.setPackage("org.telegram.messenger")
+            try {
+                startActivity(intent)
+            } catch (ex: ActivityNotFoundException) {
+                showToast("Install Telegram")
+            }
+        }
+
         if (mIsArchive) setNotEnabledViews()
         else setViewsSettings()
 
@@ -276,6 +314,7 @@ class EditReserveFragment : Fragment() {
         mBinding.editReservePayment.isEnabled = false
         mBinding.editReserveWasCheckIn.isEnabled = false
         mBinding.editReserveWasCheckOut.isEnabled = false
+        mBinding.editReservePhoneNumber.isEnabled = false
         mBinding.editReserveBtnPaymentFull.visibility = View.INVISIBLE
     }
 
@@ -288,6 +327,10 @@ class EditReserveFragment : Fragment() {
         mBinding.editReserveGuestsCount.isEnabled = true
         mBinding.editReserveSum.isEnabled = true
         mBinding.editReservePayment.isEnabled = true
+        mBinding.editReservePhoneNumber.isEnabled = true
+
+        // phone
+        mBinding.editReservePhoneNumber.addTextChangedListener(PhoneNumberFormattingTextWatcher())
 
         // date check-in диалог
         mBinding.editReserveDateCheckIn.setOnClickListener {

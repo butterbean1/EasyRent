@@ -34,7 +34,7 @@
     <string name="def_sum">30</string>
     <string name="payment">Paid</string>
     <string name="sum">Sum</string>
-    <string name="guests_count">Number of guests</string>
+    <string name="guests_count">Total:</string>
     <string name="guest_name">Guest name</string>
     <string name="status_until">until</string>
     <string name="enter_room_name">Enter the name</string>

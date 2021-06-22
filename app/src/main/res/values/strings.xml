@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Лёгкая аренда</string>
+    <string name="pref_app_version_summary" translatable="false">1.3</string>
 
     <string name="def_room_name">ЖК Самый Лучший</string>
     <string name="def_room_address">Жилинская, д.12, кв.159</string>
@@ -24,7 +25,7 @@
     <string name="was_check_out">Выселение произошло</string>
     <string name="def_guest_name">Спиридон Красносельский</string>
     <string name="guest_name">Имя гостя</string>
-    <string name="guests_count">Количество постояльцев</string>
+    <string name="guests_count">Всего:</string>
     <string name="sum">Сумма договорная</string>
     <string name="payment">Оплачено</string>
     <string name="def_sum">2500</string>
@@ -66,7 +67,6 @@
     <string name="bookings">Бронирования</string>
     <string name="application">Приложение</string>
     <string name="pref_app_version_title">Версия</string>
-    <string name="pref_app_version_summary" translatable="false">1.2</string>
     <string name="archive">Архив</string>
     <string name="old_reserves_analyse_depth_title">Дней до отправки в архив</string>
     <string name="old_reserves_analyse_depth_summary">Помещать бронирование в архив через выбранное число дней после завершения. По умолчанию - 30 дней. Если 0, то сразу после завершения бронирование будет помещено в архив.</string>
@@ -81,6 +81,8 @@
     <string name="select_all">Отметить все</string>
     <string name="pref_auto_checkin_checkout_title">Авто-отметка заселения и выселения</string>
     <string name="pref_auto_checkin_checkout_summary">при наступлении планового времени</string>
+    <string name="def_phone_number" translatable="false">+7 999 123-45-67</string>
+    <string name="phone_number_hint" translatable="false">+Х ХХХ ХХХ-ХХ-ХХ</string>
 
 
 </resources>
