@@ -12,6 +12,7 @@ import ru.butterbean.easyrent.models.ReserveData
 import ru.butterbean.easyrent.models.RoomData
 import ru.butterbean.easyrent.screens.room.item_models.CommonReserveModel
 import ru.butterbean.easyrent.utils.APP_DATABASE
+import ru.butterbean.easyrent.utils.AUTO_CHECK_IN_CHECK_OUT
 
 class RoomViewModel(application: Application) : AndroidViewModel(application) {
     private val mRepository: ReserveRepository = ReserveRepository(APP_DATABASE.reserveDao())
@@ -44,6 +45,9 @@ class RoomViewModel(application: Application) : AndroidViewModel(application) {
         onSuccess: (List<CommonReserveModel>) -> Unit
     ) {
         viewModelScope.launch(Dispatchers.IO) {
+            // сначала установим авто-отметки заселения/выселения
+            if (AUTO_CHECK_IN_CHECK_OUT) mRepository.setAutoCheckInCheckOut(roomId)
+
             val list: List<CommonReserveModel> =
                 if (dontShowFreeReserves) mRepository.getAllReservesByRoomId(roomId)
                 else mRepository.getReservesByRoomId(roomId)

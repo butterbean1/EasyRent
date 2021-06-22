@@ -8,6 +8,7 @@ import ru.butterbean.easyrent.screens.RoomDialogViewModel
 import ru.butterbean.easyrent.models.GuestData
 import ru.butterbean.easyrent.models.ReserveData
 import ru.butterbean.easyrent.models.RoomData
+import java.util.*
 
 fun getEmptyRoom(): RoomData {
     return RoomData(0,"","", STATUS_FREE)
@@ -57,4 +58,38 @@ fun deleteRoomWithDialog(room: RoomData, lo: LifecycleOwner, onSuccess: (Boolean
     })
 }
 
+fun getAutoUpdatedReserves(reserves: List<ReserveData>): List<ReserveData> {
+    val updatedReserves = mutableListOf<ReserveData>()
+    reserves.forEach { reserve ->
+        var wasChanges = false
+        var newWasCheckIn = reserve.wasCheckIn
+        var newWasCheckOut = reserve.wasCheckOut
+        val currentCal = Calendar.getInstance()
+        if (!reserve.wasCheckIn && currentCal.after(getCalendarFromString(reserve.dateCheckIn))) {
+            wasChanges = true
+            newWasCheckIn = true
+        }
+        if (!reserve.wasCheckOut && currentCal.after(getCalendarFromString(reserve.dateCheckOut))) {
+            wasChanges = true
+            newWasCheckOut = true
+        }
+        if (wasChanges) {
+            updatedReserves.add(
+                ReserveData(
+                    reserve.id,
+                    reserve.roomId,
+                    reserve.guestName,
+                    reserve.guestsCount,
+                    reserve.sum,
+                    reserve.payment,
+                    reserve.dateCheckIn,
+                    reserve.dateCheckOut,
+                    newWasCheckIn,
+                    newWasCheckOut
 
+                )
+            )
+        }
+    }
+    return updatedReserves
+}

@@ -30,21 +30,28 @@
             app:summary="@string/pref_dont_show_free_reserves_summary"
             app:title="@string/pref_dont_show_free_reserves_title" />
 
+        <CheckBoxPreference
+            app:iconSpaceReserved="false"
+            app:key="autoCheckInCheckOut"
+            app:defaultValue="true"
+            app:summary="@string/pref_auto_checkin_checkout_summary"
+            app:title="@string/pref_auto_checkin_checkout_title" />
+
         <Preference
             app:iconSpaceReserved="false"
             app:layout="@layout/simple_pref"
-            app:title="@string/complete_criteria_title" />
+            app:title="@string/pref_complete_criteria_title" />
 
 
         <CheckBoxPreference
             android:defaultValue="true"
             app:enabled="false"
             app:key="reserveCompleteCriteriaWasCheckOut"
-            app:title="@string/complete_criteria_was_check_out" />
+            app:title="@string/pref_complete_criteria_was_check_out" />
         <CheckBoxPreference
             android:defaultValue="true"
             app:key="reserveCompleteCriteriaWasPaid"
-            app:title="@string/complete_criteria_was_paid" />
+            app:title="@string/pref_complete_criteria_was_paid" />
 
     </PreferenceCategory>
 

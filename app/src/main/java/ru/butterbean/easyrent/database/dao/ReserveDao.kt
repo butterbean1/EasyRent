@@ -20,6 +20,9 @@ interface ReserveDao {
     @Update
     suspend fun updateReserve(reserve:ReserveData)
 
+    @Update
+    suspend fun updateReserves(reserve:List<ReserveData>)
+
     @Delete
     suspend fun deleteReserve(reserve:ReserveData)
 

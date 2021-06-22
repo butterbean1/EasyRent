@@ -26,6 +26,12 @@ class ReserveRepository(private val reserveDao: ReserveDao) {
         reserveDao.deleteReserve(reserve)
     }
 
+    suspend fun setAutoCheckInCheckOut(roomId: Long) {
+        val reserves = reserveDao.getActualReservesByRoomId(roomId)
+        val updatedReserves = getAutoUpdatedReserves(reserves)
+        if (updatedReserves.count() > 0) reserveDao.updateReserves(updatedReserves)
+    }
+
     suspend fun replaceReserveToArchive(reserve: ReserveData) {
         val newArchiveReserve = ReserveArchiveData(
             0,

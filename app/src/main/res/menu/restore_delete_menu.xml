@@ -4,7 +4,6 @@
     <item
         android:id="@+id/restore"
         android:icon="@drawable/ic_restore"
-        app:showAsAction="always"
         android:title="@string/replace_from_archive" />
     <item
         android:id="@+id/delete"

@@ -66,7 +66,7 @@
     <string name="bookings">Бронирования</string>
     <string name="application">Приложение</string>
     <string name="pref_app_version_title">Версия</string>
-    <string name="pref_app_version_summary" translatable="false">1.1</string>
+    <string name="pref_app_version_summary" translatable="false">1.2</string>
     <string name="archive">Архив</string>
     <string name="old_reserves_analyse_depth_title">Дней до отправки в архив</string>
     <string name="old_reserves_analyse_depth_summary">Помещать бронирование в архив через выбранное число дней после завершения. По умолчанию - 30 дней. Если 0, то сразу после завершения бронирование будет помещено в архив.</string>
@@ -75,10 +75,12 @@
     <string name="this_room">Это помещение</string>
     <string name="in_the_archive">в архиве</string>
     <string name="replace_from_archive">Вернуть из архива</string>
-    <string name="complete_criteria_was_check_out">произошло выселение</string>
-    <string name="complete_criteria_was_paid">полностью оплачено</string>
-    <string name="complete_criteria_title">Считать завершенным когда:</string>
+    <string name="pref_complete_criteria_was_check_out">произошло выселение</string>
+    <string name="pref_complete_criteria_was_paid">полностью оплачено</string>
+    <string name="pref_complete_criteria_title">Считать завершенным когда:</string>
     <string name="select_all">Отметить все</string>
+    <string name="pref_auto_checkin_checkout_title">Авто-отметка заселения и выселения</string>
+    <string name="pref_auto_checkin_checkout_summary">при наступлении планового времени</string>
 
 
 </resources>

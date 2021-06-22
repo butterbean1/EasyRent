@@ -185,6 +185,7 @@ class RoomFragment : Fragment() {
         PREF_RESERVE_COMPLETE_WAS_CHECK_OUT =
             prefs.getBoolean("reserveCompleteCriteriaWasCheckOut", true)
         PREF_RESERVE_COMPLETE_WAS_PAID = prefs.getBoolean("reserveCompleteCriteriaWasPaid", true)
+        AUTO_CHECK_IN_CHECK_OUT = prefs.getBoolean("autoCheckInCheckOut", true)
 
         mDoNotShowFreeReserves = prefs.getBoolean("doNotShowFreeReserves", false)
         val useAddresses = prefs.getBoolean("useRoomAddresses", true)

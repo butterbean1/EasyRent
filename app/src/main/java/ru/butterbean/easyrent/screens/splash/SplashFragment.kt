@@ -43,6 +43,7 @@ class SplashFragment : Fragment() {
         val prefs = PreferenceManager.getDefaultSharedPreferences(APP_ACTIVITY)
         PREF_RESERVE_COMPLETE_WAS_CHECK_OUT = prefs.getBoolean("reserveCompleteCriteriaWasCheckOut", true)
         PREF_RESERVE_COMPLETE_WAS_PAID = prefs.getBoolean("reserveCompleteCriteriaWasPaid", true)
+        AUTO_CHECK_IN_CHECK_OUT = prefs.getBoolean("autoCheckInCheckOut", true)
 
         val prefAnalyseDepth = prefs.getString("oldReservesAnalyseDepth", DAYS_TO_REPLACE_TO_ARCHIVE.toString())!!
         val analyseDepth = if (prefAnalyseDepth.isEmpty()) DAYS_TO_REPLACE_TO_ARCHIVE else {
@@ -53,6 +54,8 @@ class SplashFragment : Fragment() {
             }
         }
         viewModel.replaceReservesToArchive(analyseDepth)
+
+        if (AUTO_CHECK_IN_CHECK_OUT) viewModel.setAutoCheckInCheckOut()
 
         viewModel.getAllRooms().observe(this) { roomsList ->
             Handler(Looper.getMainLooper()).postDelayed({

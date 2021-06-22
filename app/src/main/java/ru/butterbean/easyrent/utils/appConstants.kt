@@ -18,6 +18,7 @@ lateinit var STATUS_UNTIL : String
 
 var PREF_RESERVE_COMPLETE_WAS_PAID : Boolean = false
 var PREF_RESERVE_COMPLETE_WAS_CHECK_OUT: Boolean = false
+var AUTO_CHECK_IN_CHECK_OUT: Boolean = false
 
 
 const val DAYS_TO_REPLACE_TO_ARCHIVE = 30

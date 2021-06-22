@@ -21,4 +21,10 @@ class SplashViewModel(application: Application) : AndroidViewModel(application) 
         }
     }
 
+    fun setAutoCheckInCheckOut(){
+        viewModelScope.launch(Dispatchers.IO) {
+            mRepository.setAutoCheckInCheckOut()
+        }
+    }
+
 }

@@ -102,13 +102,13 @@ fun String.toTimeFormat(): String {
 
     return if (Build.VERSION.SDK_INT > 25) {
         val parsedTime = LocalTime.parse(this, DateTimeFormatter.ISO_DATE_TIME)
-        parsedTime.format(DateTimeFormatter.ofPattern("HH:ss"))
+        parsedTime.format(DateTimeFormatter.ofPattern("HH:mm"))
 
     } else {
 
         val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
 
-        val formatter = SimpleDateFormat("HH:ss", Locale.getDefault())
+        val formatter = SimpleDateFormat("HH:mm", Locale.getDefault())
         formatter.format(parser.parse(this) ?: Date(0))
     }
 

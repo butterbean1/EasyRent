@@ -5,7 +5,10 @@ import ru.butterbean.easyrent.database.dao.ReserveArchiveDao
 import ru.butterbean.easyrent.models.ReserveArchiveData
 import ru.butterbean.easyrent.models.ReserveData
 import ru.butterbean.easyrent.models.RoomData
+import ru.butterbean.easyrent.utils.getAutoUpdatedReserves
+import ru.butterbean.easyrent.utils.getCalendarFromString
 import ru.butterbean.easyrent.utils.reserveCompleted
+import java.util.*
 
 class ReserveArchiveRepository(private val reserveArchiveDao: ReserveArchiveDao) {
 
@@ -18,6 +21,12 @@ class ReserveArchiveRepository(private val reserveArchiveDao: ReserveArchiveDao)
 
     fun getArchiveReservesByRoomId(roomId: Long): LiveData<List<ReserveArchiveData>> =
         reserveArchiveDao.getReservesByRoomId(roomId)
+
+    suspend fun setAutoCheckInCheckOut() {
+        val reserves = reserveArchiveDao.getAllActualReserves()
+        val updatedReserves = getAutoUpdatedReserves(reserves)
+        if (updatedReserves.count() > 0) reserveArchiveDao.updateReserves(updatedReserves)
+    }
 
     suspend fun replaceReservesToArchive(analyseDepth: Int) {
         val reservesList = reserveArchiveDao.getAllCheckOutedReserves(analyseDepth)
