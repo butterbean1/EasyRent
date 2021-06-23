@@ -55,32 +55,10 @@ class EditReserveViewModel(application: Application) : AndroidViewModel(applicat
         }
     }
 
-    fun replaceReserveFromArchive(
-        reserve: ReserveArchiveData,
-        onSuccess: (Long) -> Unit
-    ) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val newId = mRepository.replaceReserveFromArchive(reserve)
-            mRepository.updateRoomStatus(reserve.roomId)
-            withContext(Dispatchers.Main) {
-                onSuccess(newId)
-            }
-        }
-    }
-
     fun deleteReserve(reserve: ReserveData, onSuccess: () -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             mRepository.deleteReserve(reserve)
             mRepository.updateRoomStatus(reserve.roomId)
-            withContext(Dispatchers.Main) {
-                onSuccess()
-            }
-        }
-    }
-
-    fun deleteReserveArchive(reserve: ReserveArchiveData, onSuccess: () -> Unit) {
-        viewModelScope.launch(Dispatchers.IO) {
-            mRepository.deleteReserveArchive(reserve)
             withContext(Dispatchers.Main) {
                 onSuccess()
             }
@@ -98,14 +76,5 @@ class EditReserveViewModel(application: Application) : AndroidViewModel(applicat
     }
 
     fun getRoomById(id: Long): LiveData<RoomData> = mRepository.getRoomById(id)
-
-    fun getReserveById(id: Long, onSuccess: (ReserveData) -> Unit) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val reserve = mRepository.getReserveById(id)
-            withContext(Dispatchers.Main) {
-                onSuccess(reserve)
-            }
-        }
-    }
 
 }

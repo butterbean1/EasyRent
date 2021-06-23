@@ -3,20 +3,21 @@ package ru.butterbean.easyrent.screens.edit_reserve
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
-import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.graphics.*
 import android.net.Uri
 import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
+import android.text.Editable
 import android.text.InputFilter
 import android.view.*
+import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
 import ru.butterbean.easyrent.R
 import ru.butterbean.easyrent.databinding.FragmentEditReserveBinding
-import ru.butterbean.easyrent.models.CommonReserveData
 import ru.butterbean.easyrent.models.ReserveArchiveData
 import ru.butterbean.easyrent.models.ReserveData
 import ru.butterbean.easyrent.models.RoomData
@@ -27,13 +28,12 @@ import java.util.*
 class EditReserveFragment : Fragment() {
 
     private var mIsNew = false
-    private var mIsArchive = false
     private var mImmediatelyReplaceToArchive = false
     private var _binding: FragmentEditReserveBinding? = null
     private val mBinding get() = _binding!!
     private lateinit var mOptionsMenu: Menu
     private lateinit var mViewModel: EditReserveViewModel
-    private lateinit var mCurrentReserve: CommonReserveData
+    private lateinit var mCurrentReserve: ReserveData
     private lateinit var mCurrentRoom: RoomData
     private lateinit var mDateCheckInSetListener: DatePickerDialog.OnDateSetListener
     private lateinit var mDateCheckOutSetListener: DatePickerDialog.OnDateSetListener
@@ -48,7 +48,7 @@ class EditReserveFragment : Fragment() {
     ): View {
 
         _binding = FragmentEditReserveBinding.inflate(layoutInflater, container, false)
-        mCurrentReserve = arguments?.getSerializable("reserve") as CommonReserveData
+        mCurrentReserve = arguments?.getSerializable("reserve") as ReserveData
         return mBinding.root
     }
 
@@ -65,11 +65,8 @@ class EditReserveFragment : Fragment() {
     private fun inflateOptionsMenu() {
         mOptionsMenu.clear()
         val inflater = APP_ACTIVITY.menuInflater
-        if (mIsArchive) inflater.inflate(R.menu.restore_delete_menu, mOptionsMenu)
-        else {
             if (mIsNew) inflater.inflate(R.menu.confirm_menu, mOptionsMenu)
             else inflater.inflate(R.menu.confirm_delete_menu, mOptionsMenu)
-        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -79,27 +76,11 @@ class EditReserveFragment : Fragment() {
                 change()
                 true
             }
-            R.id.restore -> {
-                mViewModel.replaceReserveFromArchive(mCurrentReserve as ReserveArchiveData) {
-                    afterRestore(it)
-                }
-                true
-            }
-            R.id.delete -> {
+             R.id.delete -> {
                 showDeleteDialog()
                 true
             }
             else -> super.onOptionsItemSelected(item)
-        }
-    }
-
-    private fun afterRestore(newId: Long) {
-        mViewModel.getReserveById(newId) { newReserve ->
-            mCurrentReserve = newReserve
-            APP_ACTIVITY.title = getString(R.string.reserve)
-            mIsArchive = false
-            inflateOptionsMenu()
-            setViewsSettings()
         }
     }
 
@@ -108,8 +89,7 @@ class EditReserveFragment : Fragment() {
         builder.setMessage("Бронирование будет безвозвратно удалено! Продолжить?")
             .setPositiveButton(APP_ACTIVITY.getString(R.string.yes)) { dialog, _ ->
                 dialog.cancel()
-                if (mIsArchive) mViewModel.deleteReserveArchive(mCurrentReserve as ReserveArchiveData) { goToArchiveReservesFragment() }
-                else mViewModel.deleteReserve(mCurrentReserve as ReserveData) { goToRoomFragment() }
+                mViewModel.deleteReserve(mCurrentReserve) { goToRoomFragment() }
             }
             .setNegativeButton(APP_ACTIVITY.getString(R.string.no)) { dialog, _ ->
                 dialog.cancel()
@@ -122,7 +102,7 @@ class EditReserveFragment : Fragment() {
         val guest = mBinding.editReserveGuest.text.toString().trim()
         val guestsCount = mBinding.editReserveGuestsCount.text.toString().trim()
         var phoneNumber = mBinding.editReservePhoneNumber.text.toString().trim()
-        phoneNumber = if (phoneNumber.length > 3) phoneNumber else ""
+        phoneNumber = if (phoneNumberIsEmpty(phoneNumber)) "" else phoneNumber
         val sum = mBinding.editReserveSum.text.toString().trim()
         val payment = mBinding.editReservePayment.text.toString().trim()
         val wasCheckIn = mBinding.editReserveWasCheckIn.isChecked
@@ -175,7 +155,7 @@ class EditReserveFragment : Fragment() {
                         // если редактируем - удаляем из основной таблицы и записываем с изменениями сразу в архив
                         mViewModel.replaceReserveToArchive(
                             reserve,
-                            mCurrentReserve as ReserveData
+                            mCurrentReserve
                         ) { goToRoomFragment() }
                     }
                 } else {
@@ -213,10 +193,6 @@ class EditReserveFragment : Fragment() {
         )
     }
 
-    private fun goToArchiveReservesFragment() {
-        APP_ACTIVITY.navController.popBackStack()
-    }
-
     override fun onStart() {
         super.onStart()
         initialize()
@@ -234,11 +210,8 @@ class EditReserveFragment : Fragment() {
 
         mViewModel = ViewModelProvider(APP_ACTIVITY).get(EditReserveViewModel::class.java)
         mIsNew = mCurrentReserve.id == 0.toLong()
-        mIsArchive = mCurrentReserve is ReserveArchiveData
 
-        if (mIsArchive) APP_ACTIVITY.title =
-            "${getString(R.string.archive)}. ${getString(R.string.reserve)}"
-        else APP_ACTIVITY.title = getString(R.string.reserve)
+        APP_ACTIVITY.title = getString(R.string.reserve)
 
 
         // получим модель помещения и его название из БД
@@ -247,11 +220,12 @@ class EditReserveFragment : Fragment() {
             mBinding.editReserveRoomName.text = room.name
         })
 
-        mBinding.editReserveGuest.setText(mCurrentReserve.guestName)
-        if (mCurrentReserve.phoneNumber.isEmpty()) mBinding.editReservePhoneNumber.setText("+${getCountryZipCode()}")
-        else mBinding.editReservePhoneNumber.setText(mCurrentReserve.phoneNumber)
         mBinding.editReserveSum.setText(if (mCurrentReserve.sum == 0) "" else mCurrentReserve.sum.toString())
         mBinding.editReservePayment.setText(if (mCurrentReserve.payment == 0) "" else mCurrentReserve.payment.toString())
+
+        mBinding.editReserveGuest.setText(mCurrentReserve.guestName)
+        mBinding.editReservePhoneNumber.hint = "+${getCountryZipCode()} XXX XXX-XX-XX"
+        mBinding.editReservePhoneNumber.setText(mCurrentReserve.phoneNumber)
         mBinding.editReserveWasCheckIn.isChecked = mCurrentReserve.wasCheckIn
         mBinding.editReserveWasCheckOut.isChecked = mCurrentReserve.wasCheckOut
         if (mCurrentReserve.dateCheckIn.isNotEmpty()) {
@@ -289,33 +263,35 @@ class EditReserveFragment : Fragment() {
             startActivity(intent)
         }
 
-        mBinding.editReserveBtnPhoneTelegram.setOnClickListener {
-            val intent = Intent(Intent.ACTION_SEND)
-            intent.type = "text/plain"
-            intent.setPackage("org.telegram.messenger")
-            try {
-                startActivity(intent)
-            } catch (ex: ActivityNotFoundException) {
-                showToast("Install Telegram")
-            }
+        mBinding.editReserveBtnPhoneSms.setOnClickListener {
+            val intent =
+                Intent(
+                    Intent.ACTION_SENDTO,
+                    Uri.parse("smsto:" + mBinding.editReservePhoneNumber.text.toString())
+                )
+            startActivity(intent)
         }
 
-        if (mIsArchive) setNotEnabledViews()
-        else setViewsSettings()
+        changePhoneButtonsInEnabled()
+
+        setViewsSettings()
 
         // добавляем меню
         setHasOptionsMenu(true)
     }
 
-    private fun setNotEnabledViews() {
-        mBinding.editReserveGuest.isEnabled = false
-        mBinding.editReserveGuestsCount.isEnabled = false
-        mBinding.editReserveSum.isEnabled = false
-        mBinding.editReservePayment.isEnabled = false
-        mBinding.editReserveWasCheckIn.isEnabled = false
-        mBinding.editReserveWasCheckOut.isEnabled = false
-        mBinding.editReservePhoneNumber.isEnabled = false
-        mBinding.editReserveBtnPaymentFull.visibility = View.INVISIBLE
+    private fun changePhoneButtonsInEnabled() {
+        val vis = !phoneNumberIsEmpty(mBinding.editReservePhoneNumber.text.toString())
+        mBinding.editReserveBtnPhoneCall.isVisible = vis
+        mBinding.editReserveBtnPhoneWhatsapp.isVisible = vis
+        mBinding.editReserveBtnPhoneSms.isVisible = vis
+    }
+
+    private inner class MyPhoneNumberFormattingTextWatcher : PhoneNumberFormattingTextWatcher() {
+        override fun afterTextChanged(s: Editable?) {
+            super.afterTextChanged(s)
+            this@EditReserveFragment.changePhoneButtonsInEnabled()
+        }
     }
 
     private fun setViewsSettings() {
@@ -323,14 +299,9 @@ class EditReserveFragment : Fragment() {
         changeWasCheckInEnabled()
         changeWasCheckOutEnabled()
 
-        mBinding.editReserveGuest.isEnabled = true
-        mBinding.editReserveGuestsCount.isEnabled = true
-        mBinding.editReserveSum.isEnabled = true
-        mBinding.editReservePayment.isEnabled = true
-        mBinding.editReservePhoneNumber.isEnabled = true
-
         // phone
-        mBinding.editReservePhoneNumber.addTextChangedListener(PhoneNumberFormattingTextWatcher())
+
+        mBinding.editReservePhoneNumber.addTextChangedListener(MyPhoneNumberFormattingTextWatcher())
 
         // date check-in диалог
         mBinding.editReserveDateCheckIn.setOnClickListener {

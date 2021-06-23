@@ -8,19 +8,18 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import ru.butterbean.easyrent.R
-import ru.butterbean.easyrent.databinding.FragmentArchiveReservesBinding
+import ru.butterbean.easyrent.databinding.FragmentArchiveReservesListBinding
 import ru.butterbean.easyrent.models.ReserveArchiveData
 import ru.butterbean.easyrent.models.RoomData
 import ru.butterbean.easyrent.utils.APP_ACTIVITY
-import ru.butterbean.easyrent.utils.createArgsBundle
 
-class ArchiveReservesFragment : Fragment() {
+class ArchiveReservesListFragment : Fragment() {
 
-    private lateinit var mViewModel: ArchiveReservesViewModel
+    private lateinit var mViewModel: ArchiveReservesListViewModel
     private lateinit var mRecyclerView: RecyclerView
     private lateinit var mCurrentRoom: RoomData
     private lateinit var mAdapter: ArchiveReservesListAdapter
-    private var _binding: FragmentArchiveReservesBinding? = null
+    private var _binding: FragmentArchiveReservesListBinding? = null
     private val mBinding get() = _binding!!
 
     private var mCurrentList = emptyList<ReserveArchiveData>()
@@ -29,18 +28,11 @@ class ArchiveReservesFragment : Fragment() {
 
     val listMarkedReserves = mutableListOf<ReserveArchiveData>()
 
-    fun goToEditReserveFragment(reserve: ReserveArchiveData) {
-        APP_ACTIVITY.navController.navigate(
-            R.id.action_archiveReservesFragment_to_editReserveFragment,
-            createArgsBundle("reserve", reserve)
-        )
-    }
-
-    override fun onCreateView(
+   override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentArchiveReservesBinding.inflate(layoutInflater, container, false)
+        _binding = FragmentArchiveReservesListBinding.inflate(layoutInflater, container, false)
         return mBinding.root
     }
 
@@ -134,7 +126,7 @@ class ArchiveReservesFragment : Fragment() {
         mRecyclerView.adapter = mAdapter
 
         // ViewModel
-        mViewModel = ViewModelProvider(APP_ACTIVITY).get(ArchiveReservesViewModel::class.java)
+        mViewModel = ViewModelProvider(APP_ACTIVITY).get(ArchiveReservesListViewModel::class.java)
         val roomId = arguments?.getLong("roomId")!!
         mViewModel.getRoomById(roomId).observe(this) {
             mCurrentRoom = it

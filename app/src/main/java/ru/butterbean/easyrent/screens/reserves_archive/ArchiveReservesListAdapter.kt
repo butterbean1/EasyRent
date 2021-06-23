@@ -11,9 +11,10 @@ import ru.butterbean.easyrent.R
 import ru.butterbean.easyrent.databinding.ReserveItemBinding
 import ru.butterbean.easyrent.models.ReserveArchiveData
 import ru.butterbean.easyrent.utils.APP_ACTIVITY
+import ru.butterbean.easyrent.utils.createArgsBundle
 import ru.butterbean.easyrent.utils.toDateTimeFormat
 
-class ArchiveReservesListAdapter(private val f: ArchiveReservesFragment) :
+class ArchiveReservesListAdapter(private val f: ArchiveReservesListFragment) :
     RecyclerView.Adapter<ArchiveReservesListAdapter.ArchiveReservesListHolder>() {
 
     private var mList = emptyList<ReserveArchiveData>()
@@ -35,7 +36,10 @@ class ArchiveReservesListAdapter(private val f: ArchiveReservesFragment) :
     override fun onViewAttachedToWindow(holder: ArchiveReservesListHolder) {
         holder.itemView.setOnClickListener {
             if (f.listMarkedReserves.count() == 0) {
-                f.goToEditReserveFragment(mList[holder.adapterPosition])
+                APP_ACTIVITY.navController.navigate(
+                    R.id.action_archiveReservesListFragment_to_archiveReserveFragment,
+                    createArgsBundle("reserve", mList[holder.adapterPosition])
+                )
             } else changeMarkItem(mList[holder.adapterPosition], holder)
         }
         holder.itemView.setOnLongClickListener {
@@ -73,8 +77,6 @@ class ArchiveReservesListAdapter(private val f: ArchiveReservesFragment) :
             AppCompatResources.getDrawable(APP_ACTIVITY, R.drawable.ripple_effect_grey)
         setMarkItem(currentItem, holder)
     }
-
-
 
     private fun changeMarkItem(
         reserve: ReserveArchiveData,

@@ -12,7 +12,7 @@ import ru.butterbean.easyrent.models.ReserveArchiveData
 import ru.butterbean.easyrent.models.RoomData
 import ru.butterbean.easyrent.utils.APP_DATABASE
 
-class ArchiveReservesViewModel(application: Application):AndroidViewModel(application) {
+class ArchiveReservesListViewModel(application: Application):AndroidViewModel(application) {
     private val mRepository: ReserveArchiveRepository = ReserveArchiveRepository(APP_DATABASE.reserveArchiveDao())
 
     fun deleteReserves(reserves:List<ReserveArchiveData>,onSuccess:()->Unit) {

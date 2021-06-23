@@ -61,7 +61,7 @@
             app:destination="@id/settingsFragment" />
         <action
             android:id="@+id/action_roomFragment_to_archiveReservesFragment"
-            app:destination="@id/archiveReservesFragment" />
+            app:destination="@id/archiveReservesListFragment" />
     </fragment>
     <fragment
         android:id="@+id/splashFragment"
@@ -104,12 +104,22 @@
         android:name="ru.butterbean.easyrent.screens.SettingsFragment"
         android:label="SettingsFragment" />
     <fragment
-        android:id="@+id/archiveReservesFragment"
-        android:name="ru.butterbean.easyrent.screens.reserves_archive.ArchiveReservesFragment"
+        android:id="@+id/archiveReservesListFragment"
+        android:name="ru.butterbean.easyrent.screens.reserves_archive.ArchiveReservesListFragment"
         android:label="fragment_archive_reserves"
-        tools:layout="@layout/fragment_archive_reserves" >
+        tools:layout="@layout/fragment_archive_reserves_list" >
         <action
-            android:id="@+id/action_archiveReservesFragment_to_editReserveFragment"
-            app:destination="@id/editReserveFragment" />
+            android:id="@+id/action_archiveReservesListFragment_to_archiveReserveFragment"
+            app:destination="@id/archiveReserveFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/archiveReserveFragment"
+        android:name="ru.butterbean.easyrent.screens.archive_reserve.ArchiveReserveFragment"
+        android:label="ArchiveReserveFragment" >
+        <action
+            android:id="@+id/action_archiveReserveFragment_to_editReserveFragment"
+            app:destination="@id/editReserveFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/roomFragment" />
     </fragment>
 </navigation>

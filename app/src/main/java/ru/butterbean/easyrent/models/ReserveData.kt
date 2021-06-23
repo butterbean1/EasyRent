@@ -20,28 +20,16 @@ import java.io.Serializable
 )
 data class ReserveData(
     @PrimaryKey(autoGenerate = true)
-    override val id: Long,
+    val id: Long,
     @ColumnInfo(index = true)
-    override val roomId: Long,
-    override val guestName: String = "",
-    override val guestsCount: Int = 0,
-    override val sum: Int = 0,
-    override val payment: Int = 0,
-    override val dateCheckIn: String = "",
-    override val dateCheckOut: String = "",
-    override val wasCheckIn: Boolean = false,
-    override val wasCheckOut: Boolean = false,
-    override val phoneNumber: String = ""
-) : CommonReserveData(
-    id,
-    roomId,
-    guestName,
-    guestsCount,
-    sum,
-    payment,
-    dateCheckIn,
-    dateCheckOut,
-    wasCheckIn,
-    wasCheckOut,
-    phoneNumber
-), Serializable
+    val roomId: Long,
+    val guestName: String = "",
+    val guestsCount: Int = 0,
+    val sum: Int = 0,
+    val payment: Int = 0,
+    val dateCheckIn: String = "",
+    val dateCheckOut: String = "",
+    val wasCheckIn: Boolean = false,
+    val wasCheckOut: Boolean = false,
+    val phoneNumber: String = ""
+) : Serializable

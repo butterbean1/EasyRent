@@ -19,12 +19,12 @@
     <string name="check_out">Выселение</string>
     <string name="check_in_date">Дата</string>
     <string name="check_in_time" translatable="false">14:00</string>
-    <string name="was_check_in">Заселение произошло</string>
+    <string name="was_check_in">Подтверждено</string>
     <string name="check_out_date">Дата</string>
     <string name="check_out_time" translatable="false">12:00</string>
-    <string name="was_check_out">Выселение произошло</string>
+    <string name="was_check_out">Подтверждено</string>
     <string name="def_guest_name">Спиридон Красносельский</string>
-    <string name="guest_name">Имя гостя</string>
+    <string name="guest_name">Имя</string>
     <string name="guests_count">Всего:</string>
     <string name="sum">Сумма договорная</string>
     <string name="payment">Оплачено</string>
@@ -42,7 +42,7 @@
     <string name="status_on_repair">Ремонт</string>
     <string name="status_until">до</string>
     <string name="enter_room_name">Введите название!</string>
-    <string name="enter_guest_name">Укажите имя гостя!</string>
+    <string name="enter_guest_name">Укажите имя постояльца!</string>
     <string name="enter_guests_count">Укажите количество постояльцев!</string>
     <string name="checkin_after_checkout">Заселение позже выселения!</string>
     <string name="enter_checkout_time">Выберите время выселения!</string>
@@ -79,10 +79,11 @@
     <string name="pref_complete_criteria_was_paid">полностью оплачено</string>
     <string name="pref_complete_criteria_title">Считать завершенным когда:</string>
     <string name="select_all">Отметить все</string>
-    <string name="pref_auto_checkin_checkout_title">Авто-отметка заселения и выселения</string>
-    <string name="pref_auto_checkin_checkout_summary">при наступлении планового времени</string>
+    <string name="pref_auto_checkin_checkout_title">Автоматически подтверждать</string>
+    <string name="pref_auto_checkin_checkout_summary">заселение и выселение при наступлении планового времени</string>
     <string name="def_phone_number" translatable="false">+7 999 123-45-67</string>
     <string name="phone_number_hint" translatable="false">+Х ХХХ ХХХ-ХХ-ХХ</string>
+    <string name="finally_reserve_delete_message">Бронирование будет безвозвратно удалено! Продолжить?</string>
 
 
 </resources>

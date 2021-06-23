@@ -42,19 +42,18 @@
              android:id="@+id/edit_reserve_group_guests_name_count"
              android:layout_width="match_parent"
              android:layout_height="wrap_content"
-             android:layout_marginTop="@dimen/app_small_margin"
+             android:layout_marginTop="@dimen/app_margin"
              app:layout_constraintStart_toStartOf="parent"
              app:layout_constraintEnd_toEndOf="parent"
              app:layout_constraintTop_toBottomOf="@id/edit_reserve_guests_separator">
 
-             <EditText
+             <TextView
                  android:id="@+id/edit_reserve_guest"
                  android:layout_width="0dp"
                  android:layout_height="wrap_content"
-                 android:hint="@string/guest_name"
-                 android:inputType="textPersonName"
+                 android:textColor="@color/black"
+                 android:textSize="@dimen/disabled_edit_text_size"
                  android:text="@string/def_guest_name"
-                 android:textColorHint="@color/red"
                  android:layout_marginStart="@dimen/app_margin"
                  android:layout_marginEnd="@dimen/app_small_margin"
                  app:layout_constraintStart_toStartOf="parent"
@@ -66,19 +65,19 @@
                  android:layout_width="wrap_content"
                  android:layout_height="wrap_content"
                  android:layout_marginEnd="@dimen/app_margin"
-                 android:layout_marginTop="12dp"
                  android:text="@string/guests_count"
-                 android:textColor="@color/black"
                  app:layout_constraintEnd_toStartOf="@id/edit_reserve_guests_count"
+                 app:layout_constraintBottom_toBottomOf="parent"
                  app:layout_constraintTop_toTopOf="parent" />
 
-             <EditText
+             <TextView
                  android:id="@+id/edit_reserve_guests_count"
                  android:layout_width="30dp"
                  android:layout_height="wrap_content"
                  android:layout_marginEnd="@dimen/app_margin"
-                 android:inputType="number"
                  android:text="1"
+                 android:textSize="@dimen/disabled_edit_text_size"
+                 android:textColor="@color/black"
                  app:layout_constraintEnd_toEndOf="parent"
                  app:layout_constraintTop_toTopOf="parent" />
 
@@ -91,15 +90,16 @@
              app:layout_constraintTop_toBottomOf="@id/edit_reserve_group_guests_name_count"
              app:layout_constraintStart_toStartOf="parent"
              app:layout_constraintEnd_toEndOf="parent">
-             <EditText
+             <TextView
                  android:id="@+id/edit_reserve_phone_number"
                  android:layout_width="190dp"
                  android:layout_height="wrap_content"
-                 android:maxLength="17"
-                 android:inputType="phone"
+                 android:textColor="@color/black"
+                 android:textSize="@dimen/disabled_edit_text_size"
                  android:text="@string/def_phone_number"
                  android:layout_marginStart="@dimen/app_margin"
                  app:layout_constraintStart_toStartOf="parent"
+                 app:layout_constraintBottom_toBottomOf="parent"
                  app:layout_constraintTop_toTopOf="parent"/>
 
              <ImageButton
@@ -165,15 +165,14 @@
 
         <TextView
             android:id="@+id/edit_reserve_date_check_in"
-            style="@style/date_time_text"
-            android:hint="@string/check_in_date"
-            android:textColorHint="@color/red"
+            style="@style/disabled_date_time_text"
+            android:text="@string/def_date_representation"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/edit_reserve_chek_in_separator" />
 
         <TextView
             android:id="@+id/edit_reserve_time_check_in"
-            style="@style/date_time_text"
+            style="@style/disabled_date_time_text"
             android:text="@string/check_in_time"
             app:layout_constraintBottom_toBottomOf="@id/edit_reserve_date_check_in"
             app:layout_constraintStart_toEndOf="@id/edit_reserve_date_check_in"
@@ -186,6 +185,7 @@
             android:layout_marginTop="@dimen/app_margin"
             android:layout_marginStart="@dimen/app_margin"
             android:text="@string/was_check_in"
+            android:enabled="false"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/edit_reserve_time_check_in" />
 
@@ -219,15 +219,14 @@
 
         <TextView
             android:id="@+id/edit_reserve_date_check_out"
-            style="@style/date_time_text"
-            android:hint="@string/check_in_date"
-            android:textColorHint="@color/red"
+            style="@style/disabled_date_time_text"
+            android:text="@string/def_date_representation"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/edit_reserve_chek_out_separator" />
 
         <TextView
             android:id="@+id/edit_reserve_time_check_out"
-            style="@style/date_time_text"
+            style="@style/disabled_date_time_text"
             android:text="@string/check_out_time"
             app:layout_constraintBottom_toBottomOf="@id/edit_reserve_date_check_out"
             app:layout_constraintStart_toEndOf="@id/edit_reserve_date_check_out"
@@ -241,6 +240,7 @@
             android:layout_marginTop="@dimen/app_margin"
             android:layout_marginStart="@dimen/app_margin"
             android:text="@string/was_check_out"
+            android:enabled="false"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/edit_reserve_time_check_out" />
 
@@ -266,7 +266,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/edit_reserve_group_sum"
         android:layout_width="match_parent"
-        android:layout_marginTop="@dimen/app_small_margin"
+        android:layout_marginTop="@dimen/app_margin"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -277,28 +277,30 @@
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/app_margin"
-            android:layout_marginTop="12dp"
             android:text="@string/sum"
             android:textColor="@color/black"
+           app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <EditText
+        <TextView
             android:id="@+id/edit_reserve_sum"
-            android:layout_width="80dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:inputType="number"
             android:text="@string/def_sum"
+            android:textSize="@dimen/disabled_edit_text_size"
+            android:textColor="@color/black"
             app:layout_constraintStart_toEndOf="@+id/edit_reserve_header_sum"
             app:layout_constraintTop_toTopOf="parent" />
         <TextView
             android:id="@+id/edit_reserve_sum_currency_symbol"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginStart="@dimen/app_small_margin"
             android:text="@string/def_currency_symbol"
             android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/edit_reserve_sum"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -316,41 +318,33 @@
 
         <TextView
             android:id="@+id/edit_reserve_header_payment"
-            android:layout_width="100dp"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/app_margin"
-            android:layout_marginTop="12dp"
             android:text="@string/payment"
             android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageButton
-            android:id="@+id/edit_reserve_btn_payment_full"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_check_green"
-            app:layout_constraintStart_toEndOf="@+id/edit_reserve_header_payment"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            />
-
-        <EditText
+        <TextView
             android:id="@+id/edit_reserve_payment"
-            android:layout_width="80dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:inputType="number"
+            android:textColor="@color/black"
+            android:textSize="@dimen/disabled_edit_text_size"
             android:text="@string/def_sum"
-            app:layout_constraintStart_toEndOf="@+id/edit_reserve_btn_payment_full"
+            app:layout_constraintStart_toEndOf="@+id/edit_reserve_header_payment"
             app:layout_constraintTop_toTopOf="parent" />
         <TextView
             android:id="@+id/edit_reserve_payment_currency_symbol"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginStart="@dimen/app_small_margin"
             android:text="@string/def_currency_symbol"
             android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/edit_reserve_payment"
             app:layout_constraintTop_toTopOf="parent" />
 

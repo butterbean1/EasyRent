@@ -12,4 +12,5 @@
     <dimen name="min_width_datetime_text">100dp</dimen>
     <dimen name="text_separator_margin">8dp</dimen>
     <dimen name="app_small_margin">5dp</dimen>
+    <dimen name="disabled_edit_text_size">18sp</dimen>
 </resources>

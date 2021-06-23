@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".screens.reserves_archive.ArchiveReservesFragment">
+    tools:context=".screens.reserves_archive.ArchiveReservesListFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/archive_reserves_recycler_view"

@@ -59,6 +59,10 @@ fun reserveCompleted(wasCheckOut:Boolean, sum:Int, payment:Int): Boolean {
             && (!PREF_RESERVE_COMPLETE_WAS_PAID || (sum in 1..payment))
 }
 
+fun phoneNumberIsEmpty(pn: String): Boolean {
+    return pn.length < 6
+}
+
 fun getCountryZipCode(): String? {
     var countryID = ""
     var countryZipCode = ""
