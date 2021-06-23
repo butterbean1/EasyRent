@@ -108,7 +108,6 @@ class ArchiveReservesListFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-
         initialize()
     }
 
