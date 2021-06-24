@@ -14,7 +14,6 @@ import ru.butterbean.easyrent.models.ReserveArchiveData
 import ru.butterbean.easyrent.models.RoomData
 import ru.butterbean.easyrent.utils.*
 
-
 class ArchiveReserveFragment : Fragment() {
 
     private var _binding: FragmentArchiveReserveBinding? = null

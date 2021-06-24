@@ -10,7 +10,6 @@ import android.widget.Toast
 import ru.butterbean.easyrent.R
 import java.io.Serializable
 
-
 fun showToast(message: String) {
     Toast.makeText(APP_ACTIVITY, message, Toast.LENGTH_SHORT).show()
 }
@@ -63,12 +62,11 @@ fun phoneNumberIsEmpty(pn: String): Boolean {
     return pn.length < 6
 }
 
-fun getCountryZipCode(): String? {
-    var countryID = ""
+fun getCountryZipCode(): String {
     var countryZipCode = ""
     val manager = APP_ACTIVITY.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
     //getNetworkCountryIso
-    countryID = manager.simCountryIso.uppercase()
+    val countryID = manager.simCountryIso.uppercase()
     val rl: Array<String> = APP_ACTIVITY.resources.getStringArray(R.array.country_codes)
     for (i in rl.indices) {
         val g = rl[i].split(",").toTypedArray()

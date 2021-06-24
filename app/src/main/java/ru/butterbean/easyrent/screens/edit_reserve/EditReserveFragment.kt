@@ -24,7 +24,6 @@ import ru.butterbean.easyrent.models.RoomData
 import ru.butterbean.easyrent.utils.*
 import java.util.*
 
-
 class EditReserveFragment : Fragment() {
 
     private var mIsNew = false
@@ -101,8 +100,7 @@ class EditReserveFragment : Fragment() {
         hideKeyboard()
         val guest = mBinding.editReserveGuest.text.toString().trim()
         val guestsCount = mBinding.editReserveGuestsCount.text.toString().trim()
-        var phoneNumber = mBinding.editReservePhoneNumber.text.toString().trim()
-        //phoneNumber = if (phoneNumberIsEmpty(phoneNumber)) "" else phoneNumber
+        val phoneNumber = mBinding.editReservePhoneNumber.text.toString().trim()
         val sum = mBinding.editReserveSum.text.toString().trim()
         val payment = mBinding.editReservePayment.text.toString().trim()
         val wasCheckIn = mBinding.editReserveWasCheckIn.isChecked

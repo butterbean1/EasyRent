@@ -1,12 +1,10 @@
 package ru.butterbean.easyrent.models
 
-import androidx.preference.PreferenceManager
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import ru.butterbean.easyrent.database.TABLE_RESERVES_NAME
-import ru.butterbean.easyrent.utils.APP_ACTIVITY
 import java.io.Serializable
 
 @Entity(
