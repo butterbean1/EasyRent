@@ -1,4 +1,4 @@
-package ru.butterbean.easyrent.screens.reserves_archive
+package ru.butterbean.easyrent.screens.archive_reserves_list
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel

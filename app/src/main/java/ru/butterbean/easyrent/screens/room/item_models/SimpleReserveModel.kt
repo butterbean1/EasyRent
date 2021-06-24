@@ -45,7 +45,11 @@ class SimpleReserveModel(
             ) {
                 holder.itemView.background =
                     AppCompatResources.getDrawable(APP_ACTIVITY, R.drawable.ripple_effect_pink)
+            } else {
+                holder.itemView.background =
+                    AppCompatResources.getDrawable(APP_ACTIVITY, R.drawable.ripple_effect)
             }
+
         }
     }
 

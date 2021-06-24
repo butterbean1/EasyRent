@@ -105,7 +105,7 @@
         android:label="SettingsFragment" />
     <fragment
         android:id="@+id/archiveReservesListFragment"
-        android:name="ru.butterbean.easyrent.screens.reserves_archive.ArchiveReservesListFragment"
+        android:name="ru.butterbean.easyrent.screens.archive_reserves_list.ArchiveReservesListFragment"
         android:label="fragment_archive_reserves"
         tools:layout="@layout/fragment_archive_reserves_list" >
         <action
