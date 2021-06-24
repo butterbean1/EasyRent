@@ -71,7 +71,7 @@
         app:title="@string/application">
         <EditTextPreference
             android:selectable="false"
-            android:summary="@string/pref_app_version_summary"
+            android:summary="@string/app_version"
             app:iconSpaceReserved="false"
             app:key="appVersion"
             app:title="@string/pref_app_version_title" />

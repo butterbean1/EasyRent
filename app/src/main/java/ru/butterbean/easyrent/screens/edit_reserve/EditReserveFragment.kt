@@ -102,7 +102,7 @@ class EditReserveFragment : Fragment() {
         val guest = mBinding.editReserveGuest.text.toString().trim()
         val guestsCount = mBinding.editReserveGuestsCount.text.toString().trim()
         var phoneNumber = mBinding.editReservePhoneNumber.text.toString().trim()
-        phoneNumber = if (phoneNumberIsEmpty(phoneNumber)) "" else phoneNumber
+        //phoneNumber = if (phoneNumberIsEmpty(phoneNumber)) "" else phoneNumber
         val sum = mBinding.editReserveSum.text.toString().trim()
         val payment = mBinding.editReservePayment.text.toString().trim()
         val wasCheckIn = mBinding.editReserveWasCheckIn.isChecked

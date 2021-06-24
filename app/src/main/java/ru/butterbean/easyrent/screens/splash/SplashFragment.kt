@@ -6,6 +6,7 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
@@ -32,11 +33,12 @@ class SplashFragment : Fragment() {
         _binding = null
     }
 
+
+
     override fun onStart() {
         super.onStart()
 
         APP_ACTIVITY.supportActionBar?.hide()
-
 
         val viewModel = ViewModelProvider(APP_ACTIVITY).get(SplashViewModel::class.java)
 
@@ -76,9 +78,11 @@ class SplashFragment : Fragment() {
                     }
                     else -> APP_ACTIVITY.navController.navigate(R.id.action_splashFragment_to_roomsListFragment)
                 }
+                APP_ACTIVITY.window.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+
                 APP_ACTIVITY.supportActionBar?.show()
 
-            }, 2000)
+            }, 1200)
         }
 
     }
