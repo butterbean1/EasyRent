@@ -2,32 +2,29 @@ package ru.butterbean.easyrent.database.repository
 
 import androidx.lifecycle.LiveData
 import ru.butterbean.easyrent.database.dao.ReserveArchiveDao
+import ru.butterbean.easyrent.database.dao.ReserveDao
+import ru.butterbean.easyrent.database.dao.RoomDao
 import ru.butterbean.easyrent.models.ReserveArchiveData
 import ru.butterbean.easyrent.models.ReserveData
 import ru.butterbean.easyrent.models.RoomData
-import ru.butterbean.easyrent.utils.getAutoUpdatedReserves
 import ru.butterbean.easyrent.utils.reserveCompleted
 
-class ReserveArchiveRepository(private val reserveArchiveDao: ReserveArchiveDao) {
+class ReserveArchiveRepository(
+    private val reserveArchiveDao: ReserveArchiveDao,
+    private val roomDao: RoomDao,
+    private val reserveDao: ReserveDao
+) {
 
     suspend fun deleteArchiveReserves(reserves: List<ReserveArchiveData>) =
         reserveArchiveDao.deleteArchiveReserves(reserves)
 
-    fun getRoomById(id: Long): LiveData<RoomData> = reserveArchiveDao.getRoomById(id)
-
-    fun readAllRooms(): LiveData<List<RoomData>> = reserveArchiveDao.readAllRooms()
+    fun readAllRooms(): LiveData<List<RoomData>> = roomDao.readAllRooms()
 
     fun getArchiveReservesByRoomId(roomId: Long): LiveData<List<ReserveArchiveData>> =
         reserveArchiveDao.getReservesByRoomId(roomId)
 
-    suspend fun setAutoCheckInCheckOut() {
-        val reserves = reserveArchiveDao.getAllActualReserves()
-        val updatedReserves = getAutoUpdatedReserves(reserves)
-        if (updatedReserves.count() > 0) reserveArchiveDao.updateReserves(updatedReserves)
-    }
-
     suspend fun replaceReservesToArchive(analyseDepth: Int) {
-        val reservesList = reserveArchiveDao.getAllCheckOutedReserves(analyseDepth)
+        val reservesList = reserveDao.getAllCheckOutedReserves(analyseDepth)
         val reservesToDelete = mutableListOf<ReserveData>()
         val archiveReserves = mutableListOf<ReserveArchiveData>()
         reservesList.forEach { reserve ->
@@ -49,7 +46,7 @@ class ReserveArchiveRepository(private val reserveArchiveDao: ReserveArchiveDao)
                 reservesToDelete.add(reserve)
             }
         }
-        reserveArchiveDao.deleteReserves(reservesToDelete)
+        reserveDao.deleteReserves(reservesToDelete)
         reserveArchiveDao.addArchiveReserves(archiveReserves)
     }
 
@@ -72,7 +69,44 @@ class ReserveArchiveRepository(private val reserveArchiveDao: ReserveArchiveDao)
             newReserves.add(newReserve)
         }
         reserveArchiveDao.deleteArchiveReserves(reservesList)
-        reserveArchiveDao.addReserves(newReserves)
+        reserveDao.addReserves(newReserves)
     }
+
+    suspend fun replaceReserveToArchive(reserve: ReserveData) {
+        val newArchiveReserve = ReserveArchiveData(
+            0,
+            reserve.roomId,
+            reserve.guestName,
+            reserve.guestsCount,
+            reserve.sum,
+            reserve.payment,
+            reserve.dateCheckIn,
+            reserve.dateCheckOut,
+            reserve.wasCheckIn,
+            reserve.wasCheckOut,
+            reserve.phoneNumber
+        )
+        reserveDao.deleteReserve(reserve)
+        reserveArchiveDao.addArchiveReserve(newArchiveReserve)
+    }
+
+    suspend fun replaceReserveFromArchive(reserve: ReserveArchiveData):Long {
+        val newReserve = ReserveData(
+            0,
+            reserve.roomId,
+            reserve.guestName,
+            reserve.guestsCount,
+            reserve.sum,
+            reserve.payment,
+            reserve.dateCheckIn,
+            reserve.dateCheckOut,
+            reserve.wasCheckIn,
+            reserve.wasCheckOut,
+            reserve.phoneNumber
+        )
+        reserveArchiveDao.deleteArchiveReserve(reserve)
+        return reserveDao.addReserve(newReserve)
+    }
+
 
 }

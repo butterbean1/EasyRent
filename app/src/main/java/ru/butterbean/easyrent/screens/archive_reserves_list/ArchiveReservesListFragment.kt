@@ -94,7 +94,7 @@ class ArchiveReservesListFragment : Fragment() {
         builder.setMessage("Выбранные бронирования будут безвозвратно удалены! Продолжить?")
             .setPositiveButton(APP_ACTIVITY.getString(R.string.yes)) { dialog, _ ->
                 dialog.cancel()
-                mViewModel.deleteReserves(listMarkedReserves) {
+                mViewModel.deleteArchiveReserves(listMarkedReserves) {
                     listMarkedReserves.clear()
                     setVisibleOptionsMenuItems()
                     setDataToAdapter()
@@ -127,7 +127,7 @@ class ArchiveReservesListFragment : Fragment() {
         // ViewModel
         mViewModel = ViewModelProvider(APP_ACTIVITY).get(ArchiveReservesListViewModel::class.java)
         val roomId = arguments?.getLong("roomId")!!
-        mViewModel.getRoomById(roomId).observe(this) {
+        mViewModel.getRoomById(roomId) {
             mCurrentRoom = it
             APP_ACTIVITY.title = "${getString(R.string.archive)}. ${mCurrentRoom.name}"
             setDataToAdapter()
@@ -136,7 +136,7 @@ class ArchiveReservesListFragment : Fragment() {
     }
 
     fun setDataToAdapter() {
-        mViewModel.getReservesByRoomId(mCurrentRoom.id).observe(this) { reserves ->
+        mViewModel.getArchiveReservesByRoomId(mCurrentRoom.id).observe(this) { reserves ->
             mCurrentList = reserves
             mAdapter.setData(reserves)
         }

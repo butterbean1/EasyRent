@@ -18,7 +18,9 @@ class RoomRepository(private val roomDao: RoomDao) {
         roomDao.updateRoom(room)
     }
 
-    fun getReservesCount(roomId:Long):LiveData<Int> = roomDao.getReservesCount(roomId)
+    fun getAllRooms(): List<RoomData> = roomDao.getAllRooms()
+
+    fun getRoomById(id: Long): RoomData = roomDao.getRoomById(id)
 
     fun getRoomsCount():LiveData<Int> = roomDao.getRoomsCount()
 

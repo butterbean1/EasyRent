@@ -33,8 +33,6 @@ class SplashFragment : Fragment() {
         _binding = null
     }
 
-
-
     override fun onStart() {
         super.onStart()
 
@@ -59,7 +57,7 @@ class SplashFragment : Fragment() {
 
         if (AUTO_CHECK_IN_CHECK_OUT) viewModel.setAutoCheckInCheckOut()
 
-        viewModel.getAllRooms().observe(this) { roomsList ->
+        viewModel.getAllRooms(){ roomsList ->
             Handler(Looper.getMainLooper()).postDelayed({
                 when (roomsList.count()) {
                     0 -> {

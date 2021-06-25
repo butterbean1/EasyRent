@@ -15,7 +15,7 @@ class EditRoomViewModel(application: Application) : AndroidViewModel(application
     private val mRepository: RoomRepository = RoomRepository(APP_DATABASE.roomDao())
 
     fun addRoom(room: RoomData,onSuccess:(newId:Long) -> Unit) {
-        viewModelScope.launch(Dispatchers.Main) {
+        viewModelScope.launch(Dispatchers.IO) {
             val newId = mRepository.addRoom(room)
             withContext(Dispatchers.Main){onSuccess(newId)}
         }

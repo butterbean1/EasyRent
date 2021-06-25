@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import ru.butterbean.easyrent.database.repository.ReserveArchiveRepository
 import ru.butterbean.easyrent.database.repository.ReserveRepository
 import ru.butterbean.easyrent.models.ReserveData
 import ru.butterbean.easyrent.models.RoomData
@@ -16,6 +17,7 @@ import ru.butterbean.easyrent.utils.AUTO_CHECK_IN_CHECK_OUT
 
 class RoomViewModel(application: Application) : AndroidViewModel(application) {
     private val mRepository: ReserveRepository = ReserveRepository(APP_DATABASE.reserveDao())
+    private val mReserveArchiveRepository: ReserveArchiveRepository = ReserveArchiveRepository(APP_DATABASE.reserveArchiveDao())
 
     fun deleteReserve(reserve: ReserveData, onSuccess: () -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -59,7 +61,7 @@ class RoomViewModel(application: Application) : AndroidViewModel(application) {
 
     fun replaceReserveToArchive(reserve: ReserveData, onSuccess: () -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
-            mRepository.replaceReserveToArchive(reserve)
+            mReserveArchiveRepository.replaceReserveToArchive(reserve)
             withContext(Dispatchers.Main) {
                 onSuccess()
             }

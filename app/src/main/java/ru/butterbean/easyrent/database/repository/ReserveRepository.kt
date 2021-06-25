@@ -18,10 +18,6 @@ class ReserveRepository(private val reserveDao: ReserveDao) {
         return reserveDao.addReserve(reserve)
     }
 
-    suspend fun addReserveArchive(reserve: ReserveArchiveData): Long {
-        return reserveDao.addReserveArchive(reserve)
-    }
-
     suspend fun deleteReserve(reserve: ReserveData) {
         reserveDao.deleteReserve(reserve)
     }
@@ -32,45 +28,12 @@ class ReserveRepository(private val reserveDao: ReserveDao) {
         if (updatedReserves.count() > 0) reserveDao.updateReserves(updatedReserves)
     }
 
-    suspend fun replaceReserveToArchive(reserve: ReserveData) {
-        val newArchiveReserve = ReserveArchiveData(
-            0,
-            reserve.roomId,
-            reserve.guestName,
-            reserve.guestsCount,
-            reserve.sum,
-            reserve.payment,
-            reserve.dateCheckIn,
-            reserve.dateCheckOut,
-            reserve.wasCheckIn,
-            reserve.wasCheckOut,
-            reserve.phoneNumber
-        )
-        reserveDao.deleteReserve(reserve)
-        reserveDao.addReserveArchive(newArchiveReserve)
+    suspend fun setAutoCheckInCheckOut() {
+        val reserves = reserveDao.getAllActualReserves()
+        val updatedReserves = getAutoUpdatedReserves(reserves)
+        if (updatedReserves.count() > 0) reserveDao.updateReserves(updatedReserves)
     }
 
-    suspend fun replaceReserveFromArchive(reserve: ReserveArchiveData):Long {
-        val newReserve = ReserveData(
-            0,
-            reserve.roomId,
-            reserve.guestName,
-            reserve.guestsCount,
-            reserve.sum,
-            reserve.payment,
-            reserve.dateCheckIn,
-            reserve.dateCheckOut,
-            reserve.wasCheckIn,
-            reserve.wasCheckOut,
-            reserve.phoneNumber
-        )
-        reserveDao.deleteReserveArchive(reserve)
-        return reserveDao.addReserve(newReserve)
-    }
-
-    suspend fun deleteReserveArchive(reserve: ReserveArchiveData) {
-        reserveDao.deleteReserveArchive(reserve)
-    }
 
     suspend fun updateReserve(reserve: ReserveData) {
         reserveDao.updateReserve(reserve)
@@ -78,7 +41,7 @@ class ReserveRepository(private val reserveDao: ReserveDao) {
 
     suspend fun updateRoomStatus(roomId: Long) {
         val roomDao = APP_DATABASE.roomDao()
-        val room = roomDao.getByIdNow(roomId)
+        val room = roomDao.getRoomById(roomId)
 
         val reservesList = reserveDao.getActualReservesByRoomId(roomId)
         var currentDate = getStartOfDay(Calendar.getInstance())
@@ -104,10 +67,6 @@ class ReserveRepository(private val reserveDao: ReserveDao) {
         room.status = newStatus
         roomDao.updateRoom(room)
     }
-
-    fun getRoomById(id: Long): LiveData<RoomData> = reserveDao.getRoomById(id)
-
-    fun getReserveById(id: Long): ReserveData = reserveDao.getReserveById(id)
 
     fun getAllReservesByRoomId(roomId: Long): List<CommonReserveModel> {
         val reservesList = reserveDao.getReservesByRoomId(roomId)
@@ -187,5 +146,4 @@ class ReserveRepository(private val reserveDao: ReserveDao) {
 
     fun getReservesCount(roomId: Long): LiveData<Int> = reserveDao.getReservesCount(roomId)
 
-    fun getReservesArchiveCount(roomId: Long):Int = reserveDao.getReservesArchiveCount(roomId)
 }

@@ -2,18 +2,31 @@ package ru.butterbean.easyrent.screens.splash
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import ru.butterbean.easyrent.database.repository.ReserveArchiveRepository
+import ru.butterbean.easyrent.database.repository.ReserveRepository
+import ru.butterbean.easyrent.database.repository.RoomRepository
 import ru.butterbean.easyrent.models.RoomData
 import ru.butterbean.easyrent.utils.APP_DATABASE
 
 class SplashViewModel(application: Application) : AndroidViewModel(application) {
-    private val mRepository = ReserveArchiveRepository(APP_DATABASE.reserveArchiveDao())
+    private val mRepository = ReserveArchiveRepository(
+        APP_DATABASE.reserveArchiveDao(),
+        APP_DATABASE.roomDao(),APP_DATABASE.reserveDao())
+    private val mReserveRepository = ReserveRepository(APP_DATABASE.reserveDao())
+    private val mRoomRepository = RoomRepository(APP_DATABASE.roomDao())
 
-    fun getAllRooms(): LiveData<List<RoomData>> = mRepository.readAllRooms()
+    fun getAllRooms(onSuccess: (List<RoomData>) -> Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val rooms = mRoomRepository.getAllRooms()
+            withContext(Dispatchers.Main) {
+                onSuccess(rooms)
+            }
+        }
+    }
 
     fun replaceReservesToArchive(analyseDepth: Int) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -21,9 +34,9 @@ class SplashViewModel(application: Application) : AndroidViewModel(application) 
         }
     }
 
-    fun setAutoCheckInCheckOut(){
+    fun setAutoCheckInCheckOut() {
         viewModelScope.launch(Dispatchers.IO) {
-            mRepository.setAutoCheckInCheckOut()
+            mReserveRepository.setAutoCheckInCheckOut()
         }
     }
 

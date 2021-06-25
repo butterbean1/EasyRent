@@ -23,17 +23,16 @@ interface RoomDao {
     @Query("SELECT * FROM $TABLE_ROOMS_NAME ORDER BY name ASC")
     fun readAllRooms(): LiveData<List<RoomData>>
 
+    @Query("SELECT * FROM $TABLE_ROOMS_NAME ORDER BY name ASC")
+    fun getAllRooms(): List<RoomData>
+
     @Query("SELECT COUNT(*) FROM $TABLE_ROOMS_NAME")
     fun getRoomsCount(): LiveData<Int>
 
-    @Query("SELECT COUNT(*) FROM $TABLE_RESERVES_NAME WHERE roomId = :roomId")
-    fun getReservesCount(roomId:Long): LiveData<Int>
-
     @Query("SELECT * FROM $TABLE_ROOMS_NAME WHERE id = :id")
-    fun getByIdNow(id:Long): RoomData
+    fun getRoomById(id:Long): RoomData
 
     @Query("SELECT Status FROM $TABLE_ROOMS_NAME WHERE id = :id")
     fun getStatus(id: Long): LiveData<String>
-
 
 }

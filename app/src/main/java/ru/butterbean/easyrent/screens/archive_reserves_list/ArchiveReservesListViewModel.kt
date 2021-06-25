@@ -8,30 +8,42 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.butterbean.easyrent.database.repository.ReserveArchiveRepository
+import ru.butterbean.easyrent.database.repository.RoomRepository
 import ru.butterbean.easyrent.models.ReserveArchiveData
 import ru.butterbean.easyrent.models.RoomData
 import ru.butterbean.easyrent.utils.APP_DATABASE
 
-class ArchiveReservesListViewModel(application: Application):AndroidViewModel(application) {
-    private val mRepository: ReserveArchiveRepository = ReserveArchiveRepository(APP_DATABASE.reserveArchiveDao())
+class ArchiveReservesListViewModel(application: Application) : AndroidViewModel(application) {
+    private val mRepository: ReserveArchiveRepository =
+        ReserveArchiveRepository(APP_DATABASE.reserveArchiveDao(), APP_DATABASE.roomDao(), APP_DATABASE.reserveDao())
+    private val mRoomRepository: RoomRepository =
+        RoomRepository(APP_DATABASE.roomDao())
 
-    fun deleteReserves(reserves:List<ReserveArchiveData>,onSuccess:()->Unit) {
-        viewModelScope.launch {
+    fun deleteArchiveReserves(reserves: List<ReserveArchiveData>, onSuccess: () -> Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
             mRepository.deleteArchiveReserves(reserves)
-            withContext(Dispatchers.Main){
+            withContext(Dispatchers.Main) {
                 onSuccess()
             }
         }
     }
 
-    fun getReservesByRoomId(roomId: Long):LiveData<List<ReserveArchiveData>>  = mRepository.getArchiveReservesByRoomId(roomId)
+    fun getArchiveReservesByRoomId(roomId: Long): LiveData<List<ReserveArchiveData>> =
+        mRepository.getArchiveReservesByRoomId(roomId)
 
-    fun getRoomById(id: Long): LiveData<RoomData> = mRepository.getRoomById(id)
+    fun getRoomById(id: Long, onSuccess: (RoomData) -> Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val room = mRoomRepository.getRoomById(id)
+            withContext(Dispatchers.Main) {
+                onSuccess(room)
+            }
+        }
+    }
 
     fun replaceReservesFromArchive(reserves: List<ReserveArchiveData>, onSuccess: () -> Unit) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             mRepository.replaceReservesFromArchive(reserves)
-            withContext(Dispatchers.Main){
+            withContext(Dispatchers.Main) {
                 onSuccess()
             }
         }

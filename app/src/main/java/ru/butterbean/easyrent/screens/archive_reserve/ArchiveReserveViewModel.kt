@@ -7,19 +7,18 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import ru.butterbean.easyrent.database.repository.ReserveArchiveRepository
 import ru.butterbean.easyrent.database.repository.ReserveRepository
+import ru.butterbean.easyrent.database.repository.RoomRepository
 import ru.butterbean.easyrent.models.ReserveArchiveData
 import ru.butterbean.easyrent.models.ReserveData
 import ru.butterbean.easyrent.models.RoomData
 import ru.butterbean.easyrent.utils.APP_DATABASE
 
 class ArchiveReserveViewModel(application: Application) : AndroidViewModel(application) {
-    private val mRepository: ReserveRepository
-
-    init {
-        val reserveDao = APP_DATABASE.reserveDao()
-        mRepository = ReserveRepository(reserveDao)
-    }
+    private val mRepository = ReserveArchiveRepository(APP_DATABASE.reserveArchiveDao(),APP_DATABASE.roomDao(),APP_DATABASE.reserveDao())
+    private val mReserveRepository = ReserveRepository(APP_DATABASE.reserveDao())
+    private val mRoomRepository = RoomRepository(APP_DATABASE.roomDao())
 
     fun replaceReserveFromArchive(
         reserve: ReserveArchiveData,
