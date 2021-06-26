@@ -13,9 +13,7 @@ import ru.butterbean.easyrent.models.RoomData
 import ru.butterbean.easyrent.utils.APP_DATABASE
 
 class SplashViewModel(application: Application) : AndroidViewModel(application) {
-    private val mRepository = ReserveArchiveRepository(
-        APP_DATABASE.reserveArchiveDao(),
-        APP_DATABASE.roomDao(),APP_DATABASE.reserveDao())
+    private val mRepository = ReserveArchiveRepository()
     private val mReserveRepository = ReserveRepository(APP_DATABASE.reserveDao())
     private val mRoomRepository = RoomRepository(APP_DATABASE.roomDao())
 

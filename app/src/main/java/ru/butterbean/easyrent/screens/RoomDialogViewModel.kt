@@ -7,14 +7,16 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import ru.butterbean.easyrent.database.repository.ReserveRepository
 import ru.butterbean.easyrent.database.repository.RoomRepository
 import ru.butterbean.easyrent.models.RoomData
 import ru.butterbean.easyrent.utils.APP_DATABASE
 
 class RoomDialogViewModel(application: Application) : AndroidViewModel(application) {
     private val mRepository = RoomRepository(APP_DATABASE.roomDao())
+    private val mReserveRepository = ReserveRepository(APP_DATABASE.reserveDao())
 
-    fun getReservesCount(roomId: Long): LiveData<Int> = mRepository.getReservesCount(roomId)
+    fun getReservesCount(roomId: Long): LiveData<Int> = mReserveRepository.getReservesCount(roomId)
 
     fun deleteRoom(room: RoomData, onSuccess: () -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {

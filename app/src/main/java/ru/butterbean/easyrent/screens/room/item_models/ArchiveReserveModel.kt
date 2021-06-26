@@ -8,7 +8,7 @@ import ru.butterbean.easyrent.utils.APP_ACTIVITY
 
 class ArchiveReserveModel(
     val roomId: Long,
-    private val archivedCount: Int
+    private val archivedCount: Long
 ) : CommonReserveModel {
     override fun getItemViewType(): Int = CommonReserveModel.ARCHIVE
 

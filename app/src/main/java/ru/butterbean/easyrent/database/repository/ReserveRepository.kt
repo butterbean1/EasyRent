@@ -2,12 +2,9 @@ package ru.butterbean.easyrent.database.repository
 
 import androidx.lifecycle.LiveData
 import ru.butterbean.easyrent.database.dao.ReserveDao
-import ru.butterbean.easyrent.models.ReserveArchiveData
 import ru.butterbean.easyrent.models.ReserveData
-import ru.butterbean.easyrent.models.RoomData
-import ru.butterbean.easyrent.screens.room.item_models.ArchiveReserveModel
-import ru.butterbean.easyrent.screens.room.item_models.FreeReserveModel
 import ru.butterbean.easyrent.screens.room.item_models.CommonReserveModel
+import ru.butterbean.easyrent.screens.room.item_models.FreeReserveModel
 import ru.butterbean.easyrent.screens.room.item_models.SimpleReserveModel
 import ru.butterbean.easyrent.utils.*
 import java.util.*
@@ -22,7 +19,7 @@ class ReserveRepository(private val reserveDao: ReserveDao) {
         reserveDao.deleteReserve(reserve)
     }
 
-    suspend fun setAutoCheckInCheckOut(roomId: Long) {
+    suspend fun setAutoCheckInCheckOutForRoom(roomId: Long) {
         val reserves = reserveDao.getActualReservesByRoomId(roomId)
         val updatedReserves = getAutoUpdatedReserves(reserves)
         if (updatedReserves.count() > 0) reserveDao.updateReserves(updatedReserves)
@@ -75,8 +72,6 @@ class ReserveRepository(private val reserveDao: ReserveDao) {
             resList.add(createSimpleModel(reserve))
         }
 
-        val archivedCount = reserveDao.getReservesArchiveCount(roomId)
-        if (archivedCount > 0) resList.add(ArchiveReserveModel(roomId,archivedCount))
         return resList
     }
 
@@ -124,8 +119,7 @@ class ReserveRepository(private val reserveDao: ReserveDao) {
             val fm = FreeReserveModel(roomId, currentDate.toDateTimeInDatabaseFormat())
             resList.add(fm)
         }
-        val archivedCount = reserveDao.getReservesArchiveCount(roomId)
-        if (archivedCount > 0) resList.add(ArchiveReserveModel(roomId, archivedCount))
+
         return resList
     }
 
@@ -145,5 +139,7 @@ class ReserveRepository(private val reserveDao: ReserveDao) {
         )
 
     fun getReservesCount(roomId: Long): LiveData<Int> = reserveDao.getReservesCount(roomId)
+
+    fun getReserveById(id: Long): ReserveData = reserveDao.getReserveById(id)
 
 }

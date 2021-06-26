@@ -1,27 +1,31 @@
 package ru.butterbean.easyrent.database.repository
 
 import androidx.lifecycle.LiveData
-import ru.butterbean.easyrent.database.dao.ReserveArchiveDao
-import ru.butterbean.easyrent.database.dao.ReserveDao
-import ru.butterbean.easyrent.database.dao.RoomDao
 import ru.butterbean.easyrent.models.ReserveArchiveData
 import ru.butterbean.easyrent.models.ReserveData
 import ru.butterbean.easyrent.models.RoomData
+import ru.butterbean.easyrent.utils.APP_DATABASE
 import ru.butterbean.easyrent.utils.reserveCompleted
 
-class ReserveArchiveRepository(
-    private val reserveArchiveDao: ReserveArchiveDao,
-    private val roomDao: RoomDao,
-    private val reserveDao: ReserveDao
-) {
+class ReserveArchiveRepository{
+    private val reserveArchiveDao = APP_DATABASE.reserveArchiveDao()
+    private val roomDao = APP_DATABASE.roomDao()
+    private val reserveDao = APP_DATABASE.reserveDao()
+
+    suspend fun addReserveArchive(reserve: ReserveArchiveData): Long {
+        return reserveArchiveDao.addArchiveReserve(reserve)
+    }
 
     suspend fun deleteArchiveReserves(reserves: List<ReserveArchiveData>) =
         reserveArchiveDao.deleteArchiveReserves(reserves)
 
+    suspend fun deleteArchiveReserve(reserve: ReserveArchiveData) =
+        reserveArchiveDao.deleteArchiveReserve(reserve)
+
     fun readAllRooms(): LiveData<List<RoomData>> = roomDao.readAllRooms()
 
     fun getArchiveReservesByRoomId(roomId: Long): LiveData<List<ReserveArchiveData>> =
-        reserveArchiveDao.getReservesByRoomId(roomId)
+        reserveArchiveDao.getArchiveReservesByRoomId(roomId)
 
     suspend fun replaceReservesToArchive(analyseDepth: Int) {
         val reservesList = reserveDao.getAllCheckOutedReserves(analyseDepth)
@@ -107,6 +111,8 @@ class ReserveArchiveRepository(
         reserveArchiveDao.deleteArchiveReserve(reserve)
         return reserveDao.addReserve(newReserve)
     }
+
+    fun getReservesArchiveCount(roomId: Long): Long = reserveArchiveDao.getArchiveReservesCount(roomId)
 
 
 }

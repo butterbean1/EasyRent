@@ -4,10 +4,9 @@ import android.app.AlertDialog
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
 import ru.butterbean.easyrent.R
-import ru.butterbean.easyrent.screens.RoomDialogViewModel
-import ru.butterbean.easyrent.models.GuestData
 import ru.butterbean.easyrent.models.ReserveData
 import ru.butterbean.easyrent.models.RoomData
+import ru.butterbean.easyrent.screens.RoomDialogViewModel
 import java.util.*
 
 fun getEmptyRoom(): RoomData {

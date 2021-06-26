@@ -2,7 +2,6 @@ package ru.butterbean.easyrent.screens.archive_reserve
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -16,7 +15,7 @@ import ru.butterbean.easyrent.models.RoomData
 import ru.butterbean.easyrent.utils.APP_DATABASE
 
 class ArchiveReserveViewModel(application: Application) : AndroidViewModel(application) {
-    private val mRepository = ReserveArchiveRepository(APP_DATABASE.reserveArchiveDao(),APP_DATABASE.roomDao(),APP_DATABASE.reserveDao())
+    private val mRepository = ReserveArchiveRepository()
     private val mReserveRepository = ReserveRepository(APP_DATABASE.reserveDao())
     private val mRoomRepository = RoomRepository(APP_DATABASE.roomDao())
 
@@ -26,8 +25,8 @@ class ArchiveReserveViewModel(application: Application) : AndroidViewModel(appli
     ) {
         viewModelScope.launch(Dispatchers.IO) {
             val newId = mRepository.replaceReserveFromArchive(reserve)
-            mRepository.updateRoomStatus(reserve.roomId)
-            val newReserve = mRepository.getReserveById(newId)
+            mReserveRepository.updateRoomStatus(reserve.roomId)
+            val newReserve = mReserveRepository.getReserveById(newId)
             withContext(Dispatchers.Main) {
                 onSuccess(newReserve)
             }
@@ -36,13 +35,20 @@ class ArchiveReserveViewModel(application: Application) : AndroidViewModel(appli
 
      fun deleteReserveArchive(reserve: ReserveArchiveData, onSuccess: () -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
-            mRepository.deleteReserveArchive(reserve)
+            mRepository.deleteArchiveReserve(reserve)
             withContext(Dispatchers.Main) {
                 onSuccess()
             }
         }
     }
 
-     fun getRoomById(id: Long): LiveData<RoomData> = mRepository.getRoomById(id)
+    fun getRoomById(id: Long, onSuccess: (RoomData) -> Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val room = mRoomRepository.getRoomById(id)
+            withContext(Dispatchers.Main) {
+                onSuccess(room)
+            }
+        }
+    }
 
 }

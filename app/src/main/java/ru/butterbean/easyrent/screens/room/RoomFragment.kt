@@ -148,7 +148,7 @@ class RoomFragment : Fragment() {
                 true
             }
             R.id.confirm_edit -> {
-                mViewModel.getRoomById(mCurrentRoom.id).observe(viewLifecycleOwner) {
+                mViewModel.getRoomById(mCurrentRoom.id) {
                     APP_ACTIVITY.navController.navigate(
                         R.id.action_roomFragment_to_editRoomFragment,
                         createArgsBundle("room", it)

@@ -68,10 +68,7 @@ class EditRoomFragment : Fragment() {
             if (mIsNew) {
                 // если новое помещение - добавляем в базу и переходим в карточку помещения
                 mViewModel.addRoom(room) { newId ->
-                    mViewModel.getRoomsCount().observe(this) { roomsCount ->
-                        ONLY_ONE_ROOM = roomsCount == 1
-                        goToRoomFragment(RoomData(newId, room.name, room.address, room.status))
-                    }
+                    goToRoomFragment(RoomData(newId, room.name, room.address, room.status))
                 }
             } else {
                 // если редактируем - записываем изменения и переходим в карточку помещения

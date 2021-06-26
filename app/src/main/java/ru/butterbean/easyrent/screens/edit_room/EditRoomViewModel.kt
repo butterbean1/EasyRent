@@ -10,9 +10,10 @@ import kotlinx.coroutines.withContext
 import ru.butterbean.easyrent.database.repository.RoomRepository
 import ru.butterbean.easyrent.models.RoomData
 import ru.butterbean.easyrent.utils.APP_DATABASE
+import ru.butterbean.easyrent.utils.ONLY_ONE_ROOM
 
 class EditRoomViewModel(application: Application) : AndroidViewModel(application) {
-    private val mRepository: RoomRepository = RoomRepository(APP_DATABASE.roomDao())
+    private val mRepository = RoomRepository(APP_DATABASE.roomDao())
 
     fun addRoom(room: RoomData,onSuccess:(newId:Long) -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -27,7 +28,5 @@ class EditRoomViewModel(application: Application) : AndroidViewModel(application
             withContext(Dispatchers.Main){onSuccess()}
         }
     }
-
-    fun getRoomsCount():LiveData<Int> = mRepository.getRoomsCount()
 
 }

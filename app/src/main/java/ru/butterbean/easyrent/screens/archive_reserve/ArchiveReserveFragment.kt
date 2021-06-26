@@ -92,10 +92,10 @@ class ArchiveReserveFragment : Fragment() {
         APP_ACTIVITY.title = "${getString(R.string.archive)}. ${getString(R.string.reserve)}"
 
         // получим модель помещения и его название из БД
-        mViewModel.getRoomById(mCurrentReserve.roomId).observe(viewLifecycleOwner, { room ->
+        mViewModel.getRoomById(mCurrentReserve.roomId) { room ->
             mCurrentRoom = room
             mBinding.editReserveRoomName.text = room.name
-        })
+        }
 
         mBinding.editReserveGuest.text = mCurrentReserve.guestName
         mBinding.editReservePhoneNumber.hint = "+${getCountryZipCode()} XXX XXX-XX-XX"

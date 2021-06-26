@@ -3,11 +3,7 @@ package ru.butterbean.easyrent.database.dao
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import ru.butterbean.easyrent.database.TABLE_RESERVES_ARCHIVE_NAME
-import ru.butterbean.easyrent.database.TABLE_RESERVES_NAME
-import ru.butterbean.easyrent.database.TABLE_ROOMS_NAME
 import ru.butterbean.easyrent.models.ReserveArchiveData
-import ru.butterbean.easyrent.models.ReserveData
-import ru.butterbean.easyrent.models.RoomData
 
 @Dao
 interface ReserveArchiveDao {
@@ -30,12 +26,9 @@ interface ReserveArchiveDao {
     suspend fun deleteAllArchiveReserves()
 
     @Query("SELECT COUNT(*) FROM $TABLE_RESERVES_ARCHIVE_NAME WHERE roomId = :roomId")
-    fun getReservesArchiveCount(roomId:Long): Int
-
-    @Query("SELECT COUNT(*) FROM $TABLE_RESERVES_ARCHIVE_NAME WHERE roomId = :roomId")
-    fun getArchiveReservesCount(roomId:Long): LiveData<Int>
+    fun getArchiveReservesCount(roomId:Long): Long
 
     @Query("SELECT * FROM  $TABLE_RESERVES_ARCHIVE_NAME WHERE roomId= :roomId ORDER BY wasCheckOut,CASE WHEN (wasCheckOut=0) THEN (strftime('%s','now') + strftime('%s',dateCheckIn)) ELSE (strftime('%s','now') - strftime('%s',dateCheckOut)) END")
-    fun getReservesByRoomId(roomId: Long): LiveData<List<ReserveArchiveData>>
+    fun getArchiveReservesByRoomId(roomId: Long): LiveData<List<ReserveArchiveData>>
 
 }

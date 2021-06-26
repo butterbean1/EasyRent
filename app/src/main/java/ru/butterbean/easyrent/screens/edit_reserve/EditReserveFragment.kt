@@ -213,10 +213,10 @@ class EditReserveFragment : Fragment() {
 
 
         // получим модель помещения и его название из БД
-        mViewModel.getRoomById(mCurrentReserve.roomId).observe(viewLifecycleOwner, { room ->
+        mViewModel.getRoomById(mCurrentReserve.roomId) { room ->
             mCurrentRoom = room
             mBinding.editReserveRoomName.text = room.name
-        })
+        }
 
         mBinding.editReserveSum.setText(if (mCurrentReserve.sum == 0) "" else mCurrentReserve.sum.toString())
         mBinding.editReservePayment.setText(if (mCurrentReserve.payment == 0) "" else mCurrentReserve.payment.toString())
