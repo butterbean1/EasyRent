@@ -91,7 +91,7 @@ class ArchiveReservesListFragment : Fragment() {
 
     private fun showDeleteDialog() {
         val builder = AlertDialog.Builder(this.context)
-        builder.setMessage("Выбранные бронирования будут безвозвратно удалены! Продолжить?")
+        builder.setMessage(getString(R.string.finally_reserves_delete_message))
             .setPositiveButton(APP_ACTIVITY.getString(R.string.yes)) { dialog, _ ->
                 dialog.cancel()
                 mViewModel.deleteArchiveReserves(listMarkedReserves) {

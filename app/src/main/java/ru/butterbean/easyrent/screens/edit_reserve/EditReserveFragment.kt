@@ -85,7 +85,7 @@ class EditReserveFragment : Fragment() {
 
     private fun showDeleteDialog() {
         val builder = AlertDialog.Builder(this.context)
-        builder.setMessage("Бронирование будет безвозвратно удалено! Продолжить?")
+        builder.setMessage(getString(R.string.finally_reserve_delete_message))
             .setPositiveButton(APP_ACTIVITY.getString(R.string.yes)) { dialog, _ ->
                 dialog.cancel()
                 mViewModel.deleteReserve(mCurrentReserve) { goToRoomFragment() }

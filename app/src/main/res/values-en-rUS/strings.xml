@@ -76,4 +76,5 @@
     <string name="pref_auto_checkin_checkout_title">Auto-check-in and check-out</string>
     <string name="pref_auto_checkin_checkout_summary">when the planned time comes</string>
     <string name="finally_reserve_delete_message">The booking will be permanently deleted! Proceed?</string>
+    <string name="finally_reserves_delete_message">The selected bookings will be permanently deleted! Proceed?</string>
 </resources>

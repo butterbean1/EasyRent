@@ -3,13 +3,11 @@ package ru.butterbean.easyrent.database.repository
 import androidx.lifecycle.LiveData
 import ru.butterbean.easyrent.models.ReserveArchiveData
 import ru.butterbean.easyrent.models.ReserveData
-import ru.butterbean.easyrent.models.RoomData
 import ru.butterbean.easyrent.utils.APP_DATABASE
 import ru.butterbean.easyrent.utils.reserveCompleted
 
 class ReserveArchiveRepository{
     private val reserveArchiveDao = APP_DATABASE.reserveArchiveDao()
-    private val roomDao = APP_DATABASE.roomDao()
     private val reserveDao = APP_DATABASE.reserveDao()
 
     suspend fun addReserveArchive(reserve: ReserveArchiveData): Long {
@@ -21,8 +19,6 @@ class ReserveArchiveRepository{
 
     suspend fun deleteArchiveReserve(reserve: ReserveArchiveData) =
         reserveArchiveDao.deleteArchiveReserve(reserve)
-
-    fun readAllRooms(): LiveData<List<RoomData>> = roomDao.readAllRooms()
 
     fun getArchiveReservesByRoomId(roomId: Long): LiveData<List<ReserveArchiveData>> =
         reserveArchiveDao.getArchiveReservesByRoomId(roomId)
