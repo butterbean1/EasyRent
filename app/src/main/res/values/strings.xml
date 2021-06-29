@@ -85,6 +85,10 @@
     <string name="phone_number_hint" translatable="false">+Х ХХХ ХХХ-ХХ-ХХ</string>
     <string name="finally_reserve_delete_message">Бронирование будет безвозвратно удалено! Продолжить?</string>
     <string name="finally_reserves_delete_message">Выбранные брони будут безвозвратно удалены! Продолжить?</string>
+    <string name="attach_file">Прикрепить файл</string>
+    <string name="camera_capture_photo">Фото с камеры</string>
+    <string name="gallery_image">Фото из галереи</string>
+    <string name="local_file">Файл с диска</string>
 
 
 </resources>

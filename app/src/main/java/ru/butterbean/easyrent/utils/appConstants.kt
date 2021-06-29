@@ -22,3 +22,8 @@ var AUTO_CHECK_IN_CHECK_OUT: Boolean = false
 
 
 const val DAYS_TO_REPLACE_TO_ARCHIVE = 30
+const val FILE_REQUEST_CODE = 301
+const val IMAGE_REQUEST_CODE = 302
+const val PHOTO_REQUEST_CODE = 303
+const val MAX_FILE_SIZE_MEGABYTES = 50 // Мегабайты
+const val MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MEGABYTES * 1024 * 1024 // байты

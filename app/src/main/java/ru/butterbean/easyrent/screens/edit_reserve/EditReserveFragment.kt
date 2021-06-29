@@ -1,5 +1,6 @@
 package ru.butterbean.easyrent.screens.edit_reserve
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
@@ -7,10 +8,14 @@ import android.content.Intent
 import android.graphics.*
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
+import android.provider.OpenableColumns
 import android.telephony.PhoneNumberFormattingTextWatcher
 import android.text.Editable
 import android.text.InputFilter
 import android.view.*
+import androidx.core.content.FileProvider
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
@@ -22,6 +27,8 @@ import ru.butterbean.easyrent.models.ReserveArchiveData
 import ru.butterbean.easyrent.models.ReserveData
 import ru.butterbean.easyrent.models.RoomData
 import ru.butterbean.easyrent.utils.*
+import java.io.*
+import java.text.SimpleDateFormat
 import java.util.*
 
 class EditReserveFragment : Fragment() {
@@ -30,7 +37,6 @@ class EditReserveFragment : Fragment() {
     private var mImmediatelyReplaceToArchive = false
     private var _binding: FragmentEditReserveBinding? = null
     private val mBinding get() = _binding!!
-    private lateinit var mOptionsMenu: Menu
     private lateinit var mViewModel: EditReserveViewModel
     private lateinit var mCurrentReserve: ReserveData
     private lateinit var mCurrentRoom: RoomData
@@ -40,6 +46,8 @@ class EditReserveFragment : Fragment() {
     private lateinit var mTimeCheckOutSetListener: TimePickerDialog.OnTimeSetListener
     private var mCurrentDateCheckIn = "" // date in format yyyy-MM-dd
     private var mCurrentDateCheckOut = "" // date in format yyyy-MM-dd
+    private lateinit var mCurrentPhotoPath: String
+    private lateinit var mPhotoURI: Uri
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -57,15 +65,8 @@ class EditReserveFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        mOptionsMenu = menu
-        inflateOptionsMenu()
-    }
-
-    private fun inflateOptionsMenu() {
-        mOptionsMenu.clear()
-        val inflater = APP_ACTIVITY.menuInflater
-            if (mIsNew) inflater.inflate(R.menu.confirm_menu, mOptionsMenu)
-            else inflater.inflate(R.menu.confirm_delete_menu, mOptionsMenu)
+        if (mIsNew) inflater.inflate(R.menu.confirm_menu, menu)
+        else inflater.inflate(R.menu.confirm_delete_menu, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -75,11 +76,157 @@ class EditReserveFragment : Fragment() {
                 change()
                 true
             }
-             R.id.delete -> {
+            R.id.attach_file -> {
+                showAttachFileDialog()
+                true
+            }
+            R.id.delete -> {
                 showDeleteDialog()
                 true
             }
             else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun showAttachFileDialog() {
+        var actions = emptyArray<String>()
+        actions += getString(R.string.camera_capture_photo)// 0
+        actions += getString(R.string.gallery_image)// 1
+        actions += getString(R.string.local_file)// 2
+        val builder = AlertDialog.Builder(APP_ACTIVITY)
+        builder.setItems(actions) { _, i ->
+            when (i) {
+                0 -> attachPhoto()
+                1 -> attachImage()
+                2 -> attachFile()
+            }
+        }
+            .show()
+
+    }
+
+    private fun attachFile() {
+
+        val intent = Intent(Intent.ACTION_GET_CONTENT)
+        intent.type = "*/*"
+        startActivityForResult(intent, FILE_REQUEST_CODE)
+
+    }
+
+    private fun attachPhoto() {
+
+        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+            // Ensure that there's a camera activity to handle the intent
+            takePictureIntent.resolveActivity(APP_ACTIVITY.packageManager)?.also {
+                // Create the File where the photo should go
+                val photoFile: File? = try {
+                    createImageFile()
+                } catch (e: IOException) {
+                    // Error occurred while creating the File
+                    showToast(e.message.toString())
+                    null
+                }
+                // Continue only if the File was successfully created
+                photoFile?.also {
+                    mPhotoURI = FileProvider.getUriForFile(
+                        APP_ACTIVITY,
+                        "ru.butterbean.easyrent.fileprovider",
+                        it
+                    )
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, mPhotoURI)
+                    startActivityForResult(takePictureIntent, PHOTO_REQUEST_CODE)
+                }
+            }
+        }
+    }
+
+    private fun attachImage() {
+
+        val intent = Intent(Intent.ACTION_GET_CONTENT)
+        intent.type = "image/* video/*"
+        startActivityForResult(intent, FILE_REQUEST_CODE)
+
+    }
+
+    @Throws(IOException::class)
+    private fun createImageFile(): File {
+        // Create an image file name
+        val storageDir = APP_ACTIVITY.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        return File.createTempFile(
+            "IMG_${getTimeStamp()}_", /* prefix */
+            ".jpg", /* suffix */
+            storageDir /* directory */
+        ).apply {
+            // Save a file: path for use with ACTION_VIEW intents
+            mCurrentPhotoPath = absolutePath
+        }
+    }
+
+    private fun getTimeStamp():String{
+        return SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK && data != null) {
+
+            var uri = Uri.EMPTY
+            var successfulReq = false
+            when (requestCode) {
+                PHOTO_REQUEST_CODE -> {
+                    uri = mPhotoURI
+//                    uri = Uri.fromFile(File(mCurrentPhotoPath))
+                    successfulReq = true
+                }
+                FILE_REQUEST_CODE -> {
+                    uri = data.data!!
+                    successfulReq = true
+                }
+                else -> showToast("Неизвестный тип файла!")
+            }
+            if (successfulReq){
+            try {
+                val fileAttr = getFilenameFromUri(uri)
+                val fileSize = fileAttr.getLong("fileSize")
+                if (fileSize > MAX_FILE_SIZE_BYTES) {
+                    showToast("Слишком большой размер файла! Максимальный размер - $MAX_FILE_SIZE_MEGABYTES Мб.")
+                } else {
+                    val fos = FileOutputStream(
+                        File(
+                            APP_ACTIVITY.filesDir,
+                            fileAttr.getString("fileName")
+                        )
+                    )
+                    val ins = APP_ACTIVITY.contentResolver.openInputStream(uri)
+                    fos.write(ins?.readBytes())
+                    fos.close()
+                }
+            } catch (e: Exception) {
+                showToast(e.message.toString())
+            }}
+
+        }
+    }
+
+    fun getFilenameFromUri(uri: Uri): Bundle {
+        var result = Bundle()
+        val cursor = APP_ACTIVITY.contentResolver.query(uri, null, null, null, null, null)
+        try {
+            if (cursor != null && cursor.moveToFirst()) {
+                result.putString(
+                    "fileName",
+                    cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME))
+                )
+                result.putLong(
+                    "fileSize",
+                    cursor.getLong(cursor.getColumnIndex(OpenableColumns.SIZE))
+                )
+            }
+        } catch (e: Exception) {
+            showToast(e.message.toString())
+        } finally {
+            cursor?.close()
+            return result
         }
     }
 

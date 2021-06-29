@@ -1,6 +1,8 @@
 package ru.butterbean.easyrent
 
 import android.os.Bundle
+import android.os.StrictMode
+import android.os.StrictMode.VmPolicy
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
@@ -8,6 +10,7 @@ import androidx.navigation.Navigation
 import ru.butterbean.easyrent.database.MainDatabase
 import ru.butterbean.easyrent.databinding.ActivityMainBinding
 import ru.butterbean.easyrent.utils.*
+
 
 class MainActivity : AppCompatActivity() {
 
