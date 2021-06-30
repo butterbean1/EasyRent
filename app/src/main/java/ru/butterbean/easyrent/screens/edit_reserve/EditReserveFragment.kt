@@ -162,7 +162,7 @@ class EditReserveFragment : Fragment() {
         }
     }
 
-    private fun getTimeStamp():String{
+    private fun getTimeStamp(): String {
         return SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
     }
 
@@ -175,7 +175,6 @@ class EditReserveFragment : Fragment() {
             when (requestCode) {
                 PHOTO_REQUEST_CODE -> {
                     uri = mPhotoURI
-//                    uri = Uri.fromFile(File(mCurrentPhotoPath))
                     successfulReq = true
                 }
                 FILE_REQUEST_CODE -> {
@@ -184,26 +183,30 @@ class EditReserveFragment : Fragment() {
                 }
                 else -> showToast("Неизвестный тип файла!")
             }
-            if (successfulReq){
-            try {
-                val fileAttr = getFilenameFromUri(uri)
-                val fileSize = fileAttr.getLong("fileSize")
-                if (fileSize > MAX_FILE_SIZE_BYTES) {
-                    showToast("Слишком большой размер файла! Максимальный размер - $MAX_FILE_SIZE_MEGABYTES Мб.")
-                } else {
-                    val fos = FileOutputStream(
-                        File(
-                            APP_ACTIVITY.filesDir,
-                            fileAttr.getString("fileName")
-                        )
-                    )
-                    val ins = APP_ACTIVITY.contentResolver.openInputStream(uri)
-                    fos.write(ins?.readBytes())
-                    fos.close()
+            if (successfulReq) {
+                try {
+                    val fileAttr = getFilenameFromUri(uri)
+                    val fileSize = fileAttr.getLong("fileSize")
+                    if (fileSize > MAX_FILE_SIZE_BYTES) {
+                        showToast("Слишком большой размер файла! Максимальный размер - $MAX_FILE_SIZE_MEGABYTES Мб.")
+                    } else {
+                        val newDir = File(APP_ACTIVITY.filesDir, getTimeStamp())
+                        if (newDir.mkdir()) {
+                            val fos = FileOutputStream(
+                                File(
+                                    newDir,
+                                    fileAttr.getString("fileName")
+                                )
+                            )
+                            val ins = APP_ACTIVITY.contentResolver.openInputStream(uri)
+                            fos.write(ins?.readBytes())
+                            fos.close()
+                        }
+                    }
+                } catch (e: Exception) {
+                    showToast(e.message.toString())
                 }
-            } catch (e: Exception) {
-                showToast(e.message.toString())
-            }}
+            }
 
         }
     }
