@@ -44,6 +44,18 @@ val MIGRATION_3_4 = object : Migration(3, 4) {
                     "FOREIGN KEY(reserveId) REFERENCES ${TABLE_RESERVES_NAME}(id) ON UPDATE NO ACTION ON DELETE CASCADE" +
                     ") "
         )
-        database.execSQL("CREATE INDEX index_${TABLE_RESERVES_EXT_FILES_NAME}_reserveId ON $TABLE_RESERVES_NAME (reserveId)")
+        database.execSQL("CREATE INDEX index_${TABLE_RESERVES_EXT_FILES_NAME}_reserveId ON $TABLE_RESERVES_EXT_FILES_NAME (reserveId)")
+        database.execSQL(
+            "CREATE TABLE ${TABLE_RESERVES_ARCHIVE_EXT_FILES_NAME}(" +
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+                    "reserveId INTEGER NOT NULL, " +
+                    "dirName TEXT NOT NULL, " +
+                    "fileName TEXT NOT NULL, " +
+                    "fileType TEXT NOT NULL, " +
+                    "isImage INTEGER NOT NULL, " +
+                    "FOREIGN KEY(reserveId) REFERENCES ${TABLE_RESERVES_ARCHIVE_NAME}(id) ON UPDATE NO ACTION ON DELETE CASCADE" +
+                    ") "
+        )
+        database.execSQL("CREATE INDEX index_${TABLE_RESERVES_ARCHIVE_EXT_FILES_NAME}_reserveId ON $TABLE_RESERVES_ARCHIVE_EXT_FILES_NAME (reserveId)")
     }
 }

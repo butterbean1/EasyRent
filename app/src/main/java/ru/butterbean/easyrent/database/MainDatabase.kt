@@ -10,11 +10,11 @@ import ru.butterbean.easyrent.models.*
 /*
 ver. 1 : beginning
 ver. 2 : reserves_archive_table added
-ver. 3 : phone_number added
-ver. 4 : reserves_ext_files_table added
+ver. 3 : field phone_number added to reserves_table & reserves_archive_table
+ver. 4 : reserves_ext_files_table & reserves_archive_ext_files_table added
  */
 @Database(
-    entities = [RoomData::class, GuestData::class, ReserveData::class, ReserveArchiveData::class, ReserveExtFileData::class],
+    entities = [RoomData::class, GuestData::class, ReserveData::class, ReserveArchiveData::class, ReserveExtFileData::class, ReserveArchiveExtFileData::class],
     version = 4,
     exportSchema = false
 )
@@ -23,7 +23,8 @@ abstract class MainDatabase : RoomDatabase() {
     abstract fun guestDao(): GuestDao
     abstract fun reserveDao(): ReserveDao
     abstract fun reserveArchiveDao(): ReserveArchiveDao
-    abstract fun reserveExtFlieDao(): ReserveExtFilesDao
+    abstract fun reserveExtFileDao(): ReserveExtFilesDao
+    abstract fun reserveArchiveExtFilesDao(): ReserveArchiveExtFilesDao
 
     companion object {
         @Volatile
