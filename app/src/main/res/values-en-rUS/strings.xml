@@ -81,4 +81,6 @@
     <string name="camera_capture_photo">Take a photo</string>
     <string name="gallery_image">Picture from gallery</string>
     <string name="local_file">Any file</string>
+    <string name="guests">Guests</string>
+    <string name="picture">Picture</string>
 </resources>

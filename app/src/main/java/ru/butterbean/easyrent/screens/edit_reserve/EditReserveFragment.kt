@@ -16,6 +16,7 @@ import android.text.Editable
 import android.text.InputFilter
 import android.view.*
 import androidx.core.content.FileProvider
+import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
@@ -23,13 +24,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
 import ru.butterbean.easyrent.R
 import ru.butterbean.easyrent.databinding.FragmentEditReserveBinding
-import ru.butterbean.easyrent.models.ReserveArchiveData
-import ru.butterbean.easyrent.models.ReserveData
-import ru.butterbean.easyrent.models.RoomData
+import ru.butterbean.easyrent.models.*
 import ru.butterbean.easyrent.utils.*
 import java.io.*
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 class EditReserveFragment : Fragment() {
 
@@ -46,8 +46,15 @@ class EditReserveFragment : Fragment() {
     private lateinit var mTimeCheckOutSetListener: TimePickerDialog.OnTimeSetListener
     private var mCurrentDateCheckIn = "" // date in format yyyy-MM-dd
     private var mCurrentDateCheckOut = "" // date in format yyyy-MM-dd
-    private lateinit var mCurrentPhotoPath: String
     private lateinit var mPhotoURI: Uri
+    private val mListCurrentExtFiles = mutableListOf<EmptyExtFileData>()
+
+    private class EmptyExtFileData(
+        val dirName: String,
+        val fileName: String,
+        val fileType: String,
+        val isImage: Boolean
+    )
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -62,6 +69,16 @@ class EditReserveFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        // удалим временные внешние файлы
+        try {
+            mListCurrentExtFiles.forEach {
+                val file = File(APP_ACTIVITY.filesDir.path + "/" + it.dirName)
+                file.deleteRecursively()
+            }
+            mListCurrentExtFiles.clear()
+        } catch (e: Exception) {
+            showToast(e.message.toString())
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -74,10 +91,6 @@ class EditReserveFragment : Fragment() {
             android.R.id.home -> APP_ACTIVITY.navController.popBackStack()
             R.id.confirm_change -> {
                 change()
-                true
-            }
-            R.id.attach_file -> {
-                showAttachFileDialog()
                 true
             }
             R.id.delete -> {
@@ -156,10 +169,7 @@ class EditReserveFragment : Fragment() {
             "IMG_${getTimeStamp()}_", /* prefix */
             ".jpg", /* suffix */
             storageDir /* directory */
-        ).apply {
-            // Save a file: path for use with ACTION_VIEW intents
-            mCurrentPhotoPath = absolutePath
-        }
+        )
     }
 
     private fun getTimeStamp(): String {
@@ -190,17 +200,17 @@ class EditReserveFragment : Fragment() {
                     if (fileSize > MAX_FILE_SIZE_BYTES) {
                         showToast("Слишком большой размер файла! Максимальный размер - $MAX_FILE_SIZE_MEGABYTES Мб.")
                     } else {
-                        val newDir = File(APP_ACTIVITY.filesDir, getTimeStamp())
+                        val newDirName = getTimeStamp()
+                        val newDir = File(APP_ACTIVITY.filesDir, newDirName)
+                        val newFileName = fileAttr.getString("fileName")!!
+                        val newFile = File(newDir, newFileName)
                         if (newDir.mkdir()) {
-                            val fos = FileOutputStream(
-                                File(
-                                    newDir,
-                                    fileAttr.getString("fileName")
-                                )
-                            )
+                            val fos = FileOutputStream(newFile)
                             val ins = APP_ACTIVITY.contentResolver.openInputStream(uri)
                             fos.write(ins?.readBytes())
                             fos.close()
+                            addExtFileToDatabase(newDirName, newFileName, newFile.extension)
+                            changeExtFilesButtonsVisibility()
                         }
                     }
                 } catch (e: Exception) {
@@ -208,6 +218,32 @@ class EditReserveFragment : Fragment() {
                 }
             }
 
+        }
+    }
+
+    private fun addExtFileToDatabase(dirName: String, fileName: String, extension: String) {
+        if (mIsNew) {
+            mListCurrentExtFiles.add(
+                EmptyExtFileData(
+                    dirName,
+                    fileName,
+                    extension,
+                    extension.isImageExtension()
+                )
+            )
+        } else {
+            mViewModel.addReserveExtFile(
+                ReserveExtFileData(
+                    0,
+                    mCurrentReserve.id,
+                    dirName,
+                    fileName,
+                    extension,
+                    extension.isImageExtension()
+                )
+            ) {
+                changeExtFilesButtonsVisibility()
+            }
         }
     }
 
@@ -298,7 +334,24 @@ class EditReserveFragment : Fragment() {
 
                     if (mIsNew) {
                         // если новое бронирование - добавляем сразу в архив
-                        mViewModel.addReserveArchive(reserve) { goToRoomFragment() }
+                        mViewModel.addReserveArchive(reserve) { newId ->
+                            // прикрепим новые файлы
+                            val listExtFiles = mutableListOf<ReserveArchiveExtFileData>()
+                            mListCurrentExtFiles.forEach {
+                                listExtFiles.add(
+                                    ReserveArchiveExtFileData(
+                                        0,
+                                        newId,
+                                        it.dirName,
+                                        it.fileName,
+                                        it.fileType,
+                                        it.isImage
+                                    )
+                                )
+                            }
+                            mViewModel.addReserveArchiveExtFiles(listExtFiles)
+                            goToRoomFragment()
+                        }
                     } else {
                         // если редактируем - удаляем из основной таблицы и записываем с изменениями сразу в архив
                         mViewModel.replaceReserveToArchive(
@@ -307,6 +360,7 @@ class EditReserveFragment : Fragment() {
                         ) { goToRoomFragment() }
                     }
                 } else {
+
                     val reserve = ReserveData(
                         mCurrentReserve.id,
                         mCurrentReserve.roomId,
@@ -322,7 +376,23 @@ class EditReserveFragment : Fragment() {
                     )
                     if (mIsNew) {
                         // если новое бронирование - добавляем в базу
-                        mViewModel.addReserve(reserve) { goToRoomFragment() }
+                        mViewModel.addReserve(reserve) { newId ->
+                            val listExtFiles = mutableListOf<ReserveExtFileData>()
+                            mListCurrentExtFiles.forEach {
+                                listExtFiles.add(
+                                    ReserveExtFileData(
+                                        0,
+                                        newId,
+                                        it.dirName,
+                                        it.fileName,
+                                        it.fileType,
+                                        it.isImage
+                                    )
+                                )
+                            }
+                            mViewModel.addReserveExtFiles(listExtFiles)
+                            goToRoomFragment()
+                        }
                     } else {
                         // если редактируем - записываем изменения
                         mViewModel.updateReserve(reserve) { goToRoomFragment() }
@@ -367,6 +437,8 @@ class EditReserveFragment : Fragment() {
             mCurrentRoom = room
             mBinding.editReserveRoomName.text = room.name
         }
+
+        changeExtFilesButtonsVisibility()
 
         mBinding.editReserveSum.setText(if (mCurrentReserve.sum == 0) "" else mCurrentReserve.sum.toString())
         mBinding.editReservePayment.setText(if (mCurrentReserve.payment == 0) "" else mCurrentReserve.payment.toString())
@@ -426,6 +498,86 @@ class EditReserveFragment : Fragment() {
 
         // добавляем меню
         setHasOptionsMenu(true)
+    }
+
+    private fun changeExtFilesButtonsVisibility() {
+        if (mIsNew) setExtFilesButtonsVisibility(mListCurrentExtFiles.count())
+        else mViewModel.getExtFilesCount(mCurrentReserve.id) { setExtFilesButtonsVisibility(it) }
+    }
+
+    private fun setExtFilesButtonsVisibility(filesCount: Int) {
+        when (filesCount) {
+            0 -> {
+                mBinding.editReserveBtnShowFiles.visibility = View.GONE
+                mBinding.editReserveBtnShowSingleFile.visibility = View.GONE
+            }
+            1 -> {
+                mBinding.editReserveBtnShowFiles.visibility = View.GONE
+                mBinding.editReserveBtnShowSingleFile.visibility = View.VISIBLE
+                getSingleExtFileImageUri { uri ->
+                    mBinding.editReserveBtnShowSingleFile.setImageURI(uri)
+                }
+                mBinding.editReserveBtnShowSingleFile.isEnabled = !mIsNew
+            }
+            else -> {
+                mBinding.editReserveBtnShowFiles.visibility = View.VISIBLE
+                mBinding.editReserveBtnShowSingleFile.visibility = View.GONE
+                mBinding.editReserveBtnShowFiles.text = "($filesCount)"
+                mBinding.editReserveBtnShowFiles.isEnabled = !mIsNew
+            }
+        }
+    }
+
+    private fun getSingleExtFileParams(f: (Bundle) -> Unit) {
+
+        if (mIsNew) {
+            f(
+                getSingleExtFileParamsBundle(
+                    mListCurrentExtFiles[0].dirName,
+                    mListCurrentExtFiles[0].fileName,
+                    mListCurrentExtFiles[0].fileType,
+                    mListCurrentExtFiles[0].isImage
+                )
+            )
+        } else {
+            mViewModel.getSingleExtFileByReserveId(mCurrentReserve.id) { extFile ->
+                f(
+                    getSingleExtFileParamsBundle(
+                        extFile.dirName,
+                        extFile.fileName,
+                        extFile.fileType,
+                        extFile.isImage
+                    )
+                )
+            }
+        }
+
+    }
+
+    private fun getSingleExtFileParamsBundle(
+        dirName: String,
+        fileName: String,
+        fileType: String,
+        isImage: Boolean
+    ): Bundle {
+        val res = Bundle()
+        val file = File(
+            APP_ACTIVITY.filesDir.path + "/" + dirName,
+            fileName
+        )
+        res.putString("uriString", Uri.fromFile(file).toString())
+        res.putString("filePath", file.absolutePath)
+        res.putString("fileName", fileName)
+        res.putString("fileType", fileType)
+        res.putBoolean("isImage", isImage)
+        return res
+    }
+
+
+    private fun getSingleExtFileImageUri(f: (Uri) -> Unit) {
+        getSingleExtFileParams { params ->
+            f(params.getString("uriString")?.toUri()!!)
+        }
     }
 
     private fun changePhoneButtonsInEnabled() {
@@ -534,6 +686,55 @@ class EditReserveFragment : Fragment() {
             changePaymentBtnVisibility()
             hideKeyboard()
         }
+        mBinding.editReserveBtnAddFile.setOnClickListener {
+            showAttachFileDialog()
+        }
+        mBinding.editReserveBtnShowSingleFile.setOnClickListener {
+            getSingleExtFileParams { extFileParams ->
+
+
+                if (extFileParams.getBoolean("isImage")) APP_ACTIVITY.navController.navigate(
+                    R.id.action_editReserveFragment_to_fullSizeImageFragment,
+                    extFileParams
+                )
+                else {
+                    startAnyApp(extFileParams)
+                }
+            }
+
+        }
+    }
+
+    private fun startAnyApp(params: Bundle) {
+        try {
+            val filePath = params.getString("filePath")
+            val fileType = params.getString("fileType")
+            val storageDir = APP_ACTIVITY.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+            val tempFile = File(storageDir, "FILE_${getTimeStamp()}.$fileType")
+            FileInputStream(File(filePath)).use { fis ->
+                FileOutputStream(tempFile).use { fos ->
+                    // Transfer bytes from in to out
+                    val buf = ByteArray(1024)
+                    var len: Int
+                    while (fis.read(buf).also { len = it } > 0) {
+                        fos.write(buf, 0, len)
+                    }
+                }
+            }
+            val uriApp = FileProvider.getUriForFile(
+                requireContext(),
+                "ru.butterbean.easyrent.fileprovider",
+                tempFile
+            )
+
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.setDataAndType(uriApp, "application/$fileType")
+            intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+            startActivity(intent)
+
+        } catch (e: Exception) {
+            showToast(e.message.toString())
+        }
     }
 
     private fun changeWasCheckInEnabled() {
@@ -575,8 +776,5 @@ class EditReserveFragment : Fragment() {
         } else {
             mBinding.editReserveBtnPaymentFull.visibility = View.VISIBLE
         }
-
     }
-
-
 }

@@ -6,34 +6,32 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import ru.butterbean.easyrent.database.repository.ReserveArchiveRepository
-import ru.butterbean.easyrent.database.repository.ReserveRepository
-import ru.butterbean.easyrent.database.repository.RoomRepository
-import ru.butterbean.easyrent.models.ReserveArchiveData
-import ru.butterbean.easyrent.models.ReserveData
-import ru.butterbean.easyrent.models.RoomData
+import ru.butterbean.easyrent.database.repository.*
+import ru.butterbean.easyrent.models.*
 import ru.butterbean.easyrent.utils.APP_DATABASE
 
 class EditReserveViewModel(application: Application) : AndroidViewModel(application) {
     private val mRepository = ReserveRepository(APP_DATABASE.reserveDao())
     private val mRoomRepository = RoomRepository(APP_DATABASE.roomDao())
     private val mReserveArchiveRepository = ReserveArchiveRepository()
+    private val mReserveExtFileRepository = ReserveExtFileRepository(APP_DATABASE.reserveExtFileDao())
+    private val mReserveArchiveExtFileRepository = ReserveArchiveExtFileRepository(APP_DATABASE.reserveArchiveExtFilesDao())
 
-    fun addReserve(reserve: ReserveData, onSuccess: () -> Unit) {
+    fun addReserve(reserve: ReserveData, onSuccess: (Long) -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
-            mRepository.addReserve(reserve)
+            val newId = mRepository.addReserve(reserve)
             mRepository.updateRoomStatus(reserve.roomId)
             withContext(Dispatchers.Main) {
-                onSuccess()
+                onSuccess(newId)
             }
         }
     }
 
-    fun addReserveArchive(reserve: ReserveArchiveData, onSuccess: () -> Unit) {
+    fun addReserveArchive(reserve: ReserveArchiveData, onSuccess: (Long) -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
-            mReserveArchiveRepository.addReserveArchive(reserve)
+            val newId = mReserveArchiveRepository.addReserveArchive(reserve)
             withContext(Dispatchers.Main) {
-                onSuccess()
+                onSuccess(newId)
             }
         }
     }
@@ -81,5 +79,45 @@ class EditReserveViewModel(application: Application) : AndroidViewModel(applicat
             }
         }
     }
+
+    fun getExtFilesCount(reserveId: Long, onSuccess: (Int) -> Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val count = mReserveExtFileRepository.getExtFilesCount(reserveId)
+            withContext(Dispatchers.Main) {
+                onSuccess(count)
+            }
+        }
+    }
+
+    fun getSingleExtFileByReserveId(reserveId: Long, onSuccess: (ReserveExtFileData) -> Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val extFile = mReserveExtFileRepository.getSingleExtFileByReserveId(reserveId)
+            withContext(Dispatchers.Main) {
+                onSuccess(extFile)
+            }
+        }
+    }
+
+    fun addReserveExtFile(extFile: ReserveExtFileData, onSuccess: () -> Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            mReserveExtFileRepository.addReserveExtFile(extFile)
+            withContext(Dispatchers.Main) {
+                onSuccess()
+            }
+        }
+    }
+
+    fun addReserveExtFiles(extFiles: List<ReserveExtFileData>) {
+        viewModelScope.launch(Dispatchers.IO) {
+            mReserveExtFileRepository.addReserveExtFiles(extFiles)
+        }
+    }
+
+    fun addReserveArchiveExtFiles(extFiles: List<ReserveArchiveExtFileData>) {
+        viewModelScope.launch(Dispatchers.IO) {
+            mReserveArchiveExtFileRepository.addReserveExtFiles(extFiles)
+        }
+    }
+
 
 }

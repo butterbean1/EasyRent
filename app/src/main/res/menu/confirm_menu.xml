@@ -7,10 +7,4 @@
         android:title="@string/save"
         app:showAsAction="always" />
 
-    <item
-        android:id="@+id/attach_file"
-        android:icon="@drawable/ic_attach_file"
-        android:title="@string/attach_file"
-        app:showAsAction="never" />
-
 </menu>

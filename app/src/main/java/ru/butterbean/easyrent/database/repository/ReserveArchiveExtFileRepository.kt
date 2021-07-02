@@ -31,4 +31,6 @@ class ReserveArchiveExtFileRepository(private val reserveArchiveExtFilesDao: Res
 
     fun getExtFilesByReserveId(reserveId: Long): LiveData<List<ReserveArchiveExtFileData>> = reserveArchiveExtFilesDao.getExtFilesByReserveId(reserveId)
 
+    fun getExtFilesCount(reserveId: Long): Int = reserveArchiveExtFilesDao.getExtFilesCount(reserveId)
+
 }

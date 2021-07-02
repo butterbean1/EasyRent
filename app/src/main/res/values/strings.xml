@@ -89,6 +89,9 @@
     <string name="camera_capture_photo">Фото с камеры</string>
     <string name="gallery_image">Фото из галереи</string>
     <string name="local_file">Файл с диска</string>
+    <string name="def_files_count" translatable="false">(99)</string>
+    <string name="guests">Постояльцы</string>
+    <string name="picture">Изображение</string>
 
 
 </resources>
