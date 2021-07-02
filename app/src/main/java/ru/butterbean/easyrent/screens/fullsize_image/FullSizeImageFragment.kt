@@ -1,6 +1,5 @@
 package ru.butterbean.easyrent.screens.fullsize_image
 
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem

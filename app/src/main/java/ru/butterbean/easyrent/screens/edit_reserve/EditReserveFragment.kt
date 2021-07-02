@@ -70,14 +70,16 @@ class EditReserveFragment : Fragment() {
         super.onDestroyView()
         _binding = null
         // удалим временные внешние файлы
-        try {
-            mListCurrentExtFiles.forEach {
-                val file = File(APP_ACTIVITY.filesDir.path + "/" + it.dirName)
-                file.deleteRecursively()
+        if (mListCurrentExtFiles.count() > 0) {
+            try {
+                mListCurrentExtFiles.forEach {
+                    val file = File(APP_ACTIVITY.filesDir.path + "/" + it.dirName)
+                    file.deleteRecursively()
+                }
+                mListCurrentExtFiles.clear()
+            } catch (e: Exception) {
+                showToast(e.message.toString())
             }
-            mListCurrentExtFiles.clear()
-        } catch (e: Exception) {
-            showToast(e.message.toString())
         }
     }
 
@@ -350,6 +352,7 @@ class EditReserveFragment : Fragment() {
                                 )
                             }
                             mViewModel.addReserveArchiveExtFiles(listExtFiles)
+                            mListCurrentExtFiles.clear()
                             goToRoomFragment()
                         }
                     } else {
@@ -391,6 +394,7 @@ class EditReserveFragment : Fragment() {
                                 )
                             }
                             mViewModel.addReserveExtFiles(listExtFiles)
+                            mListCurrentExtFiles.clear()
                             goToRoomFragment()
                         }
                     } else {
