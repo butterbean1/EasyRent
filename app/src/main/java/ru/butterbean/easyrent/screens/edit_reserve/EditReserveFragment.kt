@@ -15,6 +15,8 @@ import android.telephony.PhoneNumberFormattingTextWatcher
 import android.text.Editable
 import android.text.InputFilter
 import android.view.*
+import android.webkit.MimeTypeMap
+import android.widget.ImageButton
 import androidx.core.content.FileProvider
 import androidx.core.net.toUri
 import androidx.core.view.isVisible
@@ -29,7 +31,6 @@ import ru.butterbean.easyrent.utils.*
 import java.io.*
 import java.text.SimpleDateFormat
 import java.util.*
-
 
 class EditReserveFragment : Fragment() {
 
@@ -180,7 +181,7 @@ class EditReserveFragment : Fragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK && data != null) {
+        if (resultCode == Activity.RESULT_OK) {
 
             var uri = Uri.EMPTY
             var successfulReq = false
@@ -190,8 +191,10 @@ class EditReserveFragment : Fragment() {
                     successfulReq = true
                 }
                 FILE_REQUEST_CODE -> {
-                    uri = data.data!!
-                    successfulReq = true
+                    if (data != null) {
+                        uri = data.data!!
+                        successfulReq = true
+                    }
                 }
                 else -> showToast("Неизвестный тип файла!")
             }
@@ -249,7 +252,7 @@ class EditReserveFragment : Fragment() {
         }
     }
 
-    fun getFilenameFromUri(uri: Uri): Bundle {
+    private fun getFilenameFromUri(uri: Uri): Bundle {
         var result = Bundle()
         val cursor = APP_ACTIVITY.contentResolver.query(uri, null, null, null, null, null)
         try {
@@ -518,9 +521,7 @@ class EditReserveFragment : Fragment() {
             1 -> {
                 mBinding.editReserveBtnShowFiles.visibility = View.GONE
                 mBinding.editReserveBtnShowSingleFile.visibility = View.VISIBLE
-                getSingleExtFileImageUri { uri ->
-                    mBinding.editReserveBtnShowSingleFile.setImageURI(uri)
-                }
+                mBinding.editReserveBtnShowSingleFile.setSingleExtFileImage()
                 mBinding.editReserveBtnShowSingleFile.isEnabled = !mIsNew
             }
             else -> {
@@ -578,9 +579,17 @@ class EditReserveFragment : Fragment() {
     }
 
 
-    private fun getSingleExtFileImageUri(f: (Uri) -> Unit) {
+    private fun ImageButton.setSingleExtFileImage() {
         getSingleExtFileParams { params ->
-            f(params.getString("uriString")?.toUri()!!)
+            if (params.getBoolean("isImage")) this.setImageURI(
+                params.getString("uriString")?.toUri()!!
+            )
+            else {
+                val fileType = params.getString("fileType")!!
+                val resId = getFileIconId(fileType)
+                this.setImageResource(resId)
+            }
+
         }
     }
 
@@ -695,26 +704,22 @@ class EditReserveFragment : Fragment() {
         }
         mBinding.editReserveBtnShowSingleFile.setOnClickListener {
             getSingleExtFileParams { extFileParams ->
-
-
-                if (extFileParams.getBoolean("isImage")) APP_ACTIVITY.navController.navigate(
-                    R.id.action_editReserveFragment_to_fullSizeImageFragment,
-                    extFileParams
-                )
-                else {
-                    startAnyApp(extFileParams)
-                }
+                startAnyApp(extFileParams)
             }
+        }
+        mBinding.editReserveBtnShowSingleFile.setOnLongClickListener{
 
+            true
         }
     }
 
     private fun startAnyApp(params: Bundle) {
         try {
-            val filePath = params.getString("filePath")
+            val filePath = params.getString("filePath")!!
+            val fileName = params.getString("fileName")
             val fileType = params.getString("fileType")
             val storageDir = APP_ACTIVITY.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-            val tempFile = File(storageDir, "FILE_${getTimeStamp()}.$fileType")
+            val tempFile = File(storageDir, fileName)
             FileInputStream(File(filePath)).use { fis ->
                 FileOutputStream(tempFile).use { fos ->
                     // Transfer bytes from in to out
@@ -732,12 +737,13 @@ class EditReserveFragment : Fragment() {
             )
 
             val intent = Intent(Intent.ACTION_VIEW)
-            intent.setDataAndType(uriApp, "application/$fileType")
+            val appType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(fileType)
+            intent.setDataAndType(uriApp, appType)
             intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
             startActivity(intent)
 
         } catch (e: Exception) {
-            showToast(e.message.toString())
+            showToast("Не удалось открыть файл: " + e.message.toString())
         }
     }
 

@@ -37,7 +37,7 @@
             android:layout_height="35dp"
             android:scaleType="fitCenter"
             android:background="@color/white"
-            android:src="@drawable/splash_screen"
+
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/edit_reserve_btn_show_files"
             app:layout_constraintTop_toTopOf="parent" />
@@ -47,6 +47,7 @@
             android:layout_width="50dp"
             android:layout_height="45dp"
             android:text="@string/def_files_count"
+            android:visibility="gone"
             android:textColor="@color/purple"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

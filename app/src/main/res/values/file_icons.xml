@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="file_icons">
+        <item>pdf,ic_pdf</item>
+        <item>xls,ic_microsoft_excel</item>
+        <item>xlsx,ic_microsoft_excel</item>
+        <item>doc,ic_microsoft_word</item>
+        <item>docx,ic_microsoft_word</item>
+        <item>mp4,ic_video_file</item>
+        <item>avi,ic_video_file</item>
+        <item>mkv,ic_video_file</item>
+        <item>txt,ic_txt_file</item>
+    </string-array>
+</resources>

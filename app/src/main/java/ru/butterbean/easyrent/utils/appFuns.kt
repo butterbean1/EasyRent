@@ -81,3 +81,17 @@ fun getCountryZipCode(): String {
     }
     return countryZipCode
 }
+
+fun getFileIconId(extension:String): Int {
+    var ic = ""
+    val rl: Array<String> = APP_ACTIVITY.resources.getStringArray(R.array.file_icons)
+    for (i in rl.indices) {
+        val g = rl[i].split(",").toTypedArray()
+        if (g[0].trim { it <= ' ' } == extension.trim { it <= ' ' }) {
+            ic = g[1]
+            break
+        }
+    }
+    return if (ic.isEmpty()) R.drawable.ic_other_file
+    else APP_ACTIVITY.resources.getIdentifier(ic,"drawable", APP_ACTIVITY.packageName)
+}

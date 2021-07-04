@@ -18,11 +18,6 @@
             app:destination="@id/roomFragment"
             app:launchSingleTop="true"
             app:popUpTo="@id/main_nav" />
-        <action
-            android:id="@+id/action_editReserveFragment_to_fullSizeImageFragment"
-            app:destination="@id/fullSizeImageFragment"
-            app:launchSingleTop="true"
-            app:popUpTo="@id/editReserveFragment" />
     </fragment>
     <fragment
         android:id="@+id/editRoomFragment"
@@ -126,15 +121,5 @@
             app:destination="@id/editReserveFragment"
             app:launchSingleTop="true"
             app:popUpTo="@id/roomFragment" />
-        <action
-            android:id="@+id/action_archiveReserveFragment_to_fullSizeImageFragment"
-            app:destination="@id/fullSizeImageFragment"
-            app:launchSingleTop="true"
-            app:popUpTo="@id/archiveReserveFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/fullSizeImageFragment"
-        android:name="ru.butterbean.easyrent.screens.fullsize_image.FullSizeImageFragment"
-        android:label="fragment_full_size_image"
-        tools:layout="@layout/fragment_full_size_image" />
 </navigation>
