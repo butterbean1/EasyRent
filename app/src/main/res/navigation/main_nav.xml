@@ -18,6 +18,11 @@
             app:destination="@id/roomFragment"
             app:launchSingleTop="true"
             app:popUpTo="@id/main_nav" />
+        <action
+            android:id="@+id/action_editReserveFragment_to_extFilesListFragment"
+            app:destination="@id/extFilesListFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/editReserveFragment" />
     </fragment>
     <fragment
         android:id="@+id/editRoomFragment"
@@ -121,5 +126,15 @@
             app:destination="@id/editReserveFragment"
             app:launchSingleTop="true"
             app:popUpTo="@id/roomFragment" />
+        <action
+            android:id="@+id/action_archiveReserveFragment_to_extFilesListFragment"
+            app:destination="@id/extFilesListFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/archiveReserveFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/extFilesListFragment"
+        android:name="ru.butterbean.easyrent.screens.ext_files.ExtFilesListFragment"
+        android:label="fragment_ext_files_list"
+        tools:layout="@layout/fragment_ext_files_list" />
 </navigation>

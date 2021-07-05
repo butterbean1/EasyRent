@@ -33,7 +33,7 @@
 
         <ImageButton
             android:id="@+id/edit_reserve_btn_show_single_file"
-            android:layout_width="50dp"
+            android:layout_width="45dp"
             android:layout_height="35dp"
             android:scaleType="fitCenter"
             android:background="@color/white"
