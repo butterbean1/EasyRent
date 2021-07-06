@@ -689,15 +689,17 @@ class EditReserveFragment : Fragment(), ExtFilesExtension {
                 startAnyApp(extFileParams)
             }
         }
-        mBinding.editReserveBtnShowSingleFile.setOnLongClickListener{
-            getSingleExtFileParams{
-                showDeleteExtFileDialog(it.getSerializable("extFile") as ReserveExtFileData,this)
+        mBinding.editReserveBtnShowSingleFile.setOnLongClickListener {
+            getSingleExtFileParams {
+                showDeleteExtFileDialog(it.getSerializable("extFile") as ReserveExtFileData, this)
             }
             true
         }
         mBinding.editReserveBtnShowFiles.setOnClickListener {
-            APP_ACTIVITY.navController.navigate(R.id.action_editReserveFragment_to_extFilesListFragment,
-                createArgsBundle("reserve",mCurrentReserve))
+            APP_ACTIVITY.navController.navigate(
+                R.id.action_editReserveFragment_to_extFilesListFragment,
+                createArgsBundle("reserve", mCurrentReserve)
+            )
         }
     }
 
@@ -743,7 +745,7 @@ class EditReserveFragment : Fragment(), ExtFilesExtension {
     }
 
     override fun deleteReserveExtFile(extFile: ReserveExtFileData) {
-        mViewModel.deleteExtFile(extFile){
+        mViewModel.deleteExtFile(extFile) {
             changeExtFilesButtonsVisibility()
         }
     }

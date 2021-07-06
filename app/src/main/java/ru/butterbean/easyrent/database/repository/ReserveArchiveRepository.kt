@@ -72,7 +72,7 @@ class ReserveArchiveRepository{
         reserveDao.addReserves(newReserves)
     }
 
-    suspend fun replaceReserveToArchive(reserve: ReserveData) {
+    suspend fun replaceReserveToArchive(reserve: ReserveData):Long {
         val newArchiveReserve = ReserveArchiveData(
             0,
             reserve.roomId,
@@ -86,8 +86,8 @@ class ReserveArchiveRepository{
             reserve.wasCheckOut,
             reserve.phoneNumber
         )
-        reserveDao.deleteReserve(reserve)
-        reserveArchiveDao.addArchiveReserve(newArchiveReserve)
+        return reserveArchiveDao.addArchiveReserve(newArchiveReserve)
+
     }
 
     suspend fun replaceReserveFromArchive(reserve: ReserveArchiveData):Long {
@@ -104,8 +104,9 @@ class ReserveArchiveRepository{
             reserve.wasCheckOut,
             reserve.phoneNumber
         )
+        val newId = reserveDao.addReserve(newReserve)
         reserveArchiveDao.deleteArchiveReserve(reserve)
-        return reserveDao.addReserve(newReserve)
+        return newId
     }
 
     fun getReservesArchiveCount(roomId: Long): Long = reserveArchiveDao.getArchiveReservesCount(roomId)

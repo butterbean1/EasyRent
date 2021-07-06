@@ -65,7 +65,6 @@ fun deleteLocalFile(dirName: String) {
     file.deleteRecursively()
 }
 
-
 fun showDeleteExtFileDialog(extFile: ReserveExtFileData,f: ExtFilesExtension) {
     val actions = arrayOf(
         APP_ACTIVITY.getString(R.string.delete) // 0

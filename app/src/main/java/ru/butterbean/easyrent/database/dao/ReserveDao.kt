@@ -25,9 +25,6 @@ interface ReserveDao {
     @Delete
     suspend fun deleteReserves(reserves:List<ReserveData>)
 
-    @Query("DELETE FROM $TABLE_RESERVES_NAME")
-    suspend fun deleteAllReserves()
-
     @Query("SELECT * FROM $TABLE_RESERVES_NAME WHERE (date('now','start of day')<=date(dateCheckOut,'start of day')) & (NOT wasCheckOut) ORDER BY dateCheckIn,dateCheckOut ASC")
     fun getAllActualReserves(): List<ReserveData>
 

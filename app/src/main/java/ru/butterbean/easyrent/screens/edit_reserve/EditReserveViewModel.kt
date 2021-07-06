@@ -14,7 +14,7 @@ class EditReserveViewModel(application: Application) : AndroidViewModel(applicat
     private val mRepository = ReserveRepository(APP_DATABASE.reserveDao())
     private val mRoomRepository = RoomRepository(APP_DATABASE.roomDao())
     private val mReserveArchiveRepository = ReserveArchiveRepository()
-    private val mReserveExtFileRepository = ReserveExtFileRepository(APP_DATABASE.reserveExtFileDao())
+    private val mReserveExtFileRepository = ReserveExtFileRepository()
     private val mReserveArchiveExtFileRepository = ReserveArchiveExtFileRepository(APP_DATABASE.reserveArchiveExtFilesDao())
 
     fun addReserve(reserve: ReserveData, onSuccess: (Long) -> Unit) {
@@ -42,7 +42,8 @@ class EditReserveViewModel(application: Application) : AndroidViewModel(applicat
         onSuccess: () -> Unit
     ) {
         viewModelScope.launch(Dispatchers.IO) {
-            mReserveArchiveRepository.addReserveArchive(newReserve)
+            val newId = mReserveArchiveRepository.addReserveArchive(newReserve)
+            mReserveExtFileRepository.replaceExtFilesToArchive(oldReserve.id,newId)
             mRepository.deleteReserve(oldReserve)
             mRepository.updateRoomStatus(newReserve.roomId)
             withContext(Dispatchers.Main) {

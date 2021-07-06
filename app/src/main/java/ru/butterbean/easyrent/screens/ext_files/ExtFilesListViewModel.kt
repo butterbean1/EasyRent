@@ -8,10 +8,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.butterbean.easyrent.database.repository.ReserveExtFileRepository
 import ru.butterbean.easyrent.models.ReserveExtFileData
-import ru.butterbean.easyrent.utils.APP_DATABASE
 
 class ExtFilesListViewModel(application: Application): AndroidViewModel(application) {
-    private val mRepository = ReserveExtFileRepository(APP_DATABASE.reserveExtFileDao())
+    private val mRepository = ReserveExtFileRepository()
 
     fun getExtFilesByReserveId(reserveId: Long) = mRepository.getExtFilesByReserveId(reserveId)
 
