@@ -43,8 +43,14 @@ class ExtFilesListAdapter(private val lo: LifecycleOwner) : RecyclerView.Adapter
 
     override fun onBindViewHolder(holder: ExtFilesListHolder, position: Int) {
         val currentItem = listExtFiles[position]
-        holder.extFileName.text = currentItem.fileName
+        holder.extFileName.text = trimFileName(currentItem.fileName)
         holder.extFileImage.setExtFileImage(currentItem.getParamsBundle())
+    }
+
+    private fun trimFileName(fileName: String): String {
+        val maxLength = 100
+        if (fileName.length > maxLength) return fileName.substring(0,maxLength-8) + ".." + fileName.dropLast(5)
+            else return fileName
     }
 
     override fun getItemCount(): Int = listExtFiles.size
