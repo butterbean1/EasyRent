@@ -15,10 +15,8 @@ import android.telephony.PhoneNumberFormattingTextWatcher
 import android.text.Editable
 import android.text.InputFilter
 import android.view.*
-import android.webkit.MimeTypeMap
 import android.widget.ImageButton
 import androidx.core.content.FileProvider
-import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
@@ -27,12 +25,13 @@ import androidx.preference.PreferenceManager
 import ru.butterbean.easyrent.R
 import ru.butterbean.easyrent.databinding.FragmentEditReserveBinding
 import ru.butterbean.easyrent.models.*
+import ru.butterbean.easyrent.screens.ext_files.ExtFilesExtension
 import ru.butterbean.easyrent.utils.*
 import java.io.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-class EditReserveFragment : Fragment() {
+class EditReserveFragment : Fragment(), ExtFilesExtension {
 
     private var mIsNew = false
     private var mImmediatelyReplaceToArchive = false
@@ -74,8 +73,7 @@ class EditReserveFragment : Fragment() {
         if (mListCurrentExtFiles.count() > 0) {
             try {
                 mListCurrentExtFiles.forEach {
-                    val file = File(APP_ACTIVITY.filesDir.path + "/" + it.dirName)
-                    file.deleteRecursively()
+                    deleteLocalFile(it.dirName)
                 }
                 mListCurrentExtFiles.clear()
             } catch (e: Exception) {
@@ -253,7 +251,7 @@ class EditReserveFragment : Fragment() {
     }
 
     private fun getFilenameFromUri(uri: Uri): Bundle {
-        var result = Bundle()
+        val result = Bundle()
         val cursor = APP_ACTIVITY.contentResolver.query(uri, null, null, null, null, null)
         try {
             if (cursor != null && cursor.moveToFirst()) {
@@ -692,7 +690,9 @@ class EditReserveFragment : Fragment() {
             }
         }
         mBinding.editReserveBtnShowSingleFile.setOnLongClickListener{
-
+            getSingleExtFileParams{
+                showDeleteExtFileDialog(it.getSerializable("extFile") as ReserveExtFileData,this)
+            }
             true
         }
         mBinding.editReserveBtnShowFiles.setOnClickListener {
@@ -739,6 +739,12 @@ class EditReserveFragment : Fragment() {
             mBinding.editReserveBtnPaymentFull.visibility = View.INVISIBLE
         } else {
             mBinding.editReserveBtnPaymentFull.visibility = View.VISIBLE
+        }
+    }
+
+    override fun deleteReserveExtFile(extFile: ReserveExtFileData) {
+        mViewModel.deleteExtFile(extFile){
+            changeExtFilesButtonsVisibility()
         }
     }
 }

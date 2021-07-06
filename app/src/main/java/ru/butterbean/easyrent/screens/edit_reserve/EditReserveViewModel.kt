@@ -113,6 +113,16 @@ class EditReserveViewModel(application: Application) : AndroidViewModel(applicat
         }
     }
 
+    fun deleteExtFile(extFile: ReserveExtFileData, onSuccess: () -> Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            mReserveExtFileRepository.deleteReserveExtFile(extFile)
+            withContext(Dispatchers.Main) {
+                onSuccess()
+            }
+        }
+    }
+
+
     fun addReserveArchiveExtFiles(extFiles: List<ReserveArchiveExtFileData>) {
         viewModelScope.launch(Dispatchers.IO) {
             mReserveArchiveExtFileRepository.addReserveExtFiles(extFiles)

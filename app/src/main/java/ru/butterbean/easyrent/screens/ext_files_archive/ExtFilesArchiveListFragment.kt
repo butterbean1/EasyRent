@@ -1,4 +1,4 @@
-package ru.butterbean.easyrent.screens.ext_files
+package ru.butterbean.easyrent.screens.ext_files_archive
 
 import android.os.Bundle
 import android.view.*
@@ -6,25 +6,22 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import ru.butterbean.easyrent.databinding.FragmentExtFilesListBinding
+import ru.butterbean.easyrent.models.ReserveArchiveExtFileData
 import ru.butterbean.easyrent.models.ReserveData
-import ru.butterbean.easyrent.models.ReserveExtFileData
-import ru.butterbean.easyrent.utils.*
+import ru.butterbean.easyrent.utils.APP_ACTIVITY
+import ru.butterbean.easyrent.utils.startAnyApp
 
-class ExtFilesListFragment : Fragment(), ExtFilesExtension {
+class ExtFilesArchiveListFragment : Fragment() {
 
-    private lateinit var mViewModel: ExtFilesListViewModel
+    private lateinit var mViewModel: ExtFilesArchiveListViewModel
     private lateinit var mRecyclerView: RecyclerView
     private lateinit var mCurrentReserve: ReserveData
     private var _binding: FragmentExtFilesListBinding? = null
     private val mBinding get() = _binding!!
 
     companion object {
-        fun clickOnListItem(extFile: ReserveExtFileData) {
+        fun clickOnListItem(extFile: ReserveArchiveExtFileData) {
             startAnyApp(extFile.getParamsBundle())
-        }
-
-        fun longClickOnListItem(extFile: ReserveExtFileData,f:ExtFilesListFragment) {
-            showDeleteExtFileDialog(extFile,f)
         }
 
     }
@@ -61,20 +58,17 @@ class ExtFilesListFragment : Fragment(), ExtFilesExtension {
         setHasOptionsMenu(true)
 
         //Recycler view
-        val adapter = ExtFilesListAdapter(this)
+        val adapter = ExtFilesArchiveListAdapter()
         mRecyclerView = mBinding.extFilesRecyclerView
         mRecyclerView.adapter = adapter
 
         // ViewModel
-        mViewModel = ViewModelProvider(APP_ACTIVITY).get(ExtFilesListViewModel::class.java)
+        mViewModel = ViewModelProvider(APP_ACTIVITY).get(ExtFilesArchiveListViewModel::class.java)
         mViewModel.getExtFilesByReserveId(mCurrentReserve.id).observe(viewLifecycleOwner){
             adapter.setData(it.asReversed())
         }
 
     }
 
-    override fun deleteReserveExtFile(extFile: ReserveExtFileData) {
-        mViewModel.deleteExtFile(extFile){}
-    }
 
 }

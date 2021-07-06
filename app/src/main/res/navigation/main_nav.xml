@@ -127,8 +127,8 @@
             app:launchSingleTop="true"
             app:popUpTo="@id/roomFragment" />
         <action
-            android:id="@+id/action_archiveReserveFragment_to_extFilesListFragment"
-            app:destination="@id/extFilesListFragment"
+            android:id="@+id/action_archiveReserveFragment_to_extFilesArchiveListFragment"
+            app:destination="@id/extFilesArchiveListFragment"
             app:launchSingleTop="true"
             app:popUpTo="@id/archiveReserveFragment" />
     </fragment>
@@ -137,4 +137,8 @@
         android:name="ru.butterbean.easyrent.screens.ext_files.ExtFilesListFragment"
         android:label="fragment_ext_files_list"
         tools:layout="@layout/fragment_ext_files_list" />
+    <fragment
+        android:id="@+id/extFilesArchiveListFragment"
+        android:name="ru.butterbean.easyrent.screens.ext_files_archive.ExtFilesArchiveListFragment"
+        android:label="ExtFilesArchiveListFragment" />
 </navigation>

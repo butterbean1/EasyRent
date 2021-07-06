@@ -41,6 +41,7 @@ data class ReserveExtFileData(
         res.putString("fileName", fileName)
         res.putString("fileType", fileType)
         res.putBoolean("isImage", isImage)
+        res.putSerializable("extFile", this)
         return res
     }
 }

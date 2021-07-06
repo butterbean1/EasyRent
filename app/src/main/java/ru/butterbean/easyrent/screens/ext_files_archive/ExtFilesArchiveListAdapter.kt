@@ -1,16 +1,17 @@
-package ru.butterbean.easyrent.screens.ext_files
+package ru.butterbean.easyrent.screens.ext_files_archive
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.butterbean.easyrent.databinding.ExtFileItemBinding
+import ru.butterbean.easyrent.models.ReserveArchiveExtFileData
 import ru.butterbean.easyrent.models.ReserveExtFileData
 import ru.butterbean.easyrent.utils.setExtFileImage
 import ru.butterbean.easyrent.utils.trimFileName
 
-class ExtFilesListAdapter(private val f:ExtFilesListFragment) : RecyclerView.Adapter<ExtFilesListAdapter.ExtFilesListHolder>() {
+class ExtFilesArchiveListAdapter() : RecyclerView.Adapter<ExtFilesArchiveListAdapter.ExtFilesListHolder>() {
 
-    private var listExtFiles = emptyList<ReserveExtFileData>()
+    private var listExtFiles = emptyList<ReserveArchiveExtFileData>()
 
     class ExtFilesListHolder(itemBinding: ExtFileItemBinding): RecyclerView.ViewHolder(itemBinding.root){
         val extFileName = itemBinding.extFileName
@@ -19,11 +20,7 @@ class ExtFilesListAdapter(private val f:ExtFilesListFragment) : RecyclerView.Ada
 
     override fun onViewAttachedToWindow(holder: ExtFilesListHolder) {
         holder.itemView.setOnClickListener {
-            ExtFilesListFragment.clickOnListItem(listExtFiles[holder.adapterPosition])
-        }
-        holder.itemView.setOnLongClickListener {
-            ExtFilesListFragment.longClickOnListItem(listExtFiles[holder.adapterPosition],f)
-            true
+            ExtFilesArchiveListFragment.clickOnListItem(listExtFiles[holder.adapterPosition])
         }
         super.onViewAttachedToWindow(holder)
     }
@@ -49,7 +46,7 @@ class ExtFilesListAdapter(private val f:ExtFilesListFragment) : RecyclerView.Ada
 
     override fun getItemCount(): Int = listExtFiles.size
 
-    fun setData(extFiles:List<ReserveExtFileData>){
+    fun setData(extFiles:List<ReserveArchiveExtFileData>){
         listExtFiles = extFiles
         notifyDataSetChanged()
 
