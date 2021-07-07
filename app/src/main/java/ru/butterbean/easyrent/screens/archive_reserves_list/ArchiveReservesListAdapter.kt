@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import ru.butterbean.easyrent.R
 import ru.butterbean.easyrent.databinding.ReserveItemBinding
@@ -23,6 +24,7 @@ class ArchiveReservesListAdapter(private val f: ArchiveReservesListFragment) :
         RecyclerView.ViewHolder(itemBinding.root) {
         val guestName: TextView = itemBinding.reservesListGuestName
         val guestsCount: TextView = itemBinding.reservesListGuestsCount
+        val sumsGroup = itemBinding.reservesListGroupSums
         val sum: TextView = itemBinding.reservesListSum
         val sumCheck: ImageView = itemBinding.reservesListSumCheck
         val dateCheckIn: TextView = itemBinding.reservesListDateCheckIn
@@ -31,6 +33,8 @@ class ArchiveReservesListAdapter(private val f: ArchiveReservesListFragment) :
         val wasCheckOut: ImageView = itemBinding.reservesListWasCheckOut
         val markItem: ImageView = itemBinding.reservesListMarkItem
         val nonMarkItem: ImageView = itemBinding.reservesListNonMarkItem
+        val attachmentGroup: ConstraintLayout = itemBinding.reservesListAttachment
+        val attachmentText: TextView = itemBinding.reservesListAttachmentText
     }
 
     override fun onViewAttachedToWindow(holder: ArchiveReservesListHolder) {
@@ -67,15 +71,23 @@ class ArchiveReservesListAdapter(private val f: ArchiveReservesListFragment) :
         val currentItem = mList[position]
         holder.guestName.text = currentItem.guestName
         holder.guestsCount.text = currentItem.guestsCount.toString()
-        holder.sum.text = currentItem.sum.toString()
-        holder.sumCheck.visibility =
-            if (currentItem.sum > 0 && currentItem.sum <= currentItem.payment) View.VISIBLE else View.INVISIBLE
+        if (currentItem.sum == 0) holder.sumsGroup.visibility = View.GONE
+        else {
+            holder.sumsGroup.visibility = View.VISIBLE
+            holder.sum.text = currentItem.sum.toString()
+            holder.sumCheck.visibility = if (currentItem.sum in 1..currentItem.payment) View.VISIBLE else View.GONE
+        }
         holder.dateCheckIn.text = currentItem.dateCheckIn.toDateTimeFormat()
         holder.dateCheckOut.text = currentItem.dateCheckOut.toDateTimeFormat()
         holder.wasCheckIn.visibility = if (currentItem.wasCheckIn) View.VISIBLE else View.GONE
         holder.itemView.background =
-            AppCompatResources.getDrawable(APP_ACTIVITY, R.drawable.ripple_effect_grey)
+            AppCompatResources.getDrawable(APP_ACTIVITY, R.drawable.ripple_effect_green)
         setMarkItem(currentItem, holder)
+        if (currentItem.extFilesCount == 0) holder.attachmentGroup.visibility = View.GONE
+        else {
+            holder.attachmentGroup.visibility = View.VISIBLE
+            holder.attachmentText.text = currentItem.extFilesCount.toString()
+        }
     }
 
     private fun changeMarkItem(

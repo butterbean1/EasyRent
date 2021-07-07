@@ -17,6 +17,7 @@ import ru.butterbean.easyrent.screens.room.item_models.ArchiveReserveModel
 import ru.butterbean.easyrent.screens.room.item_models.CommonReserveModel
 import ru.butterbean.easyrent.utils.APP_DATABASE
 import ru.butterbean.easyrent.utils.AUTO_CHECK_IN_CHECK_OUT
+import ru.butterbean.easyrent.utils.deleteLocalFiles
 
 class RoomViewModel(application: Application) : AndroidViewModel(application) {
     private val mRepository = ReserveRepository(APP_DATABASE.reserveDao())
@@ -26,6 +27,7 @@ class RoomViewModel(application: Application) : AndroidViewModel(application) {
 
     fun deleteReserve(reserve: ReserveData, onSuccess: () -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
+            deleteLocalFiles(mReserveExtFileRepository.getExtFileDirsByReserveId(reserve.id))
             mRepository.deleteReserve(reserve)
             mRepository.updateRoomStatus(reserve.roomId)
             withContext(Dispatchers.Main) {

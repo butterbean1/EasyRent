@@ -7,18 +7,24 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import ru.butterbean.easyrent.database.repository.ReserveArchiveExtFileRepository
 import ru.butterbean.easyrent.database.repository.ReserveArchiveRepository
 import ru.butterbean.easyrent.database.repository.RoomRepository
 import ru.butterbean.easyrent.models.ReserveArchiveData
 import ru.butterbean.easyrent.models.RoomData
 import ru.butterbean.easyrent.utils.APP_DATABASE
+import ru.butterbean.easyrent.utils.deleteLocalFiles
 
 class ArchiveReservesListViewModel(application: Application) : AndroidViewModel(application) {
     private val mRepository = ReserveArchiveRepository()
     private val mRoomRepository = RoomRepository(APP_DATABASE.roomDao())
+    private val mReserveArchiveExtFileRepository = ReserveArchiveExtFileRepository(APP_DATABASE.reserveArchiveExtFilesDao())
 
     fun deleteArchiveReserves(reserves: List<ReserveArchiveData>, onSuccess: () -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
+            reserves.forEach {
+                deleteLocalFiles(mReserveArchiveExtFileRepository.getExtFileDirsByReserveId(it.id))
+            }
             mRepository.deleteArchiveReserves(reserves)
             withContext(Dispatchers.Main) {
                 onSuccess()

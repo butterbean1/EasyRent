@@ -14,11 +14,12 @@ class ExtFilesListViewModel(application: Application): AndroidViewModel(applicat
 
     fun getExtFilesByReserveId(reserveId: Long) = mRepository.getExtFilesByReserveId(reserveId)
 
-    fun deleteExtFile(extFile: ReserveExtFileData, onSuccess: () -> Unit) {
+    fun deleteExtFile(extFile: ReserveExtFileData, onSuccess: (Int) -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             mRepository.deleteReserveExtFile(extFile)
+            val extFilesCount = mRepository.getExtFilesCount(extFile.reserveId)
             withContext(Dispatchers.Main) {
-                onSuccess()
+                onSuccess(extFilesCount)
             }
         }
     }

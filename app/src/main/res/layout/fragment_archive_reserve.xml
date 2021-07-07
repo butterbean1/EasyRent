@@ -1,25 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/layout_edit"
-    >
+    style="@style/layout_edit">
 
-    <TextView
-        android:id="@+id/edit_reserve_room_name"
-        style="@style/large_text"
-        android:text="@string/def_room_name"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/edit_reserve_group_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-     <androidx.constraintlayout.widget.ConstraintLayout
+        <TextView
+            android:id="@+id/edit_reserve_room_name"
+            style="@style/large_text"
+            android:layout_width="0dp"
+            android:text="@string/def_room_name"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/edit_reserve_btn_show_single_file"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/edit_reserve_btn_show_single_file"
+            android:layout_width="45dp"
+            android:layout_height="35dp"
+            android:background="@color/white"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/edit_reserve_btn_show_files"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/edit_reserve_btn_show_files"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_margin="@dimen/app_small_margin"
+            android:background="@drawable/ripple_effect_grey"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/edit_reserve_btn_show_files_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_attach_file"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/black" />
+
+            <TextView
+                android:id="@+id/edit_reserve_btn_show_files_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:text="2"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/edit_reserve_btn_show_files_image"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/edit_reserve_group_guests"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_reserve_room_name">
+        app:layout_constraintTop_toBottomOf="@+id/edit_reserve_group_header">
 
         <TextView
             android:id="@+id/edit_reserve_guests_header"
@@ -38,104 +93,102 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/edit_reserve_guests_header" />
 
-         <androidx.constraintlayout.widget.ConstraintLayout
-             android:id="@+id/edit_reserve_group_guests_name_count"
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             android:layout_marginTop="@dimen/app_margin"
-             app:layout_constraintStart_toStartOf="parent"
-             app:layout_constraintEnd_toEndOf="parent"
-             app:layout_constraintTop_toBottomOf="@id/edit_reserve_guests_separator">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/edit_reserve_group_guests_name_count"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/app_margin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/edit_reserve_guests_separator">
 
-             <TextView
-                 android:id="@+id/edit_reserve_guest"
-                 android:layout_width="0dp"
-                 android:layout_height="wrap_content"
-                 android:textColor="@color/black"
-                 android:textSize="@dimen/disabled_edit_text_size"
-                 android:text="@string/def_guest_name"
-                 android:layout_marginStart="@dimen/app_margin"
-                 android:layout_marginEnd="@dimen/app_small_margin"
-                 app:layout_constraintStart_toStartOf="parent"
-                 app:layout_constraintEnd_toStartOf="@+id/edit_reserve_header_guests_count"
-                 app:layout_constraintTop_toTopOf="parent"/>
+            <TextView
+                android:id="@+id/edit_reserve_guest"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/app_margin"
+                android:layout_marginEnd="@dimen/app_small_margin"
+                android:text="@string/def_guest_name"
+                android:textColor="@color/black"
+                android:textSize="@dimen/disabled_edit_text_size"
+                app:layout_constraintEnd_toStartOf="@+id/edit_reserve_header_guests_count"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-             <TextView
-                 android:id="@+id/edit_reserve_header_guests_count"
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:layout_marginEnd="@dimen/app_margin"
-                 android:text="@string/guests_count"
-                 app:layout_constraintEnd_toStartOf="@id/edit_reserve_guests_count"
-                 app:layout_constraintBottom_toBottomOf="parent"
-                 app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/edit_reserve_header_guests_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/app_margin"
+                android:text="@string/guests_count"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/edit_reserve_guests_count"
+                app:layout_constraintTop_toTopOf="parent" />
 
-             <TextView
-                 android:id="@+id/edit_reserve_guests_count"
-                 android:layout_width="30dp"
-                 android:layout_height="wrap_content"
-                 android:layout_marginEnd="@dimen/app_margin"
-                 android:text="1"
-                 android:textSize="@dimen/disabled_edit_text_size"
-                 android:textColor="@color/black"
-                 app:layout_constraintEnd_toEndOf="parent"
-                 app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/edit_reserve_guests_count"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/app_margin"
+                android:text="1"
+                android:textColor="@color/black"
+                android:textSize="@dimen/disabled_edit_text_size"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-         </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-         <androidx.constraintlayout.widget.ConstraintLayout
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             android:layout_marginTop="@dimen/app_margin"
-             app:layout_constraintTop_toBottomOf="@id/edit_reserve_group_guests_name_count"
-             app:layout_constraintStart_toStartOf="parent"
-             app:layout_constraintEnd_toEndOf="parent">
-             <TextView
-                 android:id="@+id/edit_reserve_phone_number"
-                 android:layout_width="190dp"
-                 android:layout_height="wrap_content"
-                 android:textColor="@color/black"
-                 android:textSize="@dimen/disabled_edit_text_size"
-                 android:text="@string/def_phone_number"
-                 android:layout_marginStart="@dimen/app_margin"
-                 app:layout_constraintStart_toStartOf="parent"
-                 app:layout_constraintBottom_toBottomOf="parent"
-                 app:layout_constraintTop_toTopOf="parent"/>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/app_margin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/edit_reserve_group_guests_name_count">
 
-             <ImageButton
-                 android:id="@+id/edit_reserve_btn_phone_call"
-                 android:layout_width="50dp"
-                 android:layout_height="wrap_content"
-                 android:src="@drawable/ic_phone_call"
-                 app:layout_constraintStart_toEndOf="@+id/edit_reserve_phone_number"
-                 app:layout_constraintTop_toTopOf="parent"
-                 app:layout_constraintBottom_toBottomOf="parent"
-                 />
+            <TextView
+                android:id="@+id/edit_reserve_phone_number"
+                android:layout_width="190dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/app_margin"
+                android:text="@string/def_phone_number"
+                android:textColor="@color/black"
+                android:textSize="@dimen/disabled_edit_text_size"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-             <ImageButton
-                 android:id="@+id/edit_reserve_btn_phone_whatsapp"
-                 android:layout_width="50dp"
-                 android:layout_height="wrap_content"
-                 android:src="@drawable/ic_whatsapp"
-                 app:layout_constraintStart_toEndOf="@+id/edit_reserve_btn_phone_call"
-                 app:layout_constraintTop_toTopOf="parent"
-                 app:layout_constraintBottom_toBottomOf="parent"
-                 />
+            <ImageButton
+                android:id="@+id/edit_reserve_btn_phone_call"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_phone_call"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/edit_reserve_phone_number"
+                app:layout_constraintTop_toTopOf="parent" />
 
-             <ImageButton
-                 android:id="@+id/edit_reserve_btn_phone_sms"
-                 android:layout_width="50dp"
-                 android:layout_height="wrap_content"
-                 android:src="@drawable/ic_sms"
-                 app:layout_constraintStart_toEndOf="@+id/edit_reserve_btn_phone_whatsapp"
-                 app:layout_constraintTop_toTopOf="parent"
-                 app:layout_constraintBottom_toBottomOf="parent"
-                 />
+            <ImageButton
+                android:id="@+id/edit_reserve_btn_phone_whatsapp"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_whatsapp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/edit_reserve_btn_phone_call"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/edit_reserve_btn_phone_sms"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_sms"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/edit_reserve_btn_phone_whatsapp"
+                app:layout_constraintTop_toTopOf="parent" />
 
 
-         </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-     </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/edit_reserve_group_chek_in"
@@ -182,10 +235,10 @@
             android:id="@+id/edit_reserve_was_check_in"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/app_margin"
             android:layout_marginStart="@dimen/app_margin"
-            android:text="@string/was_check_in"
+            android:layout_marginTop="@dimen/app_margin"
             android:enabled="false"
+            android:text="@string/was_check_in"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/edit_reserve_time_check_in" />
 
@@ -237,10 +290,10 @@
             android:id="@+id/edit_reserve_was_check_out"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/app_margin"
             android:layout_marginStart="@dimen/app_margin"
-            android:text="@string/was_check_out"
+            android:layout_marginTop="@dimen/app_margin"
             android:enabled="false"
+            android:text="@string/was_check_out"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/edit_reserve_time_check_out" />
 
@@ -254,102 +307,105 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/edit_reserve_group_chek_out">
-    <TextView
-        android:id="@+id/edit_sums_header"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/app_margin"
-        android:text="Оплата"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/edit_reserve_group_sum"
-        android:layout_width="match_parent"
-        android:layout_marginTop="@dimen/app_margin"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edit_sums_header">
-
-       <TextView
-            android:id="@+id/edit_reserve_header_sum"
-            android:layout_width="150dp"
+        <TextView
+            android:id="@+id/edit_sums_header"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/app_margin"
-            android:text="@string/sum"
-            android:textColor="@color/black"
-           app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_margin="@dimen/app_margin"
+            android:text="Оплата"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/edit_reserve_sum"
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/edit_reserve_group_sum"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:text="@string/def_sum"
-            android:textSize="@dimen/disabled_edit_text_size"
-            android:textColor="@color/black"
-            app:layout_constraintStart_toEndOf="@+id/edit_reserve_header_sum"
-            app:layout_constraintTop_toTopOf="parent" />
-        <TextView
-            android:id="@+id/edit_reserve_sum_currency_symbol"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/app_small_margin"
-            android:text="@string/def_currency_symbol"
-            android:textColor="@color/black"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/edit_reserve_sum"
-            app:layout_constraintTop_toTopOf="parent" />
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/edit_reserve_group_payment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edit_reserve_group_sum">
-
-        <TextView
-            android:id="@+id/edit_reserve_header_payment"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/app_margin"
-            android:text="@string/payment"
-            android:textColor="@color/black"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="@dimen/app_margin"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/edit_sums_header">
 
-        <TextView
-            android:id="@+id/edit_reserve_payment"
-            android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/edit_reserve_header_sum"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/app_margin"
+                android:text="@string/sum"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/edit_reserve_sum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="@string/def_sum"
+                android:textColor="@color/black"
+                android:textSize="@dimen/disabled_edit_text_size"
+                app:layout_constraintStart_toEndOf="@+id/edit_reserve_header_sum"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/edit_reserve_sum_currency_symbol"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/app_small_margin"
+                android:text="@string/def_currency_symbol"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/edit_reserve_sum"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/edit_reserve_group_payment"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:textColor="@color/black"
-            android:textSize="@dimen/disabled_edit_text_size"
-            android:text="@string/def_sum"
-            app:layout_constraintStart_toEndOf="@+id/edit_reserve_header_payment"
-            app:layout_constraintTop_toTopOf="parent" />
-        <TextView
-            android:id="@+id/edit_reserve_payment_currency_symbol"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/app_small_margin"
-            android:text="@string/def_currency_symbol"
-            android:textColor="@color/black"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/edit_reserve_payment"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_marginTop="15dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/edit_reserve_group_sum">
+
+            <TextView
+                android:id="@+id/edit_reserve_header_payment"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/app_margin"
+                android:text="@string/payment"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/edit_reserve_payment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="@string/def_sum"
+                android:textColor="@color/black"
+                android:textSize="@dimen/disabled_edit_text_size"
+                app:layout_constraintStart_toEndOf="@+id/edit_reserve_header_payment"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/edit_reserve_payment_currency_symbol"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/app_small_margin"
+                android:text="@string/def_currency_symbol"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/edit_reserve_payment"
+                app:layout_constraintTop_toTopOf="parent" />
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

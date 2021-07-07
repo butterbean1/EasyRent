@@ -17,7 +17,13 @@ class ReserveArchiveExtFileRepository(private val reserveArchiveExtFilesDao: Res
         return reserveArchiveExtFilesDao.deleteExtFiles(reserveExtFiles)
     }
 
+    fun getExtFileDirsByReserveId(reserveId: Long): List<String> =
+        reserveArchiveExtFilesDao.getExtFileDirsByReserveId(reserveId)
+
     fun getExtFilesByReserveId(reserveId: Long): LiveData<List<ReserveArchiveExtFileData>> = reserveArchiveExtFilesDao.getExtFilesByReserveId(reserveId)
+
+    fun getSingleExtFileByReserveId(reserveId: Long): ReserveArchiveExtFileData =
+        reserveArchiveExtFilesDao.getSingleExtFileByReserveId(reserveId)
 
     fun getExtFilesCount(reserveId: Long): Int = reserveArchiveExtFilesDao.getExtFilesCount(reserveId)
 

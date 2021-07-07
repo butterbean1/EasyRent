@@ -34,6 +34,9 @@ interface ReserveExtFilesDao {
     @Query("SELECT * FROM  $TABLE_RESERVES_EXT_FILES_NAME WHERE reserveId= :reserveId ORDER BY dirName")
     fun getExtFilesByReserveIdNow(reserveId: Long): List<ReserveExtFileData>
 
+    @Query("SELECT dirName FROM  $TABLE_RESERVES_EXT_FILES_NAME WHERE reserveId= :reserveId ORDER BY dirName")
+    fun getExtFileDirsByReserveId(reserveId: Long): List<String>
+
     @Query("SELECT * FROM  $TABLE_RESERVES_EXT_FILES_NAME WHERE reserveId= :reserveId LIMIT 1")
     fun getSingleExtFileByReserveId(reserveId: Long): ReserveExtFileData
 

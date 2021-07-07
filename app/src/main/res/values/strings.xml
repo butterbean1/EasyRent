@@ -13,7 +13,7 @@
     <string name="save">Сохранить</string>
     <string name="delete">Удалить</string>
     <string name="empty_address">Адрес не заполнен</string>
-    <string name="def_date_representation">22 сентября</string>
+    <string name="def_date_representation">22 сентября, 12:00</string>
     <string name="def_time_representation" translatable="false">12:00</string>
     <string name="check_in">Заселение</string>
     <string name="check_out">Выселение</string>
@@ -89,10 +89,11 @@
     <string name="camera_capture_photo">Фото с камеры</string>
     <string name="gallery_image">Фото из галереи</string>
     <string name="local_file">Файл с диска</string>
-    <string name="def_files_count" translatable="false">(99)</string>
+    <string name="def_files_count" translatable="false">99</string>
     <string name="guests">Постояльцы</string>
     <string name="picture">Изображение</string>
     <string name="def_ext_file_name" translatable="false">IMG_202105262598_1122156.jpg</string>
+    <string name="delete_file">Удалить файл</string>
 
 
 </resources>

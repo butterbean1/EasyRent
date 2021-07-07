@@ -29,5 +29,6 @@ data class ReserveArchiveData(
     val dateCheckOut: String = "",
     val wasCheckIn: Boolean = false,
     val wasCheckOut: Boolean = false,
-    val phoneNumber: String = ""
+    val phoneNumber: String = "",
+    var extFilesCount: Int = 0
 ) : Serializable

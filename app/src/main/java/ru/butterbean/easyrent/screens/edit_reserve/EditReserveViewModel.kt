@@ -9,6 +9,7 @@ import kotlinx.coroutines.withContext
 import ru.butterbean.easyrent.database.repository.*
 import ru.butterbean.easyrent.models.*
 import ru.butterbean.easyrent.utils.APP_DATABASE
+import ru.butterbean.easyrent.utils.deleteLocalFiles
 
 class EditReserveViewModel(application: Application) : AndroidViewModel(application) {
     private val mRepository = ReserveRepository(APP_DATABASE.reserveDao())
@@ -54,6 +55,8 @@ class EditReserveViewModel(application: Application) : AndroidViewModel(applicat
 
     fun deleteReserve(reserve: ReserveData, onSuccess: () -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
+            // удалим с диска все файлы по этому резерву
+            deleteLocalFiles(mReserveExtFileRepository.getExtFileDirsByReserveId(reserve.id))
             mRepository.deleteReserve(reserve)
             mRepository.updateRoomStatus(reserve.roomId)
             withContext(Dispatchers.Main) {
@@ -99,11 +102,12 @@ class EditReserveViewModel(application: Application) : AndroidViewModel(applicat
         }
     }
 
-    fun addReserveExtFile(extFile: ReserveExtFileData, onSuccess: () -> Unit) {
+    fun addReserveExtFile(extFile: ReserveExtFileData, onSuccess: (Int) -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             mReserveExtFileRepository.addReserveExtFile(extFile)
+            val extFilesCount = mReserveExtFileRepository.getExtFilesCount(extFile.reserveId)
             withContext(Dispatchers.Main) {
-                onSuccess()
+                onSuccess(extFilesCount)
             }
         }
     }
@@ -114,11 +118,12 @@ class EditReserveViewModel(application: Application) : AndroidViewModel(applicat
         }
     }
 
-    fun deleteExtFile(extFile: ReserveExtFileData, onSuccess: () -> Unit) {
+    fun deleteExtFile(extFile: ReserveExtFileData, onSuccess: (Int) -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             mReserveExtFileRepository.deleteReserveExtFile(extFile)
+            val extFilesCount = mReserveExtFileRepository.getExtFilesCount(extFile.reserveId)
             withContext(Dispatchers.Main) {
-                onSuccess()
+                onSuccess(extFilesCount)
             }
         }
     }

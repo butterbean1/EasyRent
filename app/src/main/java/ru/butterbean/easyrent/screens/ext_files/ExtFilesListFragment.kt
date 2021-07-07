@@ -74,7 +74,11 @@ class ExtFilesListFragment : Fragment(), ExtFilesExtension {
     }
 
     override fun deleteReserveExtFile(extFile: ReserveExtFileData) {
-        mViewModel.deleteExtFile(extFile){}
+        mViewModel.deleteExtFile(extFile){extFilesCount ->
+            mCurrentReserve.extFilesCount = extFilesCount
+        }
     }
+
+    override fun getSingleExtFileParams(f: (Bundle) -> Unit) {}
 
 }

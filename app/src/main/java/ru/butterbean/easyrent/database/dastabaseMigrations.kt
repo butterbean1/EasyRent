@@ -57,5 +57,9 @@ val MIGRATION_3_4 = object : Migration(3, 4) {
                     ") "
         )
         database.execSQL("CREATE INDEX index_${TABLE_RESERVES_ARCHIVE_EXT_FILES_NAME}_reserveId ON $TABLE_RESERVES_ARCHIVE_EXT_FILES_NAME (reserveId)")
+
+        // колонки с количеством прикрепленных файлов в резервах
+        database.execSQL("ALTER TABLE $TABLE_RESERVES_NAME ADD COLUMN extFilesCount INTEGER NOT NULL DEFAULT ''")
+        database.execSQL("ALTER TABLE $TABLE_RESERVES_ARCHIVE_NAME ADD COLUMN extFilesCount INTEGER NOT NULL DEFAULT ''")
     }
 }

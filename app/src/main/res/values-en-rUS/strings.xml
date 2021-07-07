@@ -12,7 +12,7 @@
     <string name="save">Save</string>
     <string name="delete">Delete</string>
     <string name="empty_address">Address is empty</string>
-    <string name="def_date_representation">September 22nd</string>
+    <string name="def_date_representation">September 22nd, 12:00</string>
     <string name="check_in">Check in</string>
     <string name="check_out">Check out</string>
     <string name="check_in_date">Date</string>
@@ -83,4 +83,5 @@
     <string name="local_file">Any file</string>
     <string name="guests">Guests</string>
     <string name="picture">Picture</string>
+    <string name="delete_file">Delete file</string>
 </resources>

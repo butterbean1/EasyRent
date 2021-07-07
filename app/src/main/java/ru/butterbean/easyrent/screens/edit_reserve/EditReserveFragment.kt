@@ -8,14 +8,11 @@ import android.content.Intent
 import android.graphics.*
 import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.provider.MediaStore
-import android.provider.OpenableColumns
 import android.telephony.PhoneNumberFormattingTextWatcher
 import android.text.Editable
 import android.text.InputFilter
 import android.view.*
-import android.widget.ImageButton
 import androidx.core.content.FileProvider
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
@@ -28,7 +25,6 @@ import ru.butterbean.easyrent.models.*
 import ru.butterbean.easyrent.screens.ext_files.ExtFilesExtension
 import ru.butterbean.easyrent.utils.*
 import java.io.*
-import java.text.SimpleDateFormat
 import java.util.*
 
 class EditReserveFragment : Fragment(), ExtFilesExtension {
@@ -69,7 +65,7 @@ class EditReserveFragment : Fragment(), ExtFilesExtension {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        // удалим временные внешние файлы
+        // удалим временные внешние файлы, список не пустой только когда отказались от записи
         if (mListCurrentExtFiles.count() > 0) {
             try {
                 mListCurrentExtFiles.forEach {
@@ -162,21 +158,6 @@ class EditReserveFragment : Fragment(), ExtFilesExtension {
 
     }
 
-    @Throws(IOException::class)
-    private fun createImageFile(): File {
-        // Create an image file name
-        val storageDir = APP_ACTIVITY.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-        return File.createTempFile(
-            "IMG_${getTimeStamp()}_", /* prefix */
-            ".jpg", /* suffix */
-            storageDir /* directory */
-        )
-    }
-
-    private fun getTimeStamp(): String {
-        return SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
-    }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
@@ -203,7 +184,7 @@ class EditReserveFragment : Fragment(), ExtFilesExtension {
                     if (fileSize > MAX_FILE_SIZE_BYTES) {
                         showToast("Слишком большой размер файла! Максимальный размер - $MAX_FILE_SIZE_MEGABYTES Мб.")
                     } else {
-                        val newDirName = getTimeStamp()
+                        val newDirName = getCurrentTimeStamp()
                         val newDir = File(APP_ACTIVITY.filesDir, newDirName)
                         val newFileName = fileAttr.getString("fileName")!!
                         val newFile = File(newDir, newFileName)
@@ -244,31 +225,12 @@ class EditReserveFragment : Fragment(), ExtFilesExtension {
                     extension,
                     extension.isImageExtension()
                 )
-            ) {
-                changeExtFilesButtonsVisibility()
+            ) { extFilesCount ->
+                mCurrentReserve.extFilesCount = extFilesCount
+                mViewModel.updateReserve(mCurrentReserve) {
+                    changeExtFilesButtonsVisibility()
+                }
             }
-        }
-    }
-
-    private fun getFilenameFromUri(uri: Uri): Bundle {
-        val result = Bundle()
-        val cursor = APP_ACTIVITY.contentResolver.query(uri, null, null, null, null, null)
-        try {
-            if (cursor != null && cursor.moveToFirst()) {
-                result.putString(
-                    "fileName",
-                    cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME))
-                )
-                result.putLong(
-                    "fileSize",
-                    cursor.getLong(cursor.getColumnIndex(OpenableColumns.SIZE))
-                )
-            }
-        } catch (e: Exception) {
-            showToast(e.message.toString())
-        } finally {
-            cursor?.close()
-            return result
         }
     }
 
@@ -277,7 +239,9 @@ class EditReserveFragment : Fragment(), ExtFilesExtension {
         builder.setMessage(getString(R.string.finally_reserve_delete_message))
             .setPositiveButton(APP_ACTIVITY.getString(R.string.yes)) { dialog, _ ->
                 dialog.cancel()
-                mViewModel.deleteReserve(mCurrentReserve) { goToRoomFragment() }
+                mViewModel.deleteReserve(mCurrentReserve) {
+                    goToRoomFragment()
+                }
             }
             .setNegativeButton(APP_ACTIVITY.getString(R.string.no)) { dialog, _ ->
                 dialog.cancel()
@@ -332,7 +296,8 @@ class EditReserveFragment : Fragment(), ExtFilesExtension {
                         dateCheckOutText,
                         wasCheckIn || wasCheckOut,
                         wasCheckOut,
-                        phoneNumber
+                        phoneNumber,
+                        if (mIsNew) mListCurrentExtFiles.count() else mCurrentReserve.extFilesCount
                     )
 
                     if (mIsNew) {
@@ -376,7 +341,8 @@ class EditReserveFragment : Fragment(), ExtFilesExtension {
                         dateCheckOutText,
                         wasCheckIn || wasCheckOut,
                         wasCheckOut,
-                        phoneNumber
+                        phoneNumber,
+                        if (mIsNew) mListCurrentExtFiles.count() else mCurrentReserve.extFilesCount
                     )
                     if (mIsNew) {
                         // если новое бронирование - добавляем в базу
@@ -515,23 +481,26 @@ class EditReserveFragment : Fragment(), ExtFilesExtension {
             0 -> {
                 mBinding.editReserveBtnShowFiles.visibility = View.GONE
                 mBinding.editReserveBtnShowSingleFile.visibility = View.GONE
+                mBinding.editReserveBtnAddFileAttachImage.visibility = View.VISIBLE
             }
             1 -> {
                 mBinding.editReserveBtnShowFiles.visibility = View.GONE
                 mBinding.editReserveBtnShowSingleFile.visibility = View.VISIBLE
-                mBinding.editReserveBtnShowSingleFile.setSingleExtFileImage()
+                mBinding.editReserveBtnShowSingleFile.setSingleExtFileImage(this)
                 mBinding.editReserveBtnShowSingleFile.isEnabled = !mIsNew
+                mBinding.editReserveBtnAddFileAttachImage.visibility = View.VISIBLE
             }
             else -> {
                 mBinding.editReserveBtnShowFiles.visibility = View.VISIBLE
                 mBinding.editReserveBtnShowSingleFile.visibility = View.GONE
-                mBinding.editReserveBtnShowFiles.text = "($filesCount)"
+                mBinding.editReserveBtnShowFilesText.text = filesCount.toString()
                 mBinding.editReserveBtnShowFiles.isEnabled = !mIsNew
+                mBinding.editReserveBtnAddFileAttachImage.visibility = View.GONE
             }
         }
     }
 
-    private fun getSingleExtFileParams(f: (Bundle) -> Unit) {
+    override fun getSingleExtFileParams(f: (Bundle) -> Unit) {
 
         if (mIsNew) {
             f(
@@ -546,32 +515,6 @@ class EditReserveFragment : Fragment(), ExtFilesExtension {
             mViewModel.getSingleExtFileByReserveId(mCurrentReserve.id) { extFile ->
                 f(extFile.getParamsBundle())
             }
-        }
-    }
-
-    private fun getSingleExtFileParamsBundle(
-        dirName: String,
-        fileName: String,
-        fileType: String,
-        isImage: Boolean
-    ): Bundle {
-        val res = Bundle()
-        val file = File(
-            APP_ACTIVITY.filesDir.path + "/" + dirName,
-            fileName
-        )
-        res.putString("uriString", Uri.fromFile(file).toString())
-        res.putString("filePath", file.absolutePath)
-        res.putString("fileName", fileName)
-        res.putString("fileType", fileType)
-        res.putBoolean("isImage", isImage)
-        return res
-    }
-
-
-    private fun ImageButton.setSingleExtFileImage() {
-        getSingleExtFileParams { params ->
-            setExtFileImage(params)
         }
     }
 
@@ -729,10 +672,10 @@ class EditReserveFragment : Fragment(), ExtFilesExtension {
         )
     }
 
-    private fun changeCheckGroupColor(date: String, isCheked: Boolean, groupView: View) {
+    private fun changeCheckGroupColor(date: String, isChecked: Boolean, groupView: View) {
         val dateCal = getCalendarFromString(getDateTimeInDatabaseFormat(date, "00:00"))
         val today = getStartOfDay(Calendar.getInstance())
-        if (today.after(dateCal) && !isCheked) groupView.setBackgroundColor(APP_ACTIVITY.getColor(R.color.pink))
+        if (today.after(dateCal) && !isChecked) groupView.setBackgroundColor(APP_ACTIVITY.getColor(R.color.pink))
         else groupView.setBackgroundColor(APP_ACTIVITY.getColor(R.color.white))
     }
 
@@ -745,8 +688,11 @@ class EditReserveFragment : Fragment(), ExtFilesExtension {
     }
 
     override fun deleteReserveExtFile(extFile: ReserveExtFileData) {
-        mViewModel.deleteExtFile(extFile) {
-            changeExtFilesButtonsVisibility()
+        mViewModel.deleteExtFile(extFile) { extFilesCount ->
+            mCurrentReserve.extFilesCount = extFilesCount
+            mViewModel.updateReserve(mCurrentReserve) {
+                changeExtFilesButtonsVisibility()
+            }
         }
     }
 }

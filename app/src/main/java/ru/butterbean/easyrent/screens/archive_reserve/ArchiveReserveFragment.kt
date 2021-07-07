@@ -11,10 +11,12 @@ import androidx.lifecycle.ViewModelProvider
 import ru.butterbean.easyrent.R
 import ru.butterbean.easyrent.databinding.FragmentArchiveReserveBinding
 import ru.butterbean.easyrent.models.ReserveArchiveData
+import ru.butterbean.easyrent.models.ReserveExtFileData
 import ru.butterbean.easyrent.models.RoomData
+import ru.butterbean.easyrent.screens.ext_files.ExtFilesExtension
 import ru.butterbean.easyrent.utils.*
 
-class ArchiveReserveFragment : Fragment() {
+class ArchiveReserveFragment : Fragment(), ExtFilesExtension {
 
     private var _binding: FragmentArchiveReserveBinding? = null
     private val mBinding get() = _binding!!
@@ -47,9 +49,11 @@ class ArchiveReserveFragment : Fragment() {
         return when (item.itemId) {
             android.R.id.home -> APP_ACTIVITY.navController.popBackStack()
             R.id.restore -> {
-                mViewModel.replaceReserveFromArchive(mCurrentReserve) {reserve->
-                    APP_ACTIVITY.navController.navigate(R.id.action_archiveReserveFragment_to_editReserveFragment,
-                        createArgsBundle("reserve",reserve))
+                mViewModel.replaceReserveFromArchive(mCurrentReserve) { reserve ->
+                    APP_ACTIVITY.navController.navigate(
+                        R.id.action_archiveReserveFragment_to_editReserveFragment,
+                        createArgsBundle("reserve", reserve)
+                    )
                 }
                 true
             }
@@ -83,6 +87,29 @@ class ArchiveReserveFragment : Fragment() {
         initialize()
     }
 
+    private fun changeExtFilesButtonsVisibility() {
+        mViewModel.getExtFilesCount(mCurrentReserve.id) { setExtFilesButtonsVisibility(it) }
+    }
+
+    private fun setExtFilesButtonsVisibility(filesCount: Int) {
+        when (filesCount) {
+            0 -> {
+                mBinding.editReserveBtnShowFiles.visibility = View.GONE
+                mBinding.editReserveBtnShowSingleFile.visibility = View.GONE
+            }
+            1 -> {
+                mBinding.editReserveBtnShowFiles.visibility = View.GONE
+                mBinding.editReserveBtnShowSingleFile.visibility = View.VISIBLE
+                mBinding.editReserveBtnShowSingleFile.setSingleExtFileImage(this)
+            }
+            else -> {
+                mBinding.editReserveBtnShowFiles.visibility = View.VISIBLE
+                mBinding.editReserveBtnShowSingleFile.visibility = View.GONE
+                mBinding.editReserveBtnShowFilesText.text = filesCount.toString()
+            }
+        }
+    }
+
     private fun initialize() {
         APP_ACTIVITY.title = "${getString(R.string.archive)}. ${getString(R.string.reserve)}"
         APP_ACTIVITY.supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -96,6 +123,8 @@ class ArchiveReserveFragment : Fragment() {
             mCurrentRoom = room
             mBinding.editReserveRoomName.text = room.name
         }
+
+        changeExtFilesButtonsVisibility()
 
         mBinding.editReserveGuest.text = mCurrentReserve.guestName
         mBinding.editReservePhoneNumber.hint = "+${getCountryZipCode()} XXX XXX-XX-XX"
@@ -146,6 +175,19 @@ class ArchiveReserveFragment : Fragment() {
 
         // добавляем меню
         setHasOptionsMenu(true)
+
+        mBinding.editReserveBtnShowSingleFile.setOnClickListener {
+            getSingleExtFileParams { extFileParams ->
+                startAnyApp(extFileParams)
+            }
+        }
+
+        mBinding.editReserveBtnShowFiles.setOnClickListener {
+            APP_ACTIVITY.navController.navigate(
+                R.id.action_archiveReserveFragment_to_extFilesArchiveListFragment,
+                createArgsBundle("reserve", mCurrentReserve)
+            )
+        }
     }
 
     private fun changePhoneButtonsInEnabled() {
@@ -154,5 +196,14 @@ class ArchiveReserveFragment : Fragment() {
         mBinding.editReserveBtnPhoneWhatsapp.isVisible = vis
         mBinding.editReserveBtnPhoneSms.isVisible = vis
     }
+
+    override fun deleteReserveExtFile(extFile: ReserveExtFileData) {}
+
+    override fun getSingleExtFileParams(f: (Bundle) -> Unit) {
+        mViewModel.getSingleExtFileByReserveId(mCurrentReserve.id) { extFile ->
+            f(extFile.getParamsBundle())
+        }
+    }
+
 
 }

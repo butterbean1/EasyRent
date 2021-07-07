@@ -20,7 +20,8 @@ class SimpleReserveModel(
     val dateCheckOut: String = "",
     val wasCheckIn: Boolean = false,
     val wasCheckOut: Boolean = false,
-    val phoneNumber: String = ""
+    val phoneNumber: String = "",
+    val extFilesCount: Int = 0,
 ) : CommonReserveModel {
 
     override fun getItemViewType(): Int = CommonReserveModel.SIMPLE
@@ -29,15 +30,19 @@ class SimpleReserveModel(
         val holder = viewHolder as ReservesViewHolderFactory.SimpleReserveHolder
         holder.guestName.text = guestName
         holder.guestsCount.text = guestsCount.toString()
-        holder.sum.text = sum.toString()
-        holder.sumCheck.visibility = if (sum in 1..payment) View.VISIBLE else View.INVISIBLE
+        if (sum == 0) holder.sumsGroup.visibility = View.GONE
+        else {
+            holder.sumsGroup.visibility = View.VISIBLE
+            holder.sum.text = sum.toString()
+            holder.sumCheck.visibility = if (sum in 1..payment) View.VISIBLE else View.GONE
+        }
         holder.dateCheckIn.text = dateCheckIn.toDateTimeFormat()
         holder.dateCheckOut.text = dateCheckOut.toDateTimeFormat()
         holder.wasCheckIn.visibility = if (wasCheckIn) View.VISIBLE else View.GONE
         holder.wasCheckOut.visibility = if (wasCheckOut) View.VISIBLE else View.GONE
         if (reserveCompleted(wasCheckOut, sum, payment)) {
             holder.itemView.background =
-                AppCompatResources.getDrawable(APP_ACTIVITY, R.drawable.ripple_effect_grey)
+                AppCompatResources.getDrawable(APP_ACTIVITY, R.drawable.ripple_effect_green)
         } else {
             val today = getStartOfDay(Calendar.getInstance())
             if ((today.after(getStartOfDay(getCalendarFromString(dateCheckIn))) && !wasCheckIn)
@@ -49,7 +54,11 @@ class SimpleReserveModel(
                 holder.itemView.background =
                     AppCompatResources.getDrawable(APP_ACTIVITY, R.drawable.ripple_effect)
             }
-
+        }
+        if (extFilesCount == 0) holder.attachmentGroup.visibility = View.GONE
+        else {
+            holder.attachmentGroup.visibility = View.VISIBLE
+            holder.attachmentText.text = extFilesCount.toString()
         }
     }
 
@@ -65,7 +74,8 @@ class SimpleReserveModel(
             dateCheckOut,
             wasCheckIn,
             wasCheckOut,
-            phoneNumber
+            phoneNumber,
+            extFilesCount
         )
     }
 

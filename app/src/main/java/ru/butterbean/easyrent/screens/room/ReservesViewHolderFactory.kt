@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import ru.butterbean.easyrent.databinding.FreeReserveItemBinding
 import ru.butterbean.easyrent.databinding.LinkArchiveItemBinding
@@ -16,11 +17,14 @@ class ReservesViewHolderFactory {
         val guestName: TextView = itemBinding.reservesListGuestName
         val guestsCount: TextView = itemBinding.reservesListGuestsCount
         val sum: TextView = itemBinding.reservesListSum
+        val sumsGroup = itemBinding.reservesListGroupSums
         val sumCheck: ImageView = itemBinding.reservesListSumCheck
         val dateCheckIn: TextView = itemBinding.reservesListDateCheckIn
         val dateCheckOut: TextView = itemBinding.reservesListDateCheckOut
         val wasCheckIn: ImageView = itemBinding.reservesListWasCheckIn
         val wasCheckOut: ImageView = itemBinding.reservesListWasCheckOut
+        val attachmentGroup: ConstraintLayout = itemBinding.reservesListAttachment
+        val attachmentText: TextView = itemBinding.reservesListAttachmentText
     }
 
     class FreeReserveHolder(itemBinding: FreeReserveItemBinding) :

@@ -47,7 +47,7 @@ class ReserveExtFileRepository {
     }
 
     suspend fun replaceExtFilesFromArchive(reserveArchiveId: Long, reserveId: Long) {
-        val list = reserveArchiveExtFilesDao.getExtFilesByReserveIdNow(reserveId)
+        val list = reserveArchiveExtFilesDao.getExtFilesByReserveIdNow(reserveArchiveId)
         if (list.isNotEmpty()) {
             val filesList = mutableListOf<ReserveExtFileData>()
             list.forEach {
@@ -66,6 +66,9 @@ class ReserveExtFileRepository {
             // делаем только добавление файлов, удалятся они сами при удалении записей основной таблицы по foreign key
         }
     }
+
+    fun getExtFileDirsByReserveId(reserveId: Long): List<String> =
+        reserveExtFilesDao.getExtFileDirsByReserveId(reserveId)
 
     fun getExtFilesByReserveId(reserveId: Long): LiveData<List<ReserveExtFileData>> =
         reserveExtFilesDao.getExtFilesByReserveId(reserveId)

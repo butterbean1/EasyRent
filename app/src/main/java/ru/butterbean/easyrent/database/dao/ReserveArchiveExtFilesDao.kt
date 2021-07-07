@@ -3,6 +3,7 @@ package ru.butterbean.easyrent.database.dao
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import ru.butterbean.easyrent.database.TABLE_RESERVES_ARCHIVE_EXT_FILES_NAME
+import ru.butterbean.easyrent.database.TABLE_RESERVES_EXT_FILES_NAME
 import ru.butterbean.easyrent.models.ReserveArchiveExtFileData
 
 @Dao
@@ -33,5 +34,12 @@ interface ReserveArchiveExtFilesDao {
 
     @Query("SELECT * FROM  $TABLE_RESERVES_ARCHIVE_EXT_FILES_NAME WHERE reserveId= :reserveId ORDER BY dirName")
     fun getExtFilesByReserveIdNow(reserveId: Long): List<ReserveArchiveExtFileData>
+
+    @Query("SELECT dirName FROM  $TABLE_RESERVES_ARCHIVE_EXT_FILES_NAME WHERE reserveId= :reserveId ORDER BY dirName")
+    fun getExtFileDirsByReserveId(reserveId: Long): List<String>
+
+    @Query("SELECT * FROM  $TABLE_RESERVES_ARCHIVE_EXT_FILES_NAME WHERE reserveId= :reserveId LIMIT 1")
+    fun getSingleExtFileByReserveId(reserveId: Long): ReserveArchiveExtFileData
+
 
 }

@@ -136,6 +136,7 @@ class ReserveRepository(private val reserveDao: ReserveDao) {
             reserve.wasCheckIn,
             reserve.wasCheckOut,
             reserve.phoneNumber,
+            reserve.extFilesCount
         )
 
     fun getReservesCount(roomId: Long): LiveData<Int> = reserveDao.getReservesCount(roomId)
