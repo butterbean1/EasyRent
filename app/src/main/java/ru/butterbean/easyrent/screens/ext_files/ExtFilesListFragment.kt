@@ -1,8 +1,11 @@
 package ru.butterbean.easyrent.screens.ext_files
 
+import android.content.Intent
 import android.os.Bundle
-import android.view.*
-import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import ru.butterbean.easyrent.databinding.FragmentExtFilesListBinding
@@ -10,7 +13,7 @@ import ru.butterbean.easyrent.models.ReserveData
 import ru.butterbean.easyrent.models.ReserveExtFileData
 import ru.butterbean.easyrent.utils.*
 
-class ExtFilesListFragment : Fragment(), ExtFilesExtension {
+class ExtFilesListFragment : ExtFilesExtensionFragment() {
 
     private lateinit var mViewModel: ExtFilesListViewModel
     private lateinit var mRecyclerView: RecyclerView
@@ -23,10 +26,9 @@ class ExtFilesListFragment : Fragment(), ExtFilesExtension {
             startAnyApp(extFile.getParamsBundle())
         }
 
-        fun longClickOnListItem(extFile: ReserveExtFileData,f:ExtFilesListFragment) {
-            showDeleteExtFileDialog(extFile,f)
+        fun longClickOnListItem(extFile: ReserveExtFileData, f: ExtFilesListFragment) {
+            showDeleteExtFileDialog(extFile, f)
         }
-
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -51,6 +53,12 @@ class ExtFilesListFragment : Fragment(), ExtFilesExtension {
         mRecyclerView.adapter = null
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        extOnActivityResult(resultCode, requestCode, data, this)
+    }
+
+
     override fun onStart() {
         super.onStart()
         initialization()
@@ -67,18 +75,37 @@ class ExtFilesListFragment : Fragment(), ExtFilesExtension {
 
         // ViewModel
         mViewModel = ViewModelProvider(APP_ACTIVITY).get(ExtFilesListViewModel::class.java)
-        mViewModel.getExtFilesByReserveId(mCurrentReserve.id).observe(viewLifecycleOwner){
+        mViewModel.getExtFilesByReserveId(mCurrentReserve.id).observe(viewLifecycleOwner) {
             adapter.setData(it.asReversed())
+        }
+
+        mBinding.extFilesBtnAdd.setOnClickListener {
+            showAttachFileDialog(this)
         }
 
     }
 
     override fun deleteReserveExtFile(extFile: ReserveExtFileData) {
-        mViewModel.deleteExtFile(extFile){extFilesCount ->
+        mViewModel.deleteExtFile(extFile) { extFilesCount ->
             mCurrentReserve.extFilesCount = extFilesCount
+            mViewModel.updateReserve(mCurrentReserve)
         }
     }
 
-    override fun getSingleExtFileParams(f: (Bundle) -> Unit) {}
+    override fun addExtFileToDatabase(dirName: String, fileName: String, extension: String) {
+        mViewModel.addReserveExtFile(
+            ReserveExtFileData(
+                0,
+                mCurrentReserve.id,
+                dirName,
+                fileName,
+                extension,
+                extension.isImageExtension()
+            )
+        ) { extFilesCount ->
+            mCurrentReserve.extFilesCount = extFilesCount
+            mViewModel.updateReserve(mCurrentReserve)
+        }
+    }
 
 }

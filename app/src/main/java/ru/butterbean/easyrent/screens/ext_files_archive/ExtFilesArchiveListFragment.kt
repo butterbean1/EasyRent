@@ -5,6 +5,7 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
+import ru.butterbean.easyrent.databinding.FragmentExtFilesArchiveListBinding
 import ru.butterbean.easyrent.databinding.FragmentExtFilesListBinding
 import ru.butterbean.easyrent.models.ReserveArchiveData
 import ru.butterbean.easyrent.models.ReserveArchiveExtFileData
@@ -17,7 +18,7 @@ class ExtFilesArchiveListFragment : Fragment() {
     private lateinit var mViewModel: ExtFilesArchiveListViewModel
     private lateinit var mRecyclerView: RecyclerView
     private lateinit var mCurrentReserve: ReserveArchiveData
-    private var _binding: FragmentExtFilesListBinding? = null
+    private var _binding: FragmentExtFilesArchiveListBinding? = null
     private val mBinding get() = _binding!!
 
     companion object {
@@ -38,7 +39,7 @@ class ExtFilesArchiveListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentExtFilesListBinding.inflate(layoutInflater, container, false)
+        _binding = FragmentExtFilesArchiveListBinding.inflate(layoutInflater, container, false)
         mCurrentReserve = arguments?.getSerializable("reserve") as ReserveArchiveData
         return mBinding.root
     }

@@ -9,6 +9,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.butterbean.easyrent.database.repository.ReserveArchiveExtFileRepository
 import ru.butterbean.easyrent.database.repository.ReserveArchiveRepository
+import ru.butterbean.easyrent.database.repository.ReserveExtFileRepository
 import ru.butterbean.easyrent.database.repository.RoomRepository
 import ru.butterbean.easyrent.models.ReserveArchiveData
 import ru.butterbean.easyrent.models.RoomData
@@ -19,6 +20,7 @@ class ArchiveReservesListViewModel(application: Application) : AndroidViewModel(
     private val mRepository = ReserveArchiveRepository()
     private val mRoomRepository = RoomRepository(APP_DATABASE.roomDao())
     private val mReserveArchiveExtFileRepository = ReserveArchiveExtFileRepository(APP_DATABASE.reserveArchiveExtFilesDao())
+    private val mReserveExtFileRepository = ReserveExtFileRepository()
 
     fun deleteArchiveReserves(reserves: List<ReserveArchiveData>, onSuccess: () -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -46,7 +48,11 @@ class ArchiveReservesListViewModel(application: Application) : AndroidViewModel(
 
     fun replaceReservesFromArchive(reserves: List<ReserveArchiveData>, onSuccess: () -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
-            mRepository.replaceReservesFromArchive(reserves)
+            reserves.forEach {reserve ->
+                val newId = mRepository.replaceReserveFromArchive(reserve)
+                mReserveExtFileRepository.replaceExtFilesFromArchive(reserve.id,newId)
+            }
+            mRepository.deleteArchiveReserves(reserves)
             withContext(Dispatchers.Main) {
                 onSuccess()
             }

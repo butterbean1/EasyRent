@@ -38,16 +38,6 @@ class ReserveArchiveRepository{
         reserveArchiveDao.addArchiveReserves(archiveReserves)
     }
 
-    suspend fun replaceReservesFromArchive(reservesList: List<ReserveArchiveData>) {
-        val newReserves = mutableListOf<ReserveData>()
-        reservesList.forEach { reserve ->
-            val newReserve = getReserveDataFromArchive(reserve)
-            newReserves.add(newReserve)
-        }
-        reserveArchiveDao.deleteArchiveReserves(reservesList)
-        reserveDao.addReserves(newReserves)
-    }
-
     suspend fun replaceReserveToArchive(reserve: ReserveData):Long {
         val newArchiveReserve = getReserveArchiveDataFromReserve(reserve)
         return reserveArchiveDao.addArchiveReserve(newArchiveReserve)
@@ -56,8 +46,7 @@ class ReserveArchiveRepository{
 
     suspend fun replaceReserveFromArchive(reserve: ReserveArchiveData):Long {
         val newReserve = getReserveDataFromArchive(reserve)
-        val newId = reserveDao.addReserve(newReserve)
-        return newId
+        return reserveDao.addReserve(newReserve)
     }
 
     private fun getReserveArchiveDataFromReserve(reserve: ReserveData) =

@@ -1,10 +1,12 @@
 package ru.butterbean.easyrent.utils
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
+import android.provider.MediaStore
 import android.provider.OpenableColumns
 import android.webkit.MimeTypeMap
 import android.widget.ImageButton
@@ -13,7 +15,7 @@ import androidx.core.content.FileProvider
 import androidx.core.net.toUri
 import ru.butterbean.easyrent.R
 import ru.butterbean.easyrent.models.ReserveExtFileData
-import ru.butterbean.easyrent.screens.ext_files.ExtFilesExtension
+import ru.butterbean.easyrent.screens.ext_files.ExtFilesExtensionFragment
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
@@ -77,7 +79,7 @@ fun deleteLocalFiles(list:List<String>){
     }
 }
 
-fun showDeleteExtFileDialog(extFile: ReserveExtFileData,f: ExtFilesExtension) {
+fun showDeleteExtFileDialog(extFile: ReserveExtFileData,f: ExtFilesExtensionFragment) {
     val actions = arrayOf(
         APP_ACTIVITY.getString(R.string.delete_file) // 0
     )
@@ -90,7 +92,7 @@ fun showDeleteExtFileDialog(extFile: ReserveExtFileData,f: ExtFilesExtension) {
         .show()
 }
 
-private fun deleteExtFile(extFile: ReserveExtFileData,f: ExtFilesExtension) {
+private fun deleteExtFile(extFile: ReserveExtFileData,f: ExtFilesExtensionFragment) {
     deleteLocalFile(extFile.dirName)
     f.deleteReserveExtFile(extFile)
 }
@@ -101,7 +103,7 @@ fun trimFileName(fileName: String): String {
     else fileName
 }
 
-fun ImageButton.setSingleExtFileImage(f:ExtFilesExtension) {
+fun ImageButton.setSingleExtFileImage(f:ExtFilesExtensionFragment) {
     f.getSingleExtFileParams { params ->
         setExtFileImage(params)
     }
@@ -162,3 +164,116 @@ fun createImageFile(): File {
 fun getCurrentTimeStamp(): String {
     return SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
 }
+
+
+fun showAttachFileDialog(f: ExtFilesExtensionFragment) {
+    var actions = emptyArray<String>()
+    actions += APP_ACTIVITY.getString(R.string.camera_capture_photo)// 0
+    actions += APP_ACTIVITY.getString(R.string.gallery_image)// 1
+    actions += APP_ACTIVITY.getString(R.string.local_file)// 2
+    val builder = AlertDialog.Builder(APP_ACTIVITY)
+    builder.setItems(actions) { _, i ->
+        when (i) {
+            0 -> attachPhoto(f)
+            1 -> attachImage(f)
+            2 -> attachFile(f)
+        }
+    }
+        .show()
+
+}
+
+private fun attachFile(f: ExtFilesExtensionFragment) {
+
+    val intent = Intent(Intent.ACTION_GET_CONTENT)
+    intent.type = "*/*"
+    f.startActivityForResult(intent, FILE_REQUEST_CODE)
+
+}
+
+private fun attachPhoto(f: ExtFilesExtensionFragment) {
+
+    Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+        // Ensure that there's a camera activity to handle the intent
+        takePictureIntent.resolveActivity(APP_ACTIVITY.packageManager)?.also {
+            // Create the File where the photo should go
+            val photoFile: File? = try {
+                createImageFile()
+            } catch (e: IOException) {
+                // Error occurred while creating the File
+                showToast(e.message.toString())
+                null
+            }
+            // Continue only if the File was successfully created
+            photoFile?.also {
+                f.photoURI = FileProvider.getUriForFile(
+                    APP_ACTIVITY,
+                    "ru.butterbean.easyrent.fileprovider",
+                    it
+                )
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, f.photoURI)
+                f.startActivityForResult(takePictureIntent, PHOTO_REQUEST_CODE)
+            }
+        }
+    }
+}
+
+private fun attachImage(f: ExtFilesExtensionFragment) {
+
+    val intent = Intent(Intent.ACTION_GET_CONTENT)
+    intent.type = "image/* video/*"
+    f.startActivityForResult(intent, FILE_REQUEST_CODE)
+
+}
+
+fun extOnActivityResult(
+    resultCode: Int,
+    requestCode: Int,
+    data: Intent?,
+    f: ExtFilesExtensionFragment
+) {
+    if (resultCode == Activity.RESULT_OK) {
+
+        var uri = Uri.EMPTY
+        var successfulReq = false
+        when (requestCode) {
+            PHOTO_REQUEST_CODE -> {
+                uri = f.photoURI
+                successfulReq = true
+            }
+            FILE_REQUEST_CODE -> {
+                if (data != null) {
+                    uri = data.data!!
+                    successfulReq = true
+                }
+            }
+            else -> showToast("Неизвестный тип файла!")
+        }
+        if (successfulReq) {
+            try {
+                val fileAttr = getFilenameFromUri(uri)
+                val fileSize = fileAttr.getLong("fileSize")
+                if (fileSize > MAX_FILE_SIZE_BYTES) {
+                    showToast("Слишком большой размер файла! Максимальный размер - $MAX_FILE_SIZE_MEGABYTES Мб.")
+                } else {
+                    val newDirName = getCurrentTimeStamp()
+                    val newDir = File(APP_ACTIVITY.filesDir, newDirName)
+                    val newFileName = fileAttr.getString("fileName")!!
+                    val newFile = File(newDir, newFileName)
+                    if (newDir.mkdir()) {
+                        val fos = FileOutputStream(newFile)
+                        val ins = APP_ACTIVITY.contentResolver.openInputStream(uri)
+                        fos.write(ins?.readBytes())
+                        fos.close()
+                        f.addExtFileToDatabase(newDirName, newFileName, newFile.extension)
+                    }
+                }
+            } catch (e: Exception) {
+                showToast(e.message.toString())
+            }
+        }
+
+    }
+}
+
+

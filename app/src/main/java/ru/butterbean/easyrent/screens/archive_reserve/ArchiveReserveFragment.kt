@@ -6,17 +6,15 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.*
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import ru.butterbean.easyrent.R
 import ru.butterbean.easyrent.databinding.FragmentArchiveReserveBinding
 import ru.butterbean.easyrent.models.ReserveArchiveData
-import ru.butterbean.easyrent.models.ReserveExtFileData
 import ru.butterbean.easyrent.models.RoomData
-import ru.butterbean.easyrent.screens.ext_files.ExtFilesExtension
+import ru.butterbean.easyrent.screens.ext_files.ExtFilesExtensionFragment
 import ru.butterbean.easyrent.utils.*
 
-class ArchiveReserveFragment : Fragment(), ExtFilesExtension {
+class ArchiveReserveFragment : ExtFilesExtensionFragment() {
 
     private var _binding: FragmentArchiveReserveBinding? = null
     private val mBinding get() = _binding!!
@@ -30,7 +28,6 @@ class ArchiveReserveFragment : Fragment(), ExtFilesExtension {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         _binding = FragmentArchiveReserveBinding.inflate(layoutInflater, container, false)
         mCurrentReserve = arguments?.getSerializable("reserve") as ReserveArchiveData
         return mBinding.root
@@ -197,13 +194,9 @@ class ArchiveReserveFragment : Fragment(), ExtFilesExtension {
         mBinding.editReserveBtnPhoneSms.isVisible = vis
     }
 
-    override fun deleteReserveExtFile(extFile: ReserveExtFileData) {}
-
     override fun getSingleExtFileParams(f: (Bundle) -> Unit) {
         mViewModel.getSingleExtFileByReserveId(mCurrentReserve.id) { extFile ->
             f(extFile.getParamsBundle())
         }
     }
-
-
 }
