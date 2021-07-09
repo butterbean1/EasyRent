@@ -67,6 +67,9 @@
         <action
             android:id="@+id/action_roomFragment_to_archiveReservesFragment"
             app:destination="@id/archiveReservesListFragment" />
+        <action
+            android:id="@+id/action_roomFragment_to_statisticFragment"
+            app:destination="@id/statisticFragment" />
     </fragment>
     <fragment
         android:id="@+id/splashFragment"
@@ -141,4 +144,9 @@
         android:id="@+id/extFilesArchiveListFragment"
         android:name="ru.butterbean.easyrent.screens.ext_files_archive.ExtFilesArchiveListFragment"
         android:label="ExtFilesArchiveListFragment" />
+    <fragment
+        android:id="@+id/statisticFragment"
+        android:name="ru.butterbean.easyrent.screens.statistic.StatisticFragment"
+        android:label="fragment_statistic"
+        tools:layout="@layout/fragment_statistic" />
 </navigation>

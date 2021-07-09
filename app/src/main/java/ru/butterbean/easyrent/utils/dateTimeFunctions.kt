@@ -31,7 +31,7 @@ fun String.toDateTimeFormat(): String {
 
 }
 
-fun getCalendarFromString(date: String,pattern:String = "yyyy-MM-dd'T'HH:mm:ss"): Calendar {
+fun getCalendarFromString(date: String, pattern: String = "yyyy-MM-dd'T'HH:mm:ss"): Calendar {
     val d = SimpleDateFormat(pattern, Locale.getDefault()).parse(date)
     val cal = Calendar.getInstance()
     cal.time = d!!
@@ -57,6 +57,31 @@ fun Calendar.toDateFormat(): String {
     return formatter.format(this.time)
 }
 
+fun getPeriodPresentation(startDate: Calendar, endDate: Calendar): String {
+    val pattern =
+        if (startDate.get(Calendar.DAY_OF_MONTH) == 1
+            && endDate.isLastDayOfMonth()
+        ) "LLLL YYYY"
+        else (SimpleDateFormat.getDateInstance() as SimpleDateFormat).toLocalizedPattern()
+    return if (startDate == endDate
+        ||
+        (startDate.get(Calendar.YEAR) == endDate.get(Calendar.YEAR)
+                && startDate.get(Calendar.MONTH) == endDate.get(Calendar.MONTH)
+                && startDate.get(Calendar.DAY_OF_MONTH) == 1
+                && endDate.isLastDayOfMonth()
+                )
+    ) SimpleDateFormat(pattern, Locale.getDefault()).format(startDate.time)
+    else {
+        val startDateString = SimpleDateFormat(pattern, Locale.getDefault()).format(startDate.time)
+        val endDateString = SimpleDateFormat(pattern, Locale.getDefault()).format(endDate.time)
+        "$startDateString - $endDateString"
+    }
+}
+
+fun Calendar.isLastDayOfMonth():Boolean{
+    return this.get(Calendar.DAY_OF_MONTH) == this.getActualMaximum(Calendar.DAY_OF_MONTH)
+}
+
 fun Calendar.toDateTimeInDatabaseFormat(): String {
     val d = getDateFormatISO(
         this.get(Calendar.YEAR),
@@ -67,7 +92,7 @@ fun Calendar.toDateTimeInDatabaseFormat(): String {
         this.get(Calendar.HOUR_OF_DAY),
         this.get(Calendar.MINUTE)
     )
-    return getDateTimeInDatabaseFormat(d,t)
+    return getDateTimeInDatabaseFormat(d, t)
 }
 
 fun String.toDateFormat(onlyDate: Boolean = false): String {
@@ -134,18 +159,17 @@ fun showCalendarDialogFromListener(
     context: Context,
     listener: DatePickerDialog.OnDateSetListener,
     date: String, // в формате yyyy-MM-dd
-    minDate: String="" // в формате yyyy-MM-dd
+    minDate: String = "" // в формате yyyy-MM-dd
 ) {
 
     val cal = if (date.isEmpty()) {
         if (minDate.isEmpty()) Calendar.getInstance()
         else {
             val c = getCalendarFromString(minDate, "yyyy-MM-dd")
-            c.add(Calendar.DAY_OF_MONTH,1)
+            c.add(Calendar.DAY_OF_MONTH, 1)
             c
         }
-    }
-    else getCalendarFromString(date,"yyyy-MM-dd")
+    } else getCalendarFromString(date, "yyyy-MM-dd")
 
     val dialog = DatePickerDialog(
         context,
@@ -167,7 +191,7 @@ fun showTimeDialogFromListener(
         val c = Calendar.getInstance()
         c.set(0, 0, 0, 12, 0, 0)
         c
-    } else getCalendarFromString(time,"HH:mm"))
+    } else getCalendarFromString(time, "HH:mm"))
 
     val dialog = TimePickerDialog(
         context,

@@ -2,14 +2,19 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/new_room"
-        android:icon="@drawable/ic_add_room"
-        android:title="@string/new_room" />
+        android:id="@+id/statistic"
+        android:icon="@drawable/ic_chart"
+        android:title="@string/settings"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/settings"
         android:icon="@drawable/ic_settings"
         android:title="@string/settings"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/new_room"
+        android:icon="@drawable/ic_add_room"
+        android:title="@string/new_room" />
     <item android:title="@string/this_room">
         <menu>
             <item

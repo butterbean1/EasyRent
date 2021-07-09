@@ -136,6 +136,10 @@ class RoomFragment : Fragment() {
                 )
                 true
             }
+            R.id.statistic -> {
+                APP_ACTIVITY.navController.navigate(R.id.action_roomFragment_to_statisticFragment)
+                true
+            }
             R.id.settings -> {
                 APP_ACTIVITY.navController.navigate(R.id.action_roomFragment_to_settingsFragment)
                 true

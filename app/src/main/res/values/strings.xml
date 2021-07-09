@@ -94,6 +94,11 @@
     <string name="picture">Изображение</string>
     <string name="def_ext_file_name" translatable="false">IMG_202105262598_1122156.jpg</string>
     <string name="delete_file">Удалить файл</string>
+    <string name="from_year_beginning">С начала года</string>
+    <string name="from_month_beginning">С начала месяца</string>
+    <string name="from_prev_month_beginning">С начала пред. месяца</string>
+    <string name="chosen_period">Произвольный период</string>
+    <string name="for_all_time">За все время</string>
 
 
 </resources>

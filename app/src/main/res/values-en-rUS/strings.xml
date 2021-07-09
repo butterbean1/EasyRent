@@ -84,4 +84,9 @@
     <string name="guests">Guests</string>
     <string name="picture">Picture</string>
     <string name="delete_file">Delete file</string>
+    <string name="from_year_beginning">Year to date</string>
+    <string name="from_month_beginning">Month to date</string>
+    <string name="from_prev_month_beginning">Prev month to date</string>
+    <string name="chosen_period">Chosen period</string>
+    <string name="for_all_time">For all time</string>
 </resources>
