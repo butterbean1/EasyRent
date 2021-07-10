@@ -51,6 +51,19 @@ fun getStartOfDay(date: Calendar): Calendar {
     cal.set(Calendar.MILLISECOND, 0)
     return cal
 }
+fun getEndOfDay(date: Calendar): Calendar {
+    val cal = Calendar.getInstance()
+    cal.set(
+        date.get(Calendar.YEAR),
+        date.get(Calendar.MONTH),
+        date.get(Calendar.DAY_OF_MONTH),
+        23,
+        59,
+        59
+    )
+    cal.set(Calendar.MILLISECOND, 999)
+    return cal
+}
 
 fun Calendar.toDateFormat(): String {
     val formatter = SimpleDateFormat("d MMMM", Locale.getDefault())

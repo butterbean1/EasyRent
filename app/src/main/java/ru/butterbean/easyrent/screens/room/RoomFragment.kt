@@ -137,7 +137,8 @@ class RoomFragment : Fragment() {
                 true
             }
             R.id.statistic -> {
-                APP_ACTIVITY.navController.navigate(R.id.action_roomFragment_to_statisticFragment)
+                APP_ACTIVITY.navController.navigate(R.id.action_roomFragment_to_statisticFragment,
+                    createArgsBundle("room",mCurrentRoom))
                 true
             }
             R.id.settings -> {

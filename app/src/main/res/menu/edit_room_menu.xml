@@ -4,12 +4,7 @@
     <item
         android:id="@+id/statistic"
         android:icon="@drawable/ic_chart"
-        android:title="@string/settings"
-        app:showAsAction="ifRoom" />
-    <item
-        android:id="@+id/settings"
-        android:icon="@drawable/ic_settings"
-        android:title="@string/settings"
+        android:title="@string/statistic"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/new_room"
@@ -30,4 +25,8 @@
     <item
         android:id="@+id/go_to_archive"
         android:title="@string/go_to_archive" />
+    <item
+        android:id="@+id/settings"
+        android:icon="@drawable/ic_settings"
+        android:title="@string/settings" />
 </menu>

@@ -3,6 +3,7 @@ package ru.butterbean.easyrent.database.repository
 import androidx.lifecycle.LiveData
 import ru.butterbean.easyrent.database.dao.ReserveDao
 import ru.butterbean.easyrent.models.ReserveData
+import ru.butterbean.easyrent.models.StatisticQueryResult
 import ru.butterbean.easyrent.screens.room.item_models.CommonReserveModel
 import ru.butterbean.easyrent.screens.room.item_models.FreeReserveModel
 import ru.butterbean.easyrent.screens.room.item_models.SimpleReserveModel
@@ -142,5 +143,8 @@ class ReserveRepository(private val reserveDao: ReserveDao) {
     fun getReservesCount(roomId: Long): LiveData<Int> = reserveDao.getReservesCount(roomId)
 
     fun getReserveById(id: Long): ReserveData = reserveDao.getReserveById(id)
+
+    fun getStatistic(roomId: Long,startDate:String,endDate:String): StatisticQueryResult = reserveDao.getStatistic(roomId,startDate,endDate)
+
 
 }

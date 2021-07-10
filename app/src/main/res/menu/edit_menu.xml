@@ -4,7 +4,7 @@
     <item
         android:id="@+id/statistic"
         android:icon="@drawable/ic_chart"
-        android:title="@string/settings"
+        android:title="@string/statistic"
         app:showAsAction="ifRoom" />
     <item android:title="@string/this_room">
         <menu>

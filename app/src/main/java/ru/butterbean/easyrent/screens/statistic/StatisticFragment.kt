@@ -8,15 +8,19 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import ru.butterbean.easyrent.R
 import ru.butterbean.easyrent.databinding.FragmentStatisticBinding
 import ru.butterbean.easyrent.models.RoomData
+import ru.butterbean.easyrent.models.StatisticQueryResult
+import ru.butterbean.easyrent.screens.room.RoomViewModel
 import ru.butterbean.easyrent.utils.*
 import java.util.*
 
 class StatisticFragment : Fragment() {
     private var _binding: FragmentStatisticBinding? = null
     private val mBinding get() = _binding!!
+    lateinit var mViewModel: StatisticViewModel
     private var mStartDate = getStartOfDay(Calendar.getInstance())
     private var mEndDate = getStartOfDay(Calendar.getInstance())
     private lateinit var mCurrentRoom: RoomData
@@ -102,7 +106,7 @@ class StatisticFragment : Fragment() {
             DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
                 tempStartDate.set(year, month, dayOfMonth)
 
-                if (mEndDate == getFarAwayEndDate()) {
+                if (mEndDate == getFarAwayEndDate() || mEndDate.before(tempStartDate)) {
                     tempEndDate.set(year, month, dayOfMonth)
                     tempEndDate.add(Calendar.DAY_OF_MONTH, 1)
                 } else tempEndDate = mEndDate
@@ -138,7 +142,17 @@ class StatisticFragment : Fragment() {
     }
 
     private fun refreshData() {
-        showToast("Обновление данных")
+        mViewModel.getStatistic(
+            mCurrentRoom.id,
+            mStartDate.toDateTimeInDatabaseFormat(),
+            getEndOfDay(mEndDate).toDateTimeInDatabaseFormat()
+        ) {stat->
+            mBinding.statisticSumText.text = (stat.sum?:0).toString()
+            mBinding.statisticPaymentText.text = (stat.payment?:0).toString()
+            mBinding.statisticDaysText.text = (stat.daysCount?:0).toString()
+            mBinding.statisticGuestsText.text = (stat.guestsCount?:0).toString()
+            mBinding.statisticReservesText.text = (stat.reservesCount?:0).toString()
+        }
     }
 
     private fun getFarAwayEndDate(): Calendar {
@@ -168,9 +182,15 @@ class StatisticFragment : Fragment() {
     private fun initialize() {
 
         setHasOptionsMenu(true)
+        APP_ACTIVITY.supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         mStartDate = getFarAwayStartDate()
         mEndDate = getFarAwayEndDate()
+
+        // ViewModel
+        mViewModel = ViewModelProvider(this).get(StatisticViewModel::class.java)
+
+        refreshData()
 
         mBinding.statisticPeriod.setOnClickListener {
             showStatisticPeriodDialog()

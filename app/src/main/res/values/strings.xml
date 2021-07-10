@@ -99,6 +99,14 @@
     <string name="from_prev_month_beginning">С начала пред. месяца</string>
     <string name="chosen_period">Произвольный период</string>
     <string name="for_all_time">За все время</string>
+    <string name="stat_sum_header">Сумма:</string>
+    <string name="statistic_payment_header">Оплачено:</string>
+    <string name="def_reserves_count">17</string>
+    <string name="statistic_days_header">Занято дней:</string>
+    <string name="def_days_count">11</string>
+    <string name="def_stat_guests_count">26</string>
+    <string name="statistic_guests_header">Было гостей:</string>
+    <string name="statistic">Статистика</string>
 
 
 </resources>

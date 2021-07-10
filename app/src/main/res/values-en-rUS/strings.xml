@@ -89,4 +89,6 @@
     <string name="from_prev_month_beginning">Prev month to date</string>
     <string name="chosen_period">Chosen period</string>
     <string name="for_all_time">For all time</string>
+    <string name="stat_sum_header">Sum:</string>
+    <string name="statistic_payment_header">Payment:</string>
 </resources>
