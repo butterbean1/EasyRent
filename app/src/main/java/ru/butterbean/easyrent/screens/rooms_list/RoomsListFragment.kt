@@ -13,8 +13,8 @@ import ru.butterbean.easyrent.databinding.FragmentRoomsListBinding
 import ru.butterbean.easyrent.models.RoomData
 import ru.butterbean.easyrent.utils.APP_ACTIVITY
 import ru.butterbean.easyrent.utils.createArgsBundle
-import ru.butterbean.easyrent.utils.deleteRoomWithDialog
-import ru.butterbean.easyrent.utils.getEmptyRoom
+import ru.butterbean.easyrent.database.deleteRoomWithDialog
+import ru.butterbean.easyrent.database.getEmptyRoom
 
 class RoomsListFragment : Fragment() {
 

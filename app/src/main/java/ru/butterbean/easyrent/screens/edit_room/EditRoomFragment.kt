@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
 import ru.butterbean.easyrent.R
+import ru.butterbean.easyrent.database.deleteRoomWithDialog
 import ru.butterbean.easyrent.databinding.FragmentEditRoomBinding
 import ru.butterbean.easyrent.models.RoomData
 import ru.butterbean.easyrent.utils.*

@@ -8,6 +8,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
 import ru.butterbean.easyrent.R
+import ru.butterbean.easyrent.database.deleteRoomWithDialog
+import ru.butterbean.easyrent.database.getEmptyReserve
+import ru.butterbean.easyrent.database.getEmptyRoom
 import ru.butterbean.easyrent.databinding.FragmentRoomBinding
 import ru.butterbean.easyrent.models.ReserveData
 import ru.butterbean.easyrent.models.RoomData

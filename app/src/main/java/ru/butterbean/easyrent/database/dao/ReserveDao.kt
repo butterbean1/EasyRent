@@ -53,13 +53,13 @@ interface ReserveDao {
                 "SUM(sum) sum, " +
                 "SUM(payment) payment, " +
                 "SUM(guestsCount) guestsCount, " +
-                "SUM(daysCount) daysCount, " +
+                "round(SUM(daysCount)) daysCount, " +
                 "COUNT(id) reservesCount FROM (" +
                 "SELECT " +
                 "sum sum, " +
                 "payment payment, " +
                 "guestsCount guestsCount, " +
-                "round(julianday(dateCheckOut)-julianday(dateCheckIn)) daysCount, " +
+                "julianday(dateCheckOut)-julianday(dateCheckIn) daysCount, " +
                 "id id " +
                 "FROM $TABLE_RESERVES_NAME " +
                 "WHERE roomId = :roomId AND " +
@@ -69,7 +69,7 @@ interface ReserveDao {
                 "sum sum, " +
                 "payment payment, " +
                 "guestsCount guestsCount, " +
-                "round(julianday(dateCheckOut)-julianday(dateCheckIn)) daysCount, " +
+                "julianday(dateCheckOut)-julianday(dateCheckIn) daysCount, " +
                 "id id " +
                 "FROM $TABLE_RESERVES_ARCHIVE_NAME " +
                 "WHERE roomId = :roomId AND " +

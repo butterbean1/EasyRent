@@ -1,4 +1,4 @@
-package ru.butterbean.easyrent.utils
+package ru.butterbean.easyrent.database
 
 import android.app.AlertDialog
 import androidx.lifecycle.LifecycleOwner
@@ -7,6 +7,9 @@ import ru.butterbean.easyrent.R
 import ru.butterbean.easyrent.models.ReserveData
 import ru.butterbean.easyrent.models.RoomData
 import ru.butterbean.easyrent.screens.RoomDialogViewModel
+import ru.butterbean.easyrent.utils.APP_ACTIVITY
+import ru.butterbean.easyrent.utils.STATUS_FREE
+import ru.butterbean.easyrent.utils.getCalendarFromString
 import java.util.*
 
 fun getEmptyRoom(): RoomData {

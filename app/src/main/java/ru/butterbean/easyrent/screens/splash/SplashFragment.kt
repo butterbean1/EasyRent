@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
 import ru.butterbean.easyrent.R
+import ru.butterbean.easyrent.database.getEmptyRoom
 import ru.butterbean.easyrent.databinding.FragmentSplashBinding
 import ru.butterbean.easyrent.utils.*
 

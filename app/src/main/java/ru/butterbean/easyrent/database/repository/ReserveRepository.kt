@@ -2,6 +2,7 @@ package ru.butterbean.easyrent.database.repository
 
 import androidx.lifecycle.LiveData
 import ru.butterbean.easyrent.database.dao.ReserveDao
+import ru.butterbean.easyrent.database.getAutoUpdatedReserves
 import ru.butterbean.easyrent.models.ReserveData
 import ru.butterbean.easyrent.models.StatisticQueryResult
 import ru.butterbean.easyrent.screens.room.item_models.CommonReserveModel
