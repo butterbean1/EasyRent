@@ -2,6 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/costs"
+        android:icon="@drawable/ic_costs"
+        android:title="@string/costs"
+        app:showAsAction="ifRoom" />
+    <item
         android:id="@+id/statistic"
         android:icon="@drawable/ic_chart"
         android:title="@string/statistic"

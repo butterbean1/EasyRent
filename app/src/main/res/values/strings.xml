@@ -108,6 +108,10 @@
     <string name="statistic_guests_header">Постояльцев:</string>
     <string name="statistic">Статистика</string>
     <string name="my_guest">Мой гость</string>
+    <string name="costs">Расходы</string>
+    <string name="statistic_costs_header">Расходы:</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>

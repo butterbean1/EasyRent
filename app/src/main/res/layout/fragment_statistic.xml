@@ -104,6 +104,34 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/statistic_costs_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        app:layout_constraintStart_toEndOf="@id/statistic_payment_group"
+        app:layout_constraintTop_toTopOf="@id/statistic_payment_group">
+
+        <TextView
+            android:id="@+id/statistic_costs_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/statistic_costs_header"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/statistic_costs_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/def_sum"
+            android:textColor="@color/black"
+            android:textSize="@dimen/large_text_size"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/statistic_costs_header" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/statistic_reserves_group"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

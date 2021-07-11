@@ -70,6 +70,9 @@
         <action
             android:id="@+id/action_roomFragment_to_statisticFragment"
             app:destination="@id/statisticFragment" />
+        <action
+            android:id="@+id/action_roomFragment_to_costsListFragment"
+            app:destination="@id/costsListFragment" />
     </fragment>
     <fragment
         android:id="@+id/splashFragment"
@@ -149,4 +152,36 @@
         android:name="ru.butterbean.easyrent.screens.statistic.StatisticFragment"
         android:label="fragment_statistic"
         tools:layout="@layout/fragment_statistic" />
+    <fragment
+        android:id="@+id/costsListFragment"
+        android:name="ru.butterbean.easyrent.screens.costs_list.CostsListFragment"
+        android:label="fragment_costs_list"
+        tools:layout="@layout/fragment_costs_list" >
+        <action
+            android:id="@+id/action_costsListFragment_to_costFragment"
+            app:destination="@id/costFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/costItemFragment"
+        android:name="ru.butterbean.easyrent.screens.cost_item.CostItemFragment"
+        android:label="fragment_cost_item"
+        tools:layout="@layout/fragment_cost_item" />
+    <fragment
+        android:id="@+id/costItemsListFragment"
+        android:name="ru.butterbean.easyrent.screens.cost_items_list.CostItemsListFragment"
+        android:label="fragment_cost_items_list"
+        tools:layout="@layout/fragment_cost_items_list" >
+        <action
+            android:id="@+id/action_costItemsListFragment_to_costItemFragment"
+            app:destination="@id/costItemFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/costFragment"
+        android:name="ru.butterbean.easyrent.screens.cost.CostFragment"
+        android:label="fragment_cost"
+        tools:layout="@layout/fragment_cost" >
+        <action
+            android:id="@+id/action_costFragment_to_costItemsListFragment"
+            app:destination="@id/costItemsListFragment" />
+    </fragment>
 </navigation>

@@ -2,6 +2,8 @@ package ru.butterbean.easyrent.database.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import ru.butterbean.easyrent.database.TABLE_COSTS_NAME
+import ru.butterbean.easyrent.database.TABLE_COST_ITEMS_NAME
 import ru.butterbean.easyrent.database.TABLE_RESERVES_ARCHIVE_NAME
 import ru.butterbean.easyrent.database.TABLE_RESERVES_NAME
 import ru.butterbean.easyrent.models.ReserveData
@@ -51,29 +53,45 @@ interface ReserveDao {
     @Query(
         "SELECT " +
                 "SUM(sum) sum, " +
+                "SUM(costs) costs, " +
                 "SUM(payment) payment, " +
                 "SUM(guestsCount) guestsCount, " +
                 "round(SUM(daysCount)) daysCount, " +
-                "COUNT(id) reservesCount FROM (" +
+                "SUM(reservesCount) reservesCount " +
+                "FROM (" +
                 "SELECT " +
+                "0 costs, " +
                 "sum sum, " +
                 "payment payment, " +
                 "guestsCount guestsCount, " +
                 "julianday(dateCheckOut)-julianday(dateCheckIn) daysCount, " +
-                "id id " +
+                "1 reservesCount " +
                 "FROM $TABLE_RESERVES_NAME " +
                 "WHERE roomId = :roomId AND " +
                 "dateCheckOut BETWEEN :startDate AND :endDate " +
                 "UNION ALL " +
                 "SELECT " +
+                "0 costs, " +
                 "sum sum, " +
                 "payment payment, " +
                 "guestsCount guestsCount, " +
                 "julianday(dateCheckOut)-julianday(dateCheckIn) daysCount, " +
-                "id id " +
+                "1 reservesCount " +
                 "FROM $TABLE_RESERVES_ARCHIVE_NAME " +
                 "WHERE roomId = :roomId AND " +
-                "dateCheckOut BETWEEN :startDate AND :endDate)"
+                "dateCheckOut BETWEEN :startDate AND :endDate " +
+                "UNION ALL " +
+                "SELECT " +
+                "sum costs, " +
+                "0 sum, " +
+                "0 payment, " +
+                "0 guestsCount, " +
+                "0 daysCount, " +
+                "0 reservesCount " +
+                "FROM $TABLE_COSTS_NAME " +
+                "WHERE roomId = :roomId AND " +
+                "date BETWEEN :startDate AND :endDate" +
+                ")"
     )
     fun getStatistic(roomId: Long, startDate: String, endDate: String): StatisticQueryResult
 

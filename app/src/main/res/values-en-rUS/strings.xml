@@ -95,4 +95,6 @@
     <string name="statistic_guests_header">Guests</string>
     <string name="statistic">Statistic</string>
     <string name="my_guest">My guest</string>
+    <string name="statistic_costs_header">Costs:</string>
+    <string name="costs">Costs</string>
 </resources>

@@ -149,9 +149,12 @@ class StatisticFragment : Fragment() {
         ) {stat->
             mBinding.statisticSumText.text = (stat.sum?:0).toString()
             mBinding.statisticPaymentText.text = (stat.payment?:0).toString()
-            mBinding.statisticDaysText.text = (stat.daysCount?:0).toString()
+            val daysCount = (stat.daysCount?:0)
+            val reservesCount = (stat.reservesCount?:0)
+            mBinding.statisticDaysText.text = if (daysCount == 0 && reservesCount>0) "1" else daysCount.toString()
+            mBinding.statisticReservesText.text = reservesCount.toString()
             mBinding.statisticGuestsText.text = (stat.guestsCount?:0).toString()
-            mBinding.statisticReservesText.text = (stat.reservesCount?:0).toString()
+            mBinding.statisticCostsText.text = (stat.costs?:0).toString()
         }
     }
 

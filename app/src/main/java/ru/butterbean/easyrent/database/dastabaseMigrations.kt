@@ -63,3 +63,28 @@ val MIGRATION_3_4 = object : Migration(3, 4) {
         database.execSQL("ALTER TABLE $TABLE_RESERVES_ARCHIVE_NAME ADD COLUMN extFilesCount INTEGER NOT NULL DEFAULT ''")
     }
 }
+
+val MIGRATION_4_5 = object : Migration(4, 5) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+        database.execSQL(
+            "CREATE TABLE ${TABLE_COST_ITEMS_NAME}(" +
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+                    "name TEXT NOT NULL" +
+                    ") "
+        )
+        database.execSQL(
+            "CREATE TABLE ${TABLE_COSTS_NAME}(" +
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+                    "roomId INTEGER NOT NULL, " +
+                    "costItemId INTEGER NOT NULL, " +
+                    "description TEXT NOT NULL, " +
+                    "sum INTEGER NOT NULL, " +
+                    "date TEXT NOT NULL, " +
+                    "FOREIGN KEY(roomId) REFERENCES ${TABLE_ROOMS_NAME}(id) ON UPDATE NO ACTION ON DELETE CASCADE, " +
+                    "FOREIGN KEY(costItemId) REFERENCES ${TABLE_COST_ITEMS_NAME}(id) ON UPDATE NO ACTION ON DELETE RESTRICT " +
+                    ") "
+        )
+        database.execSQL("CREATE INDEX index_${TABLE_COSTS_NAME}_roomId ON $TABLE_COSTS_NAME (roomId)")
+        database.execSQL("CREATE INDEX index_${TABLE_COSTS_NAME}_costItemId ON $TABLE_COSTS_NAME (costItemId)")
+    }
+}
