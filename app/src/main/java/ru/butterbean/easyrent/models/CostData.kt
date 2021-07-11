@@ -31,7 +31,7 @@ data class CostData(
     val roomId: Long,
     @ColumnInfo(index = true)
     val costItemId: Long = 0,
-    val description: String = "",
     val sum: Int = 0,
-    val date: String = ""
+    val date: String = "",
+    val description: String = ""
 ) : Serializable

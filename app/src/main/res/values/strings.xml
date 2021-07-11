@@ -49,6 +49,8 @@
     <string name="enter_checkout_date">Выберите дату выселения!</string>
     <string name="enter_checkin_time">Выберите время заселения!</string>
     <string name="enter_checkin_date">Выберите дату заселения!</string>
+    <string name="enter_cost_date">Выберите дату!</string>
+    <string name="enter_cost_sum">Введите сумму!</string>
     <string name="open">Открыть</string>
     <string name="def_free_reserve_text">Свободно с 25 июля по 12 августа</string>
     <string name="status_free_from">с</string>
@@ -111,9 +113,10 @@
     <string name="costs">Расходы</string>
     <string name="statistic_costs_header">Расходы:</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="def_cost_date_representation">22.09.2021</string>
     <string name="def_cost_item_name">Интернет, ТВ и медиа</string>
+    <string name="cost_item">Статья расходов</string>
+    <string name="description">Описание</string>
 
 
 </resources>

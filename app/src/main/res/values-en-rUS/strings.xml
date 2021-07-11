@@ -97,4 +97,9 @@
     <string name="my_guest">My guest</string>
     <string name="statistic_costs_header">Costs:</string>
     <string name="costs">Costs</string>
+    <string name="enter_cost_date">Select the date</string>
+    <string name="cost_item">Cost item</string>
+    <string name="def_cost_item_name">Internet, TV and media</string>
+    <string name="def_cost_date_representation">2021/09/22</string>
+    <string name="enter_cost_sum">Enter the sum</string>
 </resources>
