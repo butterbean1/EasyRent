@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".screens.edit_cost.EditCostFragment">
+
+    <TextView
+        android:id="@+id/edit_cost_room_name"
+
+        style="@style/large_text"
+        android:layout_width="0dp"
+        android:text="@string/def_room_name"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/edit_cost_item_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/edit_cost_room_name"
+        app:layout_constraintStart_toStartOf="parent">
+        <TextView
+            android:id="@+id/edit_cost_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/app_margin"
+            android:background="@drawable/ripple_effect_grey"
+            android:padding="@dimen/app_small_margin"
+            android:text="@string/def_cost_item_name"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/edit_cost_date"
+        style="@style/date_time_text"
+        android:hint="@string/check_in_date"
+        android:textColorHint="@color/red"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edit_cost_item_group" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/edit_cost_group_sum"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/app_small_margin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edit_cost_date">
+
+        <TextView
+            android:id="@+id/edit_cost_header_sum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/app_margin"
+            android:layout_marginTop="12dp"
+            android:text="@string/stat_sum_header"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/edit_cost_sum"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:inputType="number"
+            android:text="@string/def_sum"
+            app:layout_constraintStart_toEndOf="@+id/edit_cost_header_sum"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/edit_cost_sum_currency_symbol"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/def_currency_symbol"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toEndOf="@+id/edit_cost_sum"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

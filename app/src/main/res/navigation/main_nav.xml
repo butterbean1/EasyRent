@@ -158,30 +158,30 @@
         android:label="fragment_costs_list"
         tools:layout="@layout/fragment_costs_list" >
         <action
-            android:id="@+id/action_costsListFragment_to_costFragment"
-            app:destination="@id/costFragment" />
+            android:id="@+id/action_costsListFragment_to_editCostFragment"
+            app:destination="@id/editCostFragment" />
     </fragment>
     <fragment
-        android:id="@+id/costItemFragment"
-        android:name="ru.butterbean.easyrent.screens.cost_item.CostItemFragment"
+        android:id="@+id/editCostItemFragment"
+        android:name="ru.butterbean.easyrent.screens.edit_cost_item.EditCostItemFragment"
         android:label="fragment_cost_item"
-        tools:layout="@layout/fragment_cost_item" />
+        tools:layout="@layout/fragment_edit_cost_item" />
     <fragment
         android:id="@+id/costItemsListFragment"
         android:name="ru.butterbean.easyrent.screens.cost_items_list.CostItemsListFragment"
         android:label="fragment_cost_items_list"
         tools:layout="@layout/fragment_cost_items_list" >
         <action
-            android:id="@+id/action_costItemsListFragment_to_costItemFragment"
-            app:destination="@id/costItemFragment" />
+            android:id="@+id/action_costItemsListFragment_to_editCostItemFragment"
+            app:destination="@id/editCostItemFragment" />
     </fragment>
     <fragment
-        android:id="@+id/costFragment"
-        android:name="ru.butterbean.easyrent.screens.cost.CostFragment"
+        android:id="@+id/editCostFragment"
+        android:name="ru.butterbean.easyrent.screens.edit_cost.EditCostFragment"
         android:label="fragment_cost"
-        tools:layout="@layout/fragment_cost" >
+        tools:layout="@layout/fragment_edit_cost" >
         <action
-            android:id="@+id/action_costFragment_to_costItemsListFragment"
+            android:id="@+id/action_editCostFragment_to_costItemsListFragment"
             app:destination="@id/costItemsListFragment" />
     </fragment>
 </navigation>

@@ -28,7 +28,7 @@ class CostsListFragment : Fragment() {
         fun clickOnListItem(costId: Long, f: CostsListFragment) {
             f.mViewModel.getCostById(costId) { cost ->
                 APP_ACTIVITY.navController.navigate(
-                    R.id.action_costsListFragment_to_costFragment,
+                    R.id.action_costsListFragment_to_editCostFragment,
                     createArgsBundle("cost", cost)
                 )
             }
@@ -102,7 +102,7 @@ class CostsListFragment : Fragment() {
         }
 
         mBinding.costsBtnAdd.setOnClickListener {
-            APP_ACTIVITY.navController.navigate(R.id.action_costsListFragment_to_costFragment,
+            APP_ACTIVITY.navController.navigate(R.id.action_costsListFragment_to_editCostFragment,
                 createArgsBundle("cost",getEmptyCost(mCurrentRoom.id)))
         }
 
