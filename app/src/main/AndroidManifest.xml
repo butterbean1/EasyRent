@@ -3,6 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="ru.butterbean.easyrent">
 
+    <queries>
+        <intent>
+            <action android:name="android.media.action.IMAGE_CAPTURE"/>
+        </intent>
+    </queries>
+
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <application
         android:allowBackup="true"

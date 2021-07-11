@@ -91,4 +91,7 @@
     <string name="for_all_time">For all time</string>
     <string name="stat_sum_header">Sum:</string>
     <string name="statistic_payment_header">Payment:</string>
+    <string name="statistic_days_header">Reserved days</string>
+    <string name="statistic_guests_header">Guests</string>
+    <string name="statistic">Statistic</string>
 </resources>

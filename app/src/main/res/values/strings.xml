@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Лёгкая аренда</string>
-    <string name="app_version" translatable="false">1.3.2</string>
+    <string name="app_version" translatable="false">1.5.1</string>
 
     <string name="def_room_name">ЖК Самый Лучший</string>
     <string name="def_room_address">Жилинская, д.12, кв.159</string>
@@ -101,11 +101,11 @@
     <string name="for_all_time">За все время</string>
     <string name="stat_sum_header">Сумма:</string>
     <string name="statistic_payment_header">Оплачено:</string>
-    <string name="def_reserves_count">17</string>
+    <string name="def_reserves_count" translatable="false">17</string>
     <string name="statistic_days_header">Занято дней:</string>
-    <string name="def_days_count">11</string>
-    <string name="def_stat_guests_count">26</string>
-    <string name="statistic_guests_header">Было гостей:</string>
+    <string name="def_days_count" translatable="false">11</string>
+    <string name="def_stat_guests_count" translatable="false">26</string>
+    <string name="statistic_guests_header">Постояльцев:</string>
     <string name="statistic">Статистика</string>
 
 
