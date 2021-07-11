@@ -4,6 +4,8 @@ import android.app.AlertDialog
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
 import ru.butterbean.easyrent.R
+import ru.butterbean.easyrent.models.CostData
+import ru.butterbean.easyrent.models.CostItemData
 import ru.butterbean.easyrent.models.ReserveData
 import ru.butterbean.easyrent.models.RoomData
 import ru.butterbean.easyrent.screens.RoomDialogViewModel
@@ -20,6 +22,13 @@ fun getEmptyReserve(roomId: Long): ReserveData {
     return ReserveData(0, roomId, APP_ACTIVITY.getString(R.string.my_guest))
 }
 
+fun getEmptyCost(roomId: Long):CostData{
+    return CostData(0,roomId)
+}
+
+fun getEmptyCostItem(): CostItemData {
+    return CostItemData(0)
+}
 
 /* Пока что решил удалять без лишних вопросов
 fun deleteReserveWithDialog(reserve: ReserveData) {

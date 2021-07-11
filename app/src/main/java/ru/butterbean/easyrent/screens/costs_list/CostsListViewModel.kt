@@ -7,12 +7,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.butterbean.easyrent.database.repository.CostsRepository
-import ru.butterbean.easyrent.database.repository.ReserveExtFileRepository
-import ru.butterbean.easyrent.database.repository.ReserveRepository
 import ru.butterbean.easyrent.models.CostData
-import ru.butterbean.easyrent.models.ReserveData
-import ru.butterbean.easyrent.models.ReserveExtFileData
-import ru.butterbean.easyrent.utils.APP_DATABASE
 
 class CostsListViewModel(application: Application) : AndroidViewModel(application) {
     private val mRepository = CostsRepository()
@@ -22,7 +17,17 @@ class CostsListViewModel(application: Application) : AndroidViewModel(applicatio
     fun deleteCost(cost: CostData) {
         viewModelScope.launch(Dispatchers.IO) {
             mRepository.deleteCost(cost)
-
         }
     }
+    fun getCostById(id:Long,onSuccess: (CostData) -> Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val cost = mRepository.getCostById(id)
+            withContext(Dispatchers.Main){
+                onSuccess(cost)
+            }
+        }
+    }
+
+
+
 }

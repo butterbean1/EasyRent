@@ -112,6 +112,7 @@
     <string name="statistic_costs_header">Расходы:</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="def_cost_date_representation">22.09.2021</string>
 
 
 </resources>

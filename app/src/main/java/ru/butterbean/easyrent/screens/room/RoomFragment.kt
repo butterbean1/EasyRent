@@ -144,6 +144,11 @@ class RoomFragment : Fragment() {
                     createArgsBundle("room",mCurrentRoom))
                 true
             }
+            R.id.costs -> {
+                APP_ACTIVITY.navController.navigate(R.id.action_roomFragment_to_costsListFragment,
+                    createArgsBundle("room",mCurrentRoom))
+                true
+            }
             R.id.settings -> {
                 APP_ACTIVITY.navController.navigate(R.id.action_roomFragment_to_settingsFragment)
                 true

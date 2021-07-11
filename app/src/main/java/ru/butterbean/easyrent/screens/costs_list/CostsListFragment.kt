@@ -1,7 +1,6 @@
 package ru.butterbean.easyrent.screens.costs_list
 
 import android.app.AlertDialog
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -11,28 +10,36 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import ru.butterbean.easyrent.R
-import ru.butterbean.easyrent.databinding.FragmentExtFilesListBinding
+import ru.butterbean.easyrent.database.getEmptyCost
+import ru.butterbean.easyrent.databinding.FragmentCostsListBinding
 import ru.butterbean.easyrent.models.CostData
 import ru.butterbean.easyrent.models.RoomData
-import ru.butterbean.easyrent.screens.ext_files.ExtFilesListAdapter
-import ru.butterbean.easyrent.screens.ext_files.ExtFilesListViewModel
-import ru.butterbean.easyrent.utils.*
+import ru.butterbean.easyrent.utils.APP_ACTIVITY
+import ru.butterbean.easyrent.utils.createArgsBundle
 
 class CostsListFragment : Fragment() {
     private lateinit var mViewModel: CostsListViewModel
     private lateinit var mRecyclerView: RecyclerView
     private lateinit var mCurrentRoom: RoomData
-    private var _binding: FragmentExtFilesListBinding? = null
+    private var _binding: FragmentCostsListBinding? = null
     private val mBinding get() = _binding!!
 
     companion object {
-        fun clickOnListItem(cost: CostData) {
-            APP_ACTIVITY.navController.navigate(R.id.a, createArgsBundle("cost",cost))
+        fun clickOnListItem(costId: Long, f: CostsListFragment) {
+            f.mViewModel.getCostById(costId) { cost ->
+                APP_ACTIVITY.navController.navigate(
+                    R.id.action_costsListFragment_to_costFragment,
+                    createArgsBundle("cost", cost)
+                )
+            }
         }
 
-        fun longClickOnListItem(cost: CostData, f: CostsListFragment) {
-            showDeleteDialog(cost, f)
+        fun longClickOnListItem(costId: Long, f: CostsListFragment) {
+            f.mViewModel.getCostById(costId) { cost ->
+                showDeleteDialog(cost, f)
+            }
         }
+
         private fun showDeleteDialog(cost: CostData, f: CostsListFragment) {
             val actions = arrayOf(
                 APP_ACTIVITY.getString(R.string.delete) // 0
@@ -46,6 +53,7 @@ class CostsListFragment : Fragment() {
                 .show()
         }
     }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> APP_ACTIVITY.navController.popBackStack()
@@ -57,7 +65,7 @@ class CostsListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentExtFilesListBinding.inflate(layoutInflater, container, false)
+        _binding = FragmentCostsListBinding.inflate(layoutInflater, container, false)
         mCurrentRoom = arguments?.getSerializable("room") as RoomData
         return mBinding.root
     }
@@ -68,11 +76,6 @@ class CostsListFragment : Fragment() {
         mRecyclerView.adapter = null
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        extOnActivityResult(resultCode, requestCode, data, this)
-    }
-
 
     override fun onStart() {
         super.onStart()
@@ -80,22 +83,27 @@ class CostsListFragment : Fragment() {
     }
 
     private fun initialization() {
-        APP_ACTIVITY.title = "Файлы"
+        APP_ACTIVITY.title = "${getString(R.string.costs)}. ${mCurrentRoom.name}"
+
+        APP_ACTIVITY.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        // add menu
         setHasOptionsMenu(true)
 
+
         //Recycler view
-        val adapter = ExtFilesListAdapter(this)
-        mRecyclerView = mBinding.extFilesRecyclerView
+        val adapter = CostsListAdapter(this)
+        mRecyclerView = mBinding.costsRecyclerView
         mRecyclerView.adapter = adapter
 
         // ViewModel
-        mViewModel = ViewModelProvider(APP_ACTIVITY).get(ExtFilesListViewModel::class.java)
-        mViewModel.getExtFilesByReserveId(mCurrentReserve.id).observe(viewLifecycleOwner) {
+        mViewModel = ViewModelProvider(APP_ACTIVITY).get(CostsListViewModel::class.java)
+        mViewModel.getCostsByRoomId(mCurrentRoom.id).observe(viewLifecycleOwner) {
             adapter.setData(it.asReversed())
         }
 
-        mBinding.extFilesBtnAdd.setOnClickListener {
-            showAttachFileDialog(this)
+        mBinding.costsBtnAdd.setOnClickListener {
+            APP_ACTIVITY.navController.navigate(R.id.action_costsListFragment_to_costFragment,
+                createArgsBundle("cost",getEmptyCost(mCurrentRoom.id)))
         }
 
     }

@@ -3,6 +3,7 @@ package ru.butterbean.easyrent.database.repository
 import androidx.lifecycle.LiveData
 import ru.butterbean.easyrent.models.CostData
 import ru.butterbean.easyrent.models.CostItemData
+import ru.butterbean.easyrent.screens.costs_list.CostsListItem
 import ru.butterbean.easyrent.utils.APP_DATABASE
 
 class CostsRepository {
@@ -21,8 +22,11 @@ class CostsRepository {
         costDao.deleteCost(cost)
     }
 
-    fun getCostsByRoomId(roomId: Long): LiveData<List<CostData>> =
+    fun getCostsByRoomId(roomId: Long): LiveData<List<CostsListItem>> =
         costDao.getCostsByRoomId(roomId)
+
+    fun getCostById(id: Long): CostData = costDao.getCostById(id)
+
 
     suspend fun addCostItem(costItem: CostItemData): Long {
         return costItemDao.addCostItem(costItem)

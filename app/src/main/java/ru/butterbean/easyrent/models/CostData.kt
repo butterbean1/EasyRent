@@ -30,7 +30,7 @@ data class CostData(
     @ColumnInfo(index = true)
     val roomId: Long,
     @ColumnInfo(index = true)
-    val costItemId: Long,
+    val costItemId: Long = 0,
     val description: String = "",
     val sum: Int = 0,
     val date: String = ""
