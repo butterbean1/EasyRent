@@ -107,6 +107,7 @@
     <string name="def_stat_guests_count" translatable="false">26</string>
     <string name="statistic_guests_header">Постояльцев:</string>
     <string name="statistic">Статистика</string>
+    <string name="my_guest">Мой гость</string>
 
 
 </resources>

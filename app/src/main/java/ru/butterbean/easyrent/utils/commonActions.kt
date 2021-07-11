@@ -14,7 +14,7 @@ fun getEmptyRoom(): RoomData {
 }
 
 fun getEmptyReserve(roomId: Long): ReserveData {
-    return ReserveData(0, roomId)
+    return ReserveData(0, roomId, APP_ACTIVITY.getString(R.string.my_guest))
 }
 
 
