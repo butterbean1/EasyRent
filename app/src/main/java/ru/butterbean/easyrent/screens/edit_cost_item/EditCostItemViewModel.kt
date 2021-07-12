@@ -1,4 +1,4 @@
-package ru.butterbean.easyrent.screens.edit_cost
+package ru.butterbean.easyrent.screens.edit_cost_item
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
@@ -10,26 +10,26 @@ import ru.butterbean.easyrent.database.repository.CostsRepository
 import ru.butterbean.easyrent.models.CostData
 import ru.butterbean.easyrent.models.CostItemData
 
-class EditCostViewModel(application: Application) : AndroidViewModel(application) {
+class EditCostItemViewModel(application: Application) : AndroidViewModel(application) {
     private val mRepository = CostsRepository()
 
-    fun addCost(cost: CostData, onSuccess:(Long) -> Unit) {
+    fun addCostItem(costItem: CostItemData, onSuccess:(Long) -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
-            val newId = mRepository.addCost(cost)
+            val newId = mRepository.addCostItem(costItem)
             withContext(Dispatchers.Main){onSuccess(newId)}
         }
     }
 
-    fun updateCost(cost: CostData, onSuccess:() -> Unit) {
+    fun updateCostItem(costItem: CostItemData, onSuccess:() -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
-            mRepository.updateCost(cost)
+            mRepository.updateCostItem(costItem)
             withContext(Dispatchers.Main){onSuccess()}
         }
     }
 
-    fun deleteCost(cost: CostData, onSuccess:() -> Unit) {
+    fun deleteCostItem(costItem: CostItemData, onSuccess:() -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
-            mRepository.deleteCost(cost)
+            mRepository.deleteCostItem(costItem)
             withContext(Dispatchers.Main){onSuccess()}
         }
     }

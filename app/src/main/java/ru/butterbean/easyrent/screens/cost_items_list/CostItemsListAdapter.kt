@@ -1,33 +1,31 @@
-package ru.butterbean.easyrent.screens.costs_list
+package ru.butterbean.easyrent.screens.cost_items_list
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import ru.butterbean.easyrent.databinding.CostsListItemBinding
+import ru.butterbean.easyrent.databinding.CostItemsListItemBinding
 import ru.butterbean.easyrent.databinding.ExtFileItemBinding
 import ru.butterbean.easyrent.models.CostData
+import ru.butterbean.easyrent.models.CostItemData
 import ru.butterbean.easyrent.models.ReserveExtFileData
-import ru.butterbean.easyrent.utils.getDateFormatISO
 import ru.butterbean.easyrent.utils.setExtFileImage
 import ru.butterbean.easyrent.utils.toDateFormat
 import ru.butterbean.easyrent.utils.trimFileName
 
-class CostsListAdapter(private val f:CostsListFragment) : RecyclerView.Adapter<CostsListAdapter.CostsListHolder>() {
+class CostItemsListAdapter(private val f:CostItemsListFragment) : RecyclerView.Adapter<CostItemsListAdapter.CostsListHolder>() {
 
-    private var listCosts = emptyList<CostsListItem>()
+    private var listCosts = emptyList<CostItemData>()
 
-    class CostsListHolder(itemBinding: CostsListItemBinding): RecyclerView.ViewHolder(itemBinding.root){
-        val costName = itemBinding.costsListCostName
-        val date = itemBinding.costsListDate
-        val sum = itemBinding.costsListSum
+    class CostsListHolder(itemBinding: CostItemsListItemBinding): RecyclerView.ViewHolder(itemBinding.root){
+        val name = itemBinding.costItemsListName
     }
 
     override fun onViewAttachedToWindow(holder: CostsListHolder) {
         holder.itemView.setOnClickListener {
-            CostsListFragment.clickOnListItem(listCosts[holder.adapterPosition].id,f)
+            CostItemsListFragment.clickOnListItem(listCosts[holder.adapterPosition].id,f)
         }
         holder.itemView.setOnLongClickListener {
-            CostsListFragment.longClickOnListItem(listCosts[holder.adapterPosition].id,f)
+            CostItemsListFragment.longClickOnListItem(listCosts[holder.adapterPosition].id,f)
             true
         }
         super.onViewAttachedToWindow(holder)
@@ -42,21 +40,19 @@ class CostsListAdapter(private val f:CostsListFragment) : RecyclerView.Adapter<C
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CostsListHolder {
 
         return CostsListHolder(
-            CostsListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            CostItemsListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         )
     }
 
     override fun onBindViewHolder(holder: CostsListHolder, position: Int) {
         val currentItem = listCosts[position]
-        holder.date.text = currentItem.date.toDateFormat(true)
-        holder.sum.text = currentItem.sum.toString()
-        holder.costName.text = currentItem.itemName
+        holder.name.text = currentItem.name
     }
 
     override fun getItemCount(): Int = listCosts.size
 
-    fun setData(costs:List<CostsListItem>){
-        listCosts = costs
+    fun setData(costItems:List<CostItemData>){
+        listCosts = costItems
         notifyDataSetChanged()
 
     }

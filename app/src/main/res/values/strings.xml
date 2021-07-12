@@ -112,11 +112,15 @@
     <string name="my_guest">Мой гость</string>
     <string name="costs">Расходы</string>
     <string name="statistic_costs_header">Расходы:</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="def_cost_date_representation">22.09.2021</string>
     <string name="def_cost_item_name">Интернет, ТВ и медиа</string>
     <string name="cost_item">Статья расходов</string>
     <string name="description">Описание</string>
+    <string name="new_costs">Новые расходы</string>
+    <string name="empty_sum" translatable="false">0</string>
+    <string name="enter_cost_item">Выберите статью расходов!</string>
+    <string name="select_cost_item">Выберите статью расходов</string>
+    <string name="cost_item_name_hint">Название</string>
 
 
 </resources>

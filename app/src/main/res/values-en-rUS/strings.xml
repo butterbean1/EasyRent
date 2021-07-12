@@ -102,4 +102,8 @@
     <string name="def_cost_item_name">Internet, TV and media</string>
     <string name="def_cost_date_representation">2021/09/22</string>
     <string name="enter_cost_sum">Enter the sum</string>
+    <string name="description">Description</string>
+    <string name="new_costs">New cost</string>
+    <string name="enter_cost_item">Select cost item</string>
+    <string name="select_cost_item">Select cost item</string>
 </resources>

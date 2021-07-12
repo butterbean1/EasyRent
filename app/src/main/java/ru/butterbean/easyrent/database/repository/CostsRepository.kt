@@ -27,6 +27,7 @@ class CostsRepository {
 
     fun getCostById(id: Long): CostData = costDao.getCostById(id)
 
+    fun getCostItemById(id: Long): CostItemData = costItemDao.getCostItemById(id)
 
     suspend fun addCostItem(costItem: CostItemData): Long {
         return costItemDao.addCostItem(costItem)
