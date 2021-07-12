@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.butterbean.easyrent.R
 import ru.butterbean.easyrent.database.getEmptyCostItem
 import ru.butterbean.easyrent.databinding.FragmentCostItemsListBinding
+import ru.butterbean.easyrent.models.CostData
 import ru.butterbean.easyrent.models.CostItemData
-import ru.butterbean.easyrent.models.RoomData
 import ru.butterbean.easyrent.utils.APP_ACTIVITY
 import ru.butterbean.easyrent.utils.createArgsBundle
 
@@ -21,18 +21,26 @@ import ru.butterbean.easyrent.utils.createArgsBundle
 class CostItemsListFragment : Fragment() {
     private lateinit var mViewModel: CostItemsListViewModel
     private lateinit var mRecyclerView: RecyclerView
-    private lateinit var mCurrentRoom: RoomData
+    private lateinit var mCurrentCost: CostData
     private var _binding: FragmentCostItemsListBinding? = null
     private val mBinding get() = _binding!!
 
     companion object {
         fun clickOnListItem(costItemId: Long, f: CostItemsListFragment) {
-            f.mViewModel.getCostItemById(costItemId) { costItem ->
-                APP_ACTIVITY.navController.navigate(
-                    R.id.action_costItemsListFragment_to_editCostFragment,
-                    createArgsBundle("costItem", costItem)
-                )
-            }
+            val cost = CostData(
+                f.mCurrentCost.id,
+                f.mCurrentCost.roomId,
+                costItemId,
+                f.mCurrentCost.sum,
+                f.mCurrentCost.date,
+                f.mCurrentCost.description
+            )
+
+            APP_ACTIVITY.navController.navigate(
+                R.id.action_costItemsListFragment_to_editCostFragment,
+                createArgsBundle("cost", cost)
+            )
+
         }
 
         fun longClickOnListItem(costId: Long, f: CostItemsListFragment) {
@@ -72,7 +80,7 @@ class CostItemsListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentCostItemsListBinding.inflate(layoutInflater, container, false)
-        mCurrentRoom = arguments?.getSerializable("room") as RoomData
+        mCurrentCost = arguments?.getSerializable("cost") as CostData
         return mBinding.root
     }
 
@@ -108,7 +116,8 @@ class CostItemsListFragment : Fragment() {
         }
 
         mBinding.costItemsBtnAdd.setOnClickListener {
-            APP_ACTIVITY.navController.navigate(R.id.action_costItemsListFragment_to_editCostItemFragment,
+            APP_ACTIVITY.navController.navigate(
+                R.id.action_costItemsListFragment_to_editCostItemFragment,
                 createArgsBundle("costItem", getEmptyCostItem())
             )
         }

@@ -48,7 +48,7 @@ class CostsListAdapter(private val f:CostsListFragment) : RecyclerView.Adapter<C
 
     override fun onBindViewHolder(holder: CostsListHolder, position: Int) {
         val currentItem = listCosts[position]
-        holder.date.text = currentItem.date.toDateFormat(true)
+        holder.date.text = currentItem.date.toDateFormat()
         holder.sum.text = currentItem.sum.toString()
         holder.costName.text = currentItem.itemName
     }

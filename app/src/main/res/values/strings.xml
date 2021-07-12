@@ -121,6 +121,7 @@
     <string name="enter_cost_item">Выберите статью расходов!</string>
     <string name="select_cost_item">Выберите статью расходов</string>
     <string name="cost_item_name_hint">Название</string>
+    <string name="enter_cost_item_name">Введите название!</string>
 
 
 </resources>

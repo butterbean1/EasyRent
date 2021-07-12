@@ -106,4 +106,6 @@
     <string name="new_costs">New cost</string>
     <string name="enter_cost_item">Select cost item</string>
     <string name="select_cost_item">Select cost item</string>
+    <string name="cost_item_name_hint">Name</string>
+    <string name="enter_cost_item_name">Enter the name</string>
 </resources>

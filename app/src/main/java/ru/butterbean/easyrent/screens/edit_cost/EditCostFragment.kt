@@ -1,6 +1,5 @@
 package ru.butterbean.easyrent.screens.edit_cost
 
-import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.*
@@ -52,28 +51,14 @@ class EditCostFragment : Fragment() {
                 true
             }
             R.id.delete -> {
-                showDeleteDialog()
+                mViewModel.deleteCost(mCurrentCost) {
+                    goToCostListFragment()
+                }
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
     }
-
-    private fun showDeleteDialog() {
-        val builder = AlertDialog.Builder(this.context)
-        builder.setMessage(getString(R.string.finally_reserve_delete_message))
-            .setPositiveButton(APP_ACTIVITY.getString(R.string.yes)) { dialog, _ ->
-                dialog.cancel()
-                mViewModel.deleteCost(mCurrentCost) {
-                    goToCostListFragment()
-                }
-            }
-            .setNegativeButton(APP_ACTIVITY.getString(R.string.no)) { dialog, _ ->
-                dialog.cancel()
-            }
-            .show()
-    }
-
 
     private fun change() {
         val date = mBinding.editCostDate.text.toString()
@@ -85,7 +70,7 @@ class EditCostFragment : Fragment() {
             sum.isEmpty() -> showToast(getString(R.string.enter_cost_sum))
 
             else -> {
-                val sumInt = if (sum.isEmpty()) 0 else Integer.parseInt(sum)
+                val sumInt = getSumInt(sum)
                 val cost = CostData(
                     mCurrentCost.id,
                     mCurrentCost.roomId,
@@ -109,6 +94,8 @@ class EditCostFragment : Fragment() {
         }
     }
 
+    private fun getSumInt(sum: String) = if (sum.isEmpty()) 0 else Integer.parseInt(sum)
+
     private fun goToCostListFragment() {
         APP_ACTIVITY.navController.popBackStack()
     }
@@ -128,11 +115,17 @@ class EditCostFragment : Fragment() {
 
         mViewModel = ViewModelProvider(APP_ACTIVITY).get(EditCostViewModel::class.java)
 
-        if (!mIsNew){
+        if (mCurrentCost.date.isNotEmpty()) {
             mCurrentDate = mCurrentCost.date.substring(0, 10)
             mBinding.editCostDate.text = mCurrentCost.date.toDateFormat(false)
+        }
+
+        if (mCurrentCost.sum != 0) {
             mBinding.editCostSum.setText(mCurrentCost.sum.toString())
-            mViewModel.getCostItemById(mCurrentCost.costItemId){costItem->
+        }
+        if (mCurrentCost.costItemId != 0L) {
+            mViewModel.getCostItemById(mCurrentCost.costItemId) { costItem ->
+                mCurrentCostItem = costItem
                 mBinding.editCostItem.text = costItem.name
             }
         }
@@ -151,7 +144,18 @@ class EditCostFragment : Fragment() {
         }
 
         mBinding.editCostItem.setOnClickListener {
-            APP_ACTIVITY.navController.navigate(R.id.action_editCostFragment_to_costItemsListFragment)
+            val argCost = CostData(
+                mCurrentCost.id,
+                mCurrentCost.roomId,
+                mCurrentCostItem?.id ?: 0,
+                getSumInt(mBinding.editCostSum.text.toString()),
+                if (mCurrentDate.isEmpty()) "" else getDateTimeInDatabaseFormat(mCurrentDate, "00:00"),
+                mBinding.editCostDescription.text.toString()
+                )
+            APP_ACTIVITY.navController.navigate(
+                R.id.action_editCostFragment_to_costItemsListFragment,
+                createArgsBundle("cost", argCost)
+            )
         }
 
         // add menu

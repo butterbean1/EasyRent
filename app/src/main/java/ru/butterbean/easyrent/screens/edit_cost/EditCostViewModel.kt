@@ -13,29 +13,32 @@ import ru.butterbean.easyrent.models.CostItemData
 class EditCostViewModel(application: Application) : AndroidViewModel(application) {
     private val mRepository = CostsRepository()
 
-    fun addCost(cost: CostData, onSuccess:(Long) -> Unit) {
+    fun addCost(cost: CostData, onSuccess: (Long) -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             val newId = mRepository.addCost(cost)
-            withContext(Dispatchers.Main){onSuccess(newId)}
+            withContext(Dispatchers.Main) { onSuccess(newId) }
         }
     }
 
-    fun updateCost(cost: CostData, onSuccess:() -> Unit) {
+    fun updateCost(cost: CostData, onSuccess: () -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             mRepository.updateCost(cost)
-            withContext(Dispatchers.Main){onSuccess()}
+            withContext(Dispatchers.Main) { onSuccess() }
         }
     }
 
-    fun deleteCost(cost: CostData, onSuccess:() -> Unit) {
+    fun deleteCost(cost: CostData, onSuccess: () -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             mRepository.deleteCost(cost)
-            withContext(Dispatchers.Main){onSuccess()}
+            withContext(Dispatchers.Main) { onSuccess() }
         }
     }
 
-    fun getCostItemById(costItemId: Long, onSuccess:(CostItemData) -> Unit) {
-        mRepository.getCostById(costItemId)
+    fun getCostItemById(costItemId: Long, onSuccess: (CostItemData) -> Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val costItem = mRepository.getCostItemById(costItemId)
+            withContext(Dispatchers.Main) { onSuccess(costItem) }
+        }
     }
 
 }

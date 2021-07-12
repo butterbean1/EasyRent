@@ -15,7 +15,7 @@ interface CostItemDao {
     @Update
     suspend fun updateCostItem(guest:CostItemData)
 
-    @Delete
+    @Delete()
     suspend fun deleteCostItem(guest:CostItemData)
 
     @Query("DELETE FROM $TABLE_COST_ITEMS_NAME")

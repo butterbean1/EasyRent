@@ -38,7 +38,11 @@ class CostsRepository {
     }
 
     suspend fun deleteCostItem(costItem: CostItemData) {
-        costItemDao.deleteCostItem(costItem)
+        try {
+            costItemDao.deleteCostItem(costItem)
+        }catch (e:Exception) {
+//            showToast(e.message.toString())
+        }
     }
 
     fun getAllCostItems(): LiveData<List<CostItemData>> =

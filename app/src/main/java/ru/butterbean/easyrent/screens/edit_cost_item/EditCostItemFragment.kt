@@ -1,7 +1,5 @@
 package ru.butterbean.easyrent.screens.edit_cost_item
 
-import android.app.AlertDialog
-import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
@@ -9,9 +7,9 @@ import androidx.lifecycle.ViewModelProvider
 import ru.butterbean.easyrent.R
 import ru.butterbean.easyrent.databinding.FragmentEditCostItemBinding
 import ru.butterbean.easyrent.models.CostItemData
-import ru.butterbean.easyrent.screens.edit_cost.EditCostViewModel
-import ru.butterbean.easyrent.utils.*
-
+import ru.butterbean.easyrent.utils.APP_ACTIVITY
+import ru.butterbean.easyrent.utils.hideKeyboard
+import ru.butterbean.easyrent.utils.showToast
 
 class EditCostItemFragment : Fragment() {
     private var mIsNew = false
@@ -50,33 +48,19 @@ class EditCostItemFragment : Fragment() {
                 true
             }
             R.id.delete -> {
-                showDeleteDialog()
+                mViewModel.deleteCostItem(mCurrentCostItem) {
+                    goToCostItemsListFragment()
+                }
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
     }
 
-    private fun showDeleteDialog() {
-        val builder = AlertDialog.Builder(this.context)
-        builder.setMessage(getString(R.string.finally_reserve_delete_message))
-            .setPositiveButton(APP_ACTIVITY.getString(R.string.yes)) { dialog, _ ->
-                dialog.cancel()
-                mViewModel.deleteCostItem(mCurrentCostItem) {
-                    goToCostItemsListFragment()
-                }
-            }
-            .setNegativeButton(APP_ACTIVITY.getString(R.string.no)) { dialog, _ ->
-                dialog.cancel()
-            }
-            .show()
-    }
-
-
     private fun change() {
         val name = mBinding.editCostItemName.text.toString()
         when {
-            name.isEmpty() -> showToast(getString(R.string.enter_cost_item))
+            name.isEmpty() -> showToast(getString(R.string.enter_cost_item_name))
 
             else -> {
                 val costItem = CostItemData(
