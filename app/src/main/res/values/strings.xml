@@ -125,6 +125,10 @@
     <string name="select_cost_item">Выберите статью расходов</string>
     <string name="cost_item_name_hint">Название</string>
     <string name="enter_cost_item_name">Введите название!</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Отмена</string>
+    <string name="increase_sum_by">Увеличить сумму на</string>
+    <string name="decrease_sum_by">Уменьшить сумму на</string>
 
 
 </resources>

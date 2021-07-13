@@ -11,6 +11,9 @@ import android.telephony.PhoneNumberFormattingTextWatcher
 import android.text.Editable
 import android.text.InputFilter
 import android.view.*
+import android.view.View.TEXT_ALIGNMENT_CENTER
+import android.view.inputmethod.EditorInfo
+import android.widget.EditText
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.ViewModelProvider
@@ -171,8 +174,8 @@ class EditReserveFragment : ExtFilesExtensionFragment() {
             guest.isEmpty() -> showToast(getString(R.string.enter_guest_name))
             guestsCount.isEmpty() -> showToast(getString(R.string.enter_guests_count))
             else -> {
-                val sumInt = if (sum.isEmpty()) 0 else Integer.parseInt(sum)
-                val paymentInt = if (payment.isEmpty()) 0 else Integer.parseInt(payment)
+                val sumInt = getSumInt(sum)
+                val paymentInt = getSumInt(payment)
                 if (mImmediatelyReplaceToArchive && reserveCompleted(
                         wasCheckOut,
                         sumInt,
@@ -229,8 +232,8 @@ class EditReserveFragment : ExtFilesExtensionFragment() {
                         mCurrentReserve.roomId,
                         guest,
                         Integer.parseInt(guestsCount),
-                        if (sum.isEmpty()) 0 else Integer.parseInt(sum),
-                        if (payment.isEmpty()) 0 else Integer.parseInt(payment),
+                        sumInt,
+                        paymentInt,
                         dateCheckInText,
                         dateCheckOutText,
                         wasCheckIn || wasCheckOut,
@@ -266,6 +269,8 @@ class EditReserveFragment : ExtFilesExtensionFragment() {
             }
         }
     }
+
+    private fun getSumInt(sum: String) = if (sum.isEmpty()) 0 else Integer.parseInt(sum)
 
     private fun goToRoomFragment() {
         val action = if (ONLY_ONE_ROOM) R.id.action_editReserveFragment_to_roomFragment_as_main
@@ -363,6 +368,32 @@ class EditReserveFragment : ExtFilesExtensionFragment() {
 
         // добавляем меню
         setHasOptionsMenu(true)
+    }
+
+    private fun showEnterDecreaseSumDialog(editText:EditText) {
+        showEnterChangeSumDialog(editText,getString(R.string.decrease_sum_by),-1)
+    }
+    private fun showEnterIncreaseSumDialog(editText:EditText) {
+        showEnterChangeSumDialog(editText,getString(R.string.increase_sum_by),1)
+    }
+    private fun showEnterChangeSumDialog(editText:EditText,message:String,factor:Int) {
+        val builder = AlertDialog.Builder(this.context)
+        val et = EditText(this.context)
+        et.inputType = EditorInfo.TYPE_CLASS_NUMBER
+        et.textAlignment = TEXT_ALIGNMENT_CENTER
+        builder.setView(et)
+        builder.setMessage(message)
+            .setPositiveButton(APP_ACTIVITY.getString(R.string.ok)) { dialog, _ ->
+                val sum = getSumInt(editText.text.toString().trim())
+                val addSum = factor*getSumInt(et.text.toString().trim())
+                editText.setText((sum+addSum).toString())
+                changePaymentBtnVisibility()
+                dialog.cancel()
+            }
+            .setNegativeButton(APP_ACTIVITY.getString(R.string.cancel)) { dialog, _ ->
+                dialog.cancel()
+            }
+            .show()
     }
 
     private fun changeExtFilesButtonsVisibility() {
@@ -518,6 +549,23 @@ class EditReserveFragment : ExtFilesExtensionFragment() {
             changePaymentBtnVisibility()
             hideKeyboard()
         }
+
+        mBinding.editReserveBtnIncreaseSum.setOnClickListener {
+            showEnterIncreaseSumDialog(mBinding.editReserveSum)
+        }
+
+        mBinding.editReserveBtnDecreaseSum.setOnClickListener {
+            showEnterDecreaseSumDialog(mBinding.editReserveSum)
+        }
+
+        mBinding.editReserveBtnIncreasePayment.setOnClickListener {
+            showEnterIncreaseSumDialog(mBinding.editReservePayment)
+        }
+
+        mBinding.editReserveBtnDecreasePayment.setOnClickListener {
+            showEnterDecreaseSumDialog(mBinding.editReservePayment)
+        }
+
         mBinding.editReserveBtnAddFile.setOnClickListener {
             showAttachFileDialog(this)
         }

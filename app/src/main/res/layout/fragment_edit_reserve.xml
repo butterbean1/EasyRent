@@ -363,7 +363,7 @@
 
             <TextView
                 android:id="@+id/edit_reserve_header_sum"
-                android:layout_width="150dp"
+                android:layout_width="140dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/app_margin"
                 android:layout_marginTop="12dp"
@@ -392,6 +392,28 @@
                 app:layout_constraintStart_toEndOf="@+id/edit_reserve_sum"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <ImageButton
+                android:id="@+id/edit_reserve_btn_increase_sum"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/app_margin"
+                android:src="@drawable/ic_add"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/edit_reserve_sum_currency_symbol"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/green" />
+
+            <ImageButton
+                android:id="@+id/edit_reserve_btn_decrease_sum"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/app_small_margin"
+                android:src="@drawable/ic_remove"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/edit_reserve_btn_increase_sum"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/red" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -406,7 +428,7 @@
 
             <TextView
                 android:id="@+id/edit_reserve_header_payment"
-                android:layout_width="100dp"
+                android:layout_width="90dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/app_margin"
                 android:layout_marginTop="12dp"
@@ -443,6 +465,28 @@
                 android:textColor="@color/black"
                 app:layout_constraintStart_toEndOf="@+id/edit_reserve_payment"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/edit_reserve_btn_increase_payment"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/app_margin"
+                android:src="@drawable/ic_add"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/edit_reserve_payment_currency_symbol"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/green" />
+
+            <ImageButton
+                android:id="@+id/edit_reserve_btn_decrease_payment"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/app_small_margin"
+                android:src="@drawable/ic_remove"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/edit_reserve_btn_increase_payment"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/red" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
