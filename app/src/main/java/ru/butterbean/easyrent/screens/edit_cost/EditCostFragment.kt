@@ -120,6 +120,8 @@ class EditCostFragment : Fragment() {
             mBinding.editCostDate.text = mCurrentCost.date.toDateFormat(false)
         }
 
+        mBinding.editCostDescription.setText(mCurrentCost.description)
+
         if (mCurrentCost.sum != 0) {
             mBinding.editCostSum.setText(mCurrentCost.sum.toString())
         }
