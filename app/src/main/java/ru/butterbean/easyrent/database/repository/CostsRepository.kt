@@ -33,6 +33,10 @@ class CostsRepository {
         return costItemDao.addCostItem(costItem)
     }
 
+    suspend fun addCostItems(costItems: List<CostItemData>) {
+        return costItemDao.addCostItems(costItems)
+    }
+
     suspend fun updateCostItem(costItem: CostItemData) {
         costItemDao.updateCostItem(costItem)
     }

@@ -91,7 +91,7 @@ class RoomsListFragment : Fragment() {
 
         // ViewModel
         mObserverList = Observer {
-            adapter.setData(it.asReversed())
+            adapter.setData(it)
         }
         mViewModel = ViewModelProvider(APP_ACTIVITY).get(RoomsListViewModel::class.java)
         mViewModel.readAllRooms.observe(viewLifecycleOwner, mObserverList)

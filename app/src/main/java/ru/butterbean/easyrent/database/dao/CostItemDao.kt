@@ -10,13 +10,16 @@ import ru.butterbean.easyrent.models.CostItemData
 @Dao
 interface CostItemDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun addCostItem(guest: CostItemData):Long
+    suspend fun addCostItem(costItem: CostItemData):Long
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun addCostItems(costItems: List<CostItemData>)
 
     @Update
-    suspend fun updateCostItem(guest:CostItemData)
+    suspend fun updateCostItem(costItem:CostItemData)
 
     @Delete()
-    suspend fun deleteCostItem(guest:CostItemData)
+    suspend fun deleteCostItem(costItem:CostItemData)
 
     @Query("DELETE FROM $TABLE_COST_ITEMS_NAME")
     suspend fun deleteAllCostItems()

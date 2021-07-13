@@ -12,7 +12,7 @@ ver. 1 : beginning
 ver. 2 : reserves_archive_table added
 ver. 3 : field phone_number added to reserves_table & reserves_archive_table
 ver. 4 : reserves_ext_files_table & reserves_archive_ext_files_table added
-ver. 5 : costs_table added
+ver. 5 : costs_table & cost_items_table added
  */
 @Database(
     entities = [RoomData::class,
@@ -53,7 +53,12 @@ abstract class MainDatabase : RoomDatabase() {
                     MainDatabase::class.java,
                     DATABASE_NAME
                 )
-                    .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5)
+                    .addMigrations(
+                        MIGRATION_1_2,
+                        MIGRATION_2_3,
+                        MIGRATION_3_4,
+                        MIGRATION_4_5,
+                    )
                     .build()
                 INSTANCE = instance
                 return instance

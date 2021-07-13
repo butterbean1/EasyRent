@@ -10,13 +10,13 @@ import ru.butterbean.easyrent.screens.costs_list.CostsListItem
 @Dao
 interface CostDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun addCost(guest: CostData): Long
+    suspend fun addCost(cost: CostData): Long
 
     @Update
-    suspend fun updateCost(guest: CostData)
+    suspend fun updateCost(cost: CostData)
 
     @Delete
-    suspend fun deleteCost(guest: CostData)
+    suspend fun deleteCost(cost: CostData)
 
     @Query("DELETE FROM $TABLE_COSTS_NAME")
     suspend fun deleteAllCosts()

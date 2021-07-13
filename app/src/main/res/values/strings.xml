@@ -113,7 +113,10 @@
     <string name="costs">Расходы</string>
     <string name="statistic_costs_header">Расходы:</string>
     <string name="def_cost_date_representation">22.09.2021</string>
-    <string name="def_cost_item_name">Интернет, ТВ и медиа</string>
+    <string name="cost_item_internet">Интернет, ТВ и медиа</string>
+    <string name="cost_item_other">Прочее</string>
+    <string name="cost_item_repair">Ремонт</string>
+    <string name="cost_item_communal_services">ЖКХ</string>
     <string name="cost_item">Статья расходов</string>
     <string name="description">Описание</string>
     <string name="new_costs">Новые расходы</string>

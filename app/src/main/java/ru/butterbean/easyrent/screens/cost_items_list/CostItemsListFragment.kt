@@ -112,7 +112,8 @@ class CostItemsListFragment : Fragment() {
         // ViewModel
         mViewModel = ViewModelProvider(APP_ACTIVITY).get(CostItemsListViewModel::class.java)
         mViewModel.getAllCostItems().observe(viewLifecycleOwner) {
-            adapter.setData(it.asReversed())
+            if (it.isEmpty()) fillDefaultCostItems()
+            else adapter.setData(it)
         }
 
         mBinding.costItemsBtnAdd.setOnClickListener {
@@ -122,5 +123,14 @@ class CostItemsListFragment : Fragment() {
             )
         }
 
+    }
+
+    private fun fillDefaultCostItems() {
+        val l = mutableListOf<CostItemData>()
+        l.add(CostItemData(0, getString(R.string.cost_item_internet)))
+        l.add(CostItemData(0, getString(R.string.cost_item_communal_services)))
+        l.add(CostItemData(0, getString(R.string.cost_item_repair)))
+        l.add(CostItemData(0, getString(R.string.cost_item_other)))
+        mViewModel.addCostItems(l){}
     }
 }

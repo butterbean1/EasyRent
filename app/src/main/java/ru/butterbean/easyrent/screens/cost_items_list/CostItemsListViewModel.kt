@@ -13,6 +13,13 @@ import ru.butterbean.easyrent.models.CostItemData
 class CostItemsListViewModel(application: Application) : AndroidViewModel(application) {
     private val mRepository = CostsRepository()
 
+    fun addCostItems(costItems: List<CostItemData>, onSuccess:() -> Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val newId = mRepository.addCostItems(costItems)
+            withContext(Dispatchers.Main){onSuccess()}
+        }
+    }
+
     fun getAllCostItems() = mRepository.getAllCostItems()
 
     fun deleteCostItem(costItem: CostItemData) {

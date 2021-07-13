@@ -99,7 +99,7 @@
     <string name="costs">Costs</string>
     <string name="enter_cost_date">Select the date</string>
     <string name="cost_item">Cost item</string>
-    <string name="def_cost_item_name">Internet, TV and media</string>
+    <string name="cost_item_internet">Internet, TV and media</string>
     <string name="def_cost_date_representation">2021/09/22</string>
     <string name="enter_cost_sum">Enter the sum</string>
     <string name="description">Description</string>
@@ -108,4 +108,7 @@
     <string name="select_cost_item">Select cost item</string>
     <string name="cost_item_name_hint">Name</string>
     <string name="enter_cost_item_name">Enter the name</string>
+    <string name="cost_item_communal_services">Communal services</string>
+    <string name="cost_item_repair">Repair</string>
+    <string name="cost_item_other">Other</string>
 </resources>
