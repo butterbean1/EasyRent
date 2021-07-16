@@ -7,11 +7,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.butterbean.easyrent.database.repository.CostsRepository
+import ru.butterbean.easyrent.database.repository.RoomRepository
 import ru.butterbean.easyrent.models.CostData
 import ru.butterbean.easyrent.models.CostItemData
+import ru.butterbean.easyrent.models.RoomData
+import ru.butterbean.easyrent.utils.APP_DATABASE
 
 class EditCostViewModel(application: Application) : AndroidViewModel(application) {
     private val mRepository = CostsRepository()
+    private val mRoomRepository = RoomRepository(APP_DATABASE.roomDao())
 
     fun addCost(cost: CostData, onSuccess: (Long) -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -40,5 +44,16 @@ class EditCostViewModel(application: Application) : AndroidViewModel(application
             withContext(Dispatchers.Main) { onSuccess(costItem) }
         }
     }
+
+    fun getRoomById(id: Long, onSuccess: (RoomData) -> Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val room = mRoomRepository.getRoomById(id)
+            withContext(Dispatchers.Main) {
+                onSuccess(room)
+            }
+        }
+    }
+
+
 
 }

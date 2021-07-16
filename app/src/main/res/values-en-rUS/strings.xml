@@ -115,4 +115,5 @@
     <string name="cancel">Cancel</string>
     <string name="increase_sum_by">Increase sum by</string>
     <string name="decrease_sum_by">Decrease sum by</string>
+    <string name="statistic_reserves_header">Bookings:</string>
 </resources>

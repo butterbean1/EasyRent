@@ -129,6 +129,7 @@
     <string name="cancel">Отмена</string>
     <string name="increase_sum_by">Увеличить сумму на</string>
     <string name="decrease_sum_by">Уменьшить сумму на</string>
+    <string name="statistic_reserves_header">Бронирований:</string>
 
 
 </resources>

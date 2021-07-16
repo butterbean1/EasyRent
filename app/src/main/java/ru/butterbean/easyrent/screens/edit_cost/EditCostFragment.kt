@@ -112,8 +112,12 @@ class EditCostFragment : Fragment() {
         else APP_ACTIVITY.title = getString(R.string.costs)
 
         APP_ACTIVITY.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
         mViewModel = ViewModelProvider(APP_ACTIVITY).get(EditCostViewModel::class.java)
+
+        mViewModel.getRoomById(mCurrentCost.roomId) {room->
+            mBinding.editCostRoomName.text = room.name
+
+            }
 
         if (mCurrentCost.date.isNotEmpty()) {
             mCurrentDate = mCurrentCost.date.substring(0, 10)
