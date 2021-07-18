@@ -1,496 +1,500 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/layout_edit">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/edit_reserve_group_header"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:id="@+id/edit_reserve_room_name"
-
-            style="@style/large_text"
-            android:layout_width="0dp"
-            android:text="@string/def_room_name"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/edit_reserve_btn_show_single_file"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageButton
-            android:id="@+id/edit_reserve_btn_show_single_file"
-            android:layout_width="45dp"
-            android:layout_height="35dp"
-            android:background="@color/white"
-            android:scaleType="fitCenter"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/edit_reserve_btn_show_files"
-            app:layout_constraintTop_toTopOf="parent" />
+    <androidx.constraintlayout.widget.ConstraintLayout style="@style/layout_edit">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/edit_reserve_btn_add_file"
-            android:layout_width="wrap_content"
-            android:layout_height="35dp"
-            android:minWidth="30dp"
-            android:layout_margin="@dimen/app_small_margin"
-            android:background="@drawable/ripple_effect_grey"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ImageView
-                android:id="@+id/edit_reserve_btn_add_file_attach_image"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_attach_file"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:tint="@color/black" />
-
-            <ImageView
-                android:id="@+id/edit_reserve_btn_add_file_image"
-                android:layout_width="20dp"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_add"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@id/edit_reserve_btn_add_file_attach_image"
-                app:layout_constraintTop_toTopOf="parent"
-                app:tint="@color/black" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/edit_reserve_btn_show_files"
-            android:layout_width="wrap_content"
-            android:layout_height="35dp"
-            android:layout_margin="@dimen/app_small_margin"
-            android:background="@drawable/ripple_effect_grey"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/edit_reserve_btn_add_file"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ImageView
-                android:id="@+id/edit_reserve_btn_show_files_image"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_attach_file"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:tint="@color/black" />
-
-            <TextView
-                android:id="@+id/edit_reserve_btn_show_files_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="4dp"
-                android:text="2"
-                android:textColor="@color/black"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/edit_reserve_btn_show_files_image"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/edit_reserve_group_guests"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_reserve_group_header">
-
-        <TextView
-            android:id="@+id/edit_reserve_guests_header"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/app_margin"
-            android:text="@string/guests"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <View
-            android:id="@+id/edit_reserve_guests_separator"
-            style="@style/normal_separator_edit"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/edit_reserve_guests_header" />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/edit_reserve_group_guests_name_count"
+            android:id="@+id/edit_reserve_group_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/app_small_margin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/edit_reserve_guests_separator">
+            app:layout_constraintTop_toTopOf="parent">
 
-            <EditText
-                android:id="@+id/edit_reserve_guest"
+            <TextView
+                android:id="@+id/edit_reserve_room_name"
+
+                style="@style/large_text"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/app_margin"
-                android:layout_marginEnd="@dimen/app_small_margin"
-                android:hint="@string/guest_name"
-                android:inputType="textPersonName"
-                android:text="@string/def_guest_name"
-                android:textColorHint="@color/red"
-                app:layout_constraintEnd_toStartOf="@+id/edit_reserve_header_guests_count"
+                android:text="@string/def_room_name"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/edit_reserve_btn_show_single_file"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/edit_reserve_header_guests_count"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:layout_marginEnd="@dimen/app_margin"
-                android:text="@string/guests_count"
-                android:textColor="@color/black"
-                app:layout_constraintEnd_toStartOf="@id/edit_reserve_guests_count"
+            <ImageButton
+                android:id="@+id/edit_reserve_btn_show_single_file"
+                android:layout_width="45dp"
+                android:layout_height="35dp"
+                android:background="@color/white"
+                android:scaleType="fitCenter"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/edit_reserve_btn_show_files"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <EditText
-                android:id="@+id/edit_reserve_guests_count"
-                android:layout_width="30dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/app_margin"
-                android:inputType="number"
-                android:text="1"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/edit_reserve_btn_add_file"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:layout_margin="@dimen/app_small_margin"
+                android:background="@drawable/ripple_effect_grey"
+                android:minWidth="30dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/edit_reserve_btn_add_file_attach_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_attach_file"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@color/black" />
+
+                <ImageView
+                    android:id="@+id/edit_reserve_btn_add_file_image"
+                    android:layout_width="20dp"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_add"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/edit_reserve_btn_add_file_attach_image"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@color/black" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/edit_reserve_btn_show_files"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:layout_margin="@dimen/app_small_margin"
+                android:background="@drawable/ripple_effect_grey"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/edit_reserve_btn_add_file"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/edit_reserve_btn_show_files_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_attach_file"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@color/black" />
+
+                <TextView
+                    android:id="@+id/edit_reserve_btn_show_files_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
+                    android:text="2"
+                    android:textColor="@color/black"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/edit_reserve_btn_show_files_image"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/edit_reserve_group_guests"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/app_margin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/edit_reserve_group_guests_name_count">
-
-            <EditText
-                android:id="@+id/edit_reserve_phone_number"
-                android:layout_width="190dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/app_margin"
-                android:inputType="phone"
-                android:maxLength="17"
-                android:text="@string/def_phone_number"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageButton
-                android:id="@+id/edit_reserve_btn_phone_call"
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_phone_call"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/edit_reserve_phone_number"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageButton
-                android:id="@+id/edit_reserve_btn_phone_whatsapp"
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_whatsapp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/edit_reserve_btn_phone_call"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageButton
-                android:id="@+id/edit_reserve_btn_phone_sms"
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_sms"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/edit_reserve_btn_phone_whatsapp"
-                app:layout_constraintTop_toTopOf="parent" />
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/edit_reserve_group_chek_in"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_reserve_group_guests">
-
-        <TextView
-            android:id="@+id/edit_reserve_chek_in_header"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/app_margin"
-            android:text="@string/check_in"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <View
-            android:id="@+id/edit_reserve_chek_in_separator"
-            style="@style/normal_separator_edit"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/edit_reserve_chek_in_header" />
-
-        <TextView
-            android:id="@+id/edit_reserve_date_check_in"
-            style="@style/date_time_text"
-            android:hint="@string/check_in_date"
-            android:textColorHint="@color/red"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/edit_reserve_chek_in_separator" />
-
-        <TextView
-            android:id="@+id/edit_reserve_time_check_in"
-            style="@style/date_time_text"
-            android:text="@string/check_in_time"
-            app:layout_constraintBottom_toBottomOf="@id/edit_reserve_date_check_in"
-            app:layout_constraintStart_toEndOf="@id/edit_reserve_date_check_in"
-            app:layout_constraintTop_toTopOf="@id/edit_reserve_date_check_in" />
-
-        <CheckBox
-            android:id="@+id/edit_reserve_was_check_in"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/app_margin"
-            android:layout_marginTop="@dimen/app_margin"
-            android:text="@string/was_check_in"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/edit_reserve_time_check_in" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/edit_reserve_group_chek_out"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edit_reserve_group_chek_in">
-
-        <TextView
-            android:id="@+id/edit_reserve_chek_out_header"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/app_margin"
-            android:text="@string/check_out"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <View
-            android:id="@+id/edit_reserve_chek_out_separator"
-            style="@style/normal_separator_edit"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/edit_reserve_chek_out_header" />
-
-        <TextView
-            android:id="@+id/edit_reserve_date_check_out"
-            style="@style/date_time_text"
-            android:hint="@string/check_in_date"
-            android:textColorHint="@color/red"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/edit_reserve_chek_out_separator" />
-
-        <TextView
-            android:id="@+id/edit_reserve_time_check_out"
-            style="@style/date_time_text"
-            android:text="@string/check_out_time"
-            app:layout_constraintBottom_toBottomOf="@id/edit_reserve_date_check_out"
-            app:layout_constraintStart_toEndOf="@id/edit_reserve_date_check_out"
-            app:layout_constraintTop_toTopOf="@id/edit_reserve_date_check_out" />
-
-
-        <CheckBox
-            android:id="@+id/edit_reserve_was_check_out"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/app_margin"
-            android:layout_marginTop="@dimen/app_margin"
-            android:text="@string/was_check_out"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/edit_reserve_time_check_out" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/edit_reserve_group_sums"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edit_reserve_group_chek_out">
-
-        <TextView
-            android:id="@+id/edit_sums_header"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/app_margin"
-            android:text="Оплата"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/edit_reserve_group_sum"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/app_small_margin"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/edit_sums_header">
+            app:layout_constraintTop_toBottomOf="@+id/edit_reserve_group_header">
 
             <TextView
-                android:id="@+id/edit_reserve_header_sum"
-                android:layout_width="140dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/app_margin"
-                android:layout_marginTop="12dp"
-                android:text="@string/sum"
-                android:textColor="@color/black"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <EditText
-                android:id="@+id/edit_reserve_sum"
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:inputType="number"
-                android:text="@string/def_sum"
-                app:layout_constraintStart_toEndOf="@+id/edit_reserve_header_sum"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/edit_reserve_sum_currency_symbol"
+                android:id="@+id/edit_reserve_guests_header"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:text="@string/def_currency_symbol"
-                android:textColor="@color/black"
-                app:layout_constraintStart_toEndOf="@+id/edit_reserve_sum"
+                android:layout_margin="@dimen/app_margin"
+                android:text="@string/guests"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageButton
-                android:id="@+id/edit_reserve_btn_increase_sum"
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/app_margin"
-                android:src="@drawable/ic_add"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/edit_reserve_sum_currency_symbol"
-                app:layout_constraintTop_toTopOf="parent"
-                app:tint="@color/green" />
+            <View
+                android:id="@+id/edit_reserve_guests_separator"
+                style="@style/normal_separator_edit"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/edit_reserve_guests_header" />
 
-            <ImageButton
-                android:id="@+id/edit_reserve_btn_decrease_sum"
-                android:layout_width="50dp"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/edit_reserve_group_guests_name_count"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/app_small_margin"
-                android:src="@drawable/ic_remove"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/edit_reserve_btn_increase_sum"
-                app:layout_constraintTop_toTopOf="parent"
-                app:tint="@color/red" />
+                android:layout_marginTop="@dimen/app_small_margin"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/edit_reserve_guests_separator">
 
+                <EditText
+                    android:id="@+id/edit_reserve_guest"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/app_margin"
+                    android:layout_marginEnd="@dimen/app_small_margin"
+                    android:hint="@string/guest_name"
+                    android:inputType="textPersonName"
+                    android:text="@string/def_guest_name"
+                    android:textColorHint="@color/red"
+                    app:layout_constraintEnd_toStartOf="@+id/edit_reserve_header_guests_count"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/edit_reserve_header_guests_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="@dimen/app_margin"
+                    android:text="@string/guests_count"
+                    android:textColor="@color/black"
+                    app:layout_constraintEnd_toStartOf="@id/edit_reserve_guests_count"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <EditText
+                    android:id="@+id/edit_reserve_guests_count"
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/app_margin"
+                    android:inputType="number"
+                    android:text="1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/app_margin"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/edit_reserve_group_guests_name_count">
+
+                <EditText
+                    android:id="@+id/edit_reserve_phone_number"
+                    android:layout_width="190dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/app_margin"
+                    android:inputType="phone"
+                    android:maxLength="17"
+                    android:text="@string/def_phone_number"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageButton
+                    android:id="@+id/edit_reserve_btn_phone_call"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_phone_call"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/edit_reserve_phone_number"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageButton
+                    android:id="@+id/edit_reserve_btn_phone_whatsapp"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_whatsapp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/edit_reserve_btn_phone_call"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageButton
+                    android:id="@+id/edit_reserve_btn_phone_sms"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_sms"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/edit_reserve_btn_phone_whatsapp"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/edit_reserve_group_payment"
+            android:id="@+id/edit_reserve_group_chek_in"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edit_reserve_group_guests">
+
+            <TextView
+                android:id="@+id/edit_reserve_chek_in_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/app_margin"
+                android:text="@string/check_in"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/edit_reserve_chek_in_separator"
+                style="@style/normal_separator_edit"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/edit_reserve_chek_in_header" />
+
+            <TextView
+                android:id="@+id/edit_reserve_date_check_in"
+                style="@style/date_time_text"
+                android:hint="@string/check_in_date"
+                android:textColorHint="@color/red"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/edit_reserve_chek_in_separator" />
+
+            <TextView
+                android:id="@+id/edit_reserve_time_check_in"
+                style="@style/date_time_text"
+                android:text="@string/check_in_time"
+                app:layout_constraintBottom_toBottomOf="@id/edit_reserve_date_check_in"
+                app:layout_constraintStart_toEndOf="@id/edit_reserve_date_check_in"
+                app:layout_constraintTop_toTopOf="@id/edit_reserve_date_check_in" />
+
+            <CheckBox
+                android:id="@+id/edit_reserve_was_check_in"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/app_margin"
+                android:layout_marginTop="@dimen/app_margin"
+                android:text="@string/was_check_in"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/edit_reserve_time_check_in" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/edit_reserve_group_chek_out"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/edit_reserve_group_chek_in">
+
+            <TextView
+                android:id="@+id/edit_reserve_chek_out_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/app_margin"
+                android:text="@string/check_out"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/edit_reserve_chek_out_separator"
+                style="@style/normal_separator_edit"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/edit_reserve_chek_out_header" />
+
+            <TextView
+                android:id="@+id/edit_reserve_date_check_out"
+                style="@style/date_time_text"
+                android:hint="@string/check_in_date"
+                android:textColorHint="@color/red"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/edit_reserve_chek_out_separator" />
+
+            <TextView
+                android:id="@+id/edit_reserve_time_check_out"
+                style="@style/date_time_text"
+                android:text="@string/check_out_time"
+                app:layout_constraintBottom_toBottomOf="@id/edit_reserve_date_check_out"
+                app:layout_constraintStart_toEndOf="@id/edit_reserve_date_check_out"
+                app:layout_constraintTop_toTopOf="@id/edit_reserve_date_check_out" />
+
+
+            <CheckBox
+                android:id="@+id/edit_reserve_was_check_out"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/app_margin"
+                android:layout_marginTop="@dimen/app_margin"
+                android:text="@string/was_check_out"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/edit_reserve_time_check_out" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/edit_reserve_group_sums"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/edit_reserve_group_sum">
+            app:layout_constraintTop_toBottomOf="@id/edit_reserve_group_chek_out">
 
             <TextView
-                android:id="@+id/edit_reserve_header_payment"
-                android:layout_width="90dp"
+                android:id="@+id/edit_sums_header"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/app_margin"
-                android:layout_marginTop="12dp"
-                android:text="@string/payment"
-                android:textColor="@color/black"
+                android:layout_margin="@dimen/app_margin"
+                android:text="Оплата"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageButton
-                android:id="@+id/edit_reserve_btn_payment_full"
-                android:layout_width="50dp"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/edit_reserve_group_sum"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_check_green"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/edit_reserve_header_payment"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_marginTop="@dimen/app_small_margin"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/edit_sums_header">
 
-            <EditText
-                android:id="@+id/edit_reserve_payment"
-                android:layout_width="80dp"
+                <TextView
+                    android:id="@+id/edit_reserve_header_sum"
+                    android:layout_width="110dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/app_margin"
+                    android:layout_marginTop="12dp"
+                    android:text="@string/sum"
+                    android:textColor="@color/black"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <EditText
+                    android:id="@+id/edit_reserve_sum"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:inputType="number"
+                    android:text="@string/def_sum"
+                    app:layout_constraintStart_toEndOf="@+id/edit_reserve_header_sum"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/edit_reserve_sum_currency_symbol"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="@string/def_currency_symbol"
+                    android:textColor="@color/black"
+                    app:layout_constraintStart_toEndOf="@+id/edit_reserve_sum"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageButton
+                    android:id="@+id/edit_reserve_btn_increase_sum"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/app_margin"
+                    android:src="@drawable/ic_add"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/edit_reserve_sum_currency_symbol"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@color/green" />
+
+                <ImageButton
+                    android:id="@+id/edit_reserve_btn_decrease_sum"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/app_small_margin"
+                    android:src="@drawable/ic_remove"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/edit_reserve_btn_increase_sum"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@color/red" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/edit_reserve_group_payment"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:inputType="number"
-                android:text="@string/def_sum"
-                app:layout_constraintStart_toEndOf="@+id/edit_reserve_btn_payment_full"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_marginTop="15dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/edit_reserve_group_sum">
 
-            <TextView
-                android:id="@+id/edit_reserve_payment_currency_symbol"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:text="@string/def_currency_symbol"
-                android:textColor="@color/black"
-                app:layout_constraintStart_toEndOf="@+id/edit_reserve_payment"
-                app:layout_constraintTop_toTopOf="parent" />
+                <TextView
+                    android:id="@+id/edit_reserve_header_payment"
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/app_margin"
+                    android:layout_marginTop="12dp"
+                    android:text="@string/payment"
+                    android:textColor="@color/black"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageButton
-                android:id="@+id/edit_reserve_btn_increase_payment"
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/app_margin"
-                android:src="@drawable/ic_add"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/edit_reserve_payment_currency_symbol"
-                app:layout_constraintTop_toTopOf="parent"
-                app:tint="@color/green" />
+                <ImageButton
+                    android:id="@+id/edit_reserve_btn_payment_full"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_check_green"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/edit_reserve_header_payment"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageButton
-                android:id="@+id/edit_reserve_btn_decrease_payment"
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/app_small_margin"
-                android:src="@drawable/ic_remove"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/edit_reserve_btn_increase_payment"
-                app:layout_constraintTop_toTopOf="parent"
-                app:tint="@color/red" />
+                <EditText
+                    android:id="@+id/edit_reserve_payment"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:inputType="number"
+                    android:text="@string/def_sum"
+                    app:layout_constraintStart_toEndOf="@+id/edit_reserve_btn_payment_full"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/edit_reserve_payment_currency_symbol"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="@string/def_currency_symbol"
+                    android:textColor="@color/black"
+                    app:layout_constraintStart_toEndOf="@+id/edit_reserve_payment"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageButton
+                    android:id="@+id/edit_reserve_btn_increase_payment"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/app_margin"
+                    android:src="@drawable/ic_add"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/edit_reserve_payment_currency_symbol"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@color/green" />
+
+                <ImageButton
+                    android:id="@+id/edit_reserve_btn_decrease_payment"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/app_small_margin"
+                    android:src="@drawable/ic_remove"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/edit_reserve_btn_increase_payment"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@color/red" />
 
 
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
